@@ -416,7 +416,8 @@
     "breadcrumb": "News",
     "backToNews": "Back to News",
     "readCount": "reads",
-    "relatedTitle": "Related Articles"
+    "relatedTitle": "Related Articles",
+    "latestTitle": "Latest News"
   },
   "UmkmDetail": {
     "breadcrumb": "UMKM",

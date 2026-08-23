@@ -33,7 +33,7 @@ export const HomeCTA: React.FC = () => {
               {t('Home.ctaComplaint')}
             </Button>
           </Link>
-          <Link href="/profil">
+          <Link href="/kontak">
             <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10">
               {t('Home.ctaContact')}
             </Button>

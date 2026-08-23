@@ -1,6 +1,6 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { getBeritaBySlug, getBeritaTerkait } from '@/lib/services/berita.service';
+import { getBeritaBySlug, getBeritaTerkait, getBeritaTerbaru } from '@/lib/services/berita.service';
 import { BeritaDetailClient } from './BeritaDetailClient';
 
 interface BeritaDetailPageProps {
@@ -31,7 +31,16 @@ export default async function BeritaDetailPage({ params }: BeritaDetailPageProps
     notFound();
   }
 
-  const terkait = await getBeritaTerkait(slug, 3);
+  const [terkait, terbaru] = await Promise.all([
+    getBeritaTerkait(slug, 3),
+    getBeritaTerbaru(5),
+  ]);
 
-  return <BeritaDetailClient berita={berita} terkait={terkait} />;
+  return (
+    <BeritaDetailClient
+      berita={berita}
+      terkait={terkait}
+      terbaru={terbaru.filter((b) => b.slug !== slug).slice(0, 4)}
+    />
+  );
 }

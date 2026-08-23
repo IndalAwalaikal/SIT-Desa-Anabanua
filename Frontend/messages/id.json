@@ -416,7 +416,8 @@
     "breadcrumb": "Berita",
     "backToNews": "Kembali ke Berita",
     "readCount": "kali dibaca",
-    "relatedTitle": "Artikel Terkait"
+    "relatedTitle": "Berita Terkait",
+    "latestTitle": "Berita Terbaru"
   },
   "UmkmDetail": {
     "breadcrumb": "UMKM",

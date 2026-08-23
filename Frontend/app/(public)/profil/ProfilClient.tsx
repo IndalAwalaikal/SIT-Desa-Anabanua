@@ -261,7 +261,11 @@ export const ProfilClient: React.FC<ProfilClientProps> = ({ profil, perangkat })
               <h2 id="kepala-desa-heading" className="sr-only">
                 {t('KepalaDesa.jabatan')}
               </h2>
-              <KepalaDesaCard kepala={kepalaDesa} />
+              <KepalaDesaCard
+                kepala={kepalaDesa}
+                about={sejarahExcerpt}
+                aboutEyebrow={t('Profil.mastheadEyebrow')}
+              />
             </Reveal>
           </section>
         )}

@@ -185,11 +185,14 @@ function renderMarkdownContent(content: string, gambarTengah?: string) {
 interface BeritaDetailClientProps {
   berita: Berita;
   terkait: Berita[];
+  /** Berita terbaru (sudah di-filter dari artikel ini) untuk sidebar & section bawah. */
+  terbaru: Berita[];
 }
 
 export const BeritaDetailClient: React.FC<BeritaDetailClientProps> = ({
   berita,
   terkait,
+  terbaru,
 }) => {
   const { t } = useTranslation();
 
@@ -231,7 +234,7 @@ export const BeritaDetailClient: React.FC<BeritaDetailClientProps> = ({
 
   return (
     <div className="py-12 bg-neutral-50 dark:bg-neutral-950">
-      <div className="container-desa max-w-4xl space-y-8">
+      <div className="container-desa max-w-6xl space-y-8">
         {/* Back Link */}
         <Link
           href="/berita"
@@ -290,6 +293,8 @@ export const BeritaDetailClient: React.FC<BeritaDetailClientProps> = ({
           />
         </div>
 
+        {/* ── Layout utama: artikel (kiri) + sidebar berita terbaru (kanan) ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 items-start">
         {/* Main Content */}
         <Card className="p-8 sm:p-12 space-y-6 text-neutral-800 dark:text-neutral-200 leading-relaxed font-sans text-sm sm:text-base">
           {berita.ringkasan && (
@@ -318,6 +323,68 @@ export const BeritaDetailClient: React.FC<BeritaDetailClientProps> = ({
 
         {/* Share */}
         <ShareButtons title={berita.judul} />
+
+        {/* ── Sidebar: Berita Terbaru (desktop) ── */}
+        <aside className="hidden lg:block lg:sticky lg:top-24 space-y-4">
+          <h3 className="text-sm font-bold uppercase tracking-widest text-neutral-400 flex items-center gap-2">
+            {t('BeritaDetail.latestTitle')}
+          </h3>
+          <div className="space-y-3">
+            {terbaru.map((item) => (
+              <Link
+                key={item.id}
+                href={`/berita/${item.slug}`}
+                className="group block rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 hover:border-primary-500/40 hover:shadow-[0_14px_36px_-20px_rgba(11,93,187,0.35)] transition-all"
+              >
+                <span className="block text-[10px] font-bold text-primary-600 uppercase tracking-wide">
+                  {item.kategori}
+                </span>
+                <h4 className="mt-1 font-bold text-sm leading-snug text-neutral-900 line-clamp-2 group-hover:text-primary-600 transition-colors dark:text-white">
+                  {item.judul}
+                </h4>
+                <p className="mt-1.5 text-[11px] text-neutral-400 flex items-center gap-1">
+                  <Calendar className="w-3 h-3" />
+                  {formatTanggal(item.tanggalTerbit)}
+                </p>
+              </Link>
+            ))}
+          </div>
+          <Link
+            href="/berita"
+            className="inline-flex items-center gap-1.5 pt-1 text-xs font-bold text-primary-600 hover:gap-2.5 transition-all dark:text-primary-400"
+          >
+            {t('BeritaDetail.backToNews')} →
+          </Link>
+        </aside>
+        </div>
+
+        {/* ── Berita Terbaru di bawah narasi (mobile/tablet) ── */}
+        {terbaru.length > 0 && (
+          <div className="lg:hidden space-y-4 pt-2">
+            <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
+              {t('BeritaDetail.latestTitle')}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {terbaru.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/berita/${item.slug}`}
+                  className="group block rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 hover:border-primary-500/40 transition-all"
+                >
+                  <span className="block text-[10px] font-bold text-primary-600 uppercase tracking-wide">
+                    {item.kategori}
+                  </span>
+                  <h4 className="mt-1 font-bold text-sm leading-snug text-neutral-900 line-clamp-2 group-hover:text-primary-600 transition-colors dark:text-white">
+                    {item.judul}
+                  </h4>
+                  <p className="mt-1.5 text-[11px] text-neutral-400">
+                    {formatTanggal(item.tanggalTerbit)}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Komentar */}
         <section className="space-y-5 pt-4" aria-label="Komentar">

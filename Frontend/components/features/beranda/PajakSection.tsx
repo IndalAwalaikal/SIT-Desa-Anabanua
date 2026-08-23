@@ -294,9 +294,11 @@ export const PajakSection = () => {
               {features.map((f, idx) => {
                 const { ref, visible } = featRefs[idx];
                 return (
-                  <div
+                  <Link
                     key={f.no}
-                    ref={ref}
+                    ref={ref as React.Ref<HTMLAnchorElement>}
+                    href="/informasi/pajak"
+                    aria-label={f.title}
                     className="group flex items-start gap-4 sm:gap-5 rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900/70 p-4 sm:p-5 hover:border-primary-500/40 hover:shadow-[0_14px_36px_-20px_rgba(11,93,187,0.35)] transition-all duration-300"
                     style={{
                       opacity: visible ? 1 : 0,
@@ -319,7 +321,7 @@ export const PajakSection = () => {
                       </p>
                     </div>
                     <ArrowRight className="w-4 h-4 shrink-0 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 text-primary-500 transition-all duration-300 self-center" />
-                  </div>
+                  </Link>
                 );
               })}
             </div>

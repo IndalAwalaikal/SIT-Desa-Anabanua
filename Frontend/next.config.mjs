@@ -18,6 +18,8 @@ export default {
     remotePatterns: [
       // Unsplash — dipakai sebagai hero background HD
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      // Cloudinary — slide hero alternatif (lanskap desa)
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
       // ui-avatars.com — avatar generik perangkat desa bila belum ada foto unggah
       { protocol: 'https', hostname: 'ui-avatars.com' },
       // Backend uploads yang diakses via rewrite /uploads/*
