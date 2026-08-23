@@ -41,6 +41,10 @@ export default function LoginPage() {
       showSuccess(`Selamat datang kembali, ${user.nama}!`);
       router.push(user.role === 'admin' || user.role === 'super_admin' ? '/dashboard' : '/');
     } catch (err) {
+      // Backend sekarang mengirim pesan spesifik: "Email tidak terdaftar" (401 INVALID_EMAIL),
+      // "Password salah" (401 WRONG_PASSWORD), "Akun dinonaktifkan…" (403), dll —
+      // ApiError.message sudah berisi pesan user-facing yang tepat, jadi tampilkan apa adanya.
+      // ponytail: jika ingin field-level feedback, branch di sini pakai (err as ApiError).code.
       const msg = err instanceof Error ? err.message : t('Login.errorDefault');
       setErrorMsg(msg);
       showError(msg);

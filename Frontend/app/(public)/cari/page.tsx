@@ -16,6 +16,7 @@ import { Search, Newspaper, Store, FileText, X, ArrowRight, Sparkles } from 'luc
 import type { Berita } from '@/types/berita';
 import type { Umkm } from '@/types/umkm';
 import type { JenisSurat } from '@/types/persuratan';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 function sectionTitle(label: string, icon: React.ReactNode, count: number) {
   return (
@@ -32,6 +33,7 @@ function sectionTitle(label: string, icon: React.ReactNode, count: number) {
 }
 
 function CariContent() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const router = useRouter();
   const initial = searchParams.get('q') || '';
@@ -110,10 +112,10 @@ function CariContent() {
             <span>PENCARIAN WEBSITE</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white">
-            Cari di Website Desa Borong
+            {t('Cari.title', 'Cari di Website Desa Borong')}
           </h1>
           <p className="text-sm text-neutral-500">
-            Cari berita, layanan surat, hingga UMKM lokal dalam satu tempat.
+            {t('Cari.subtitle', 'Cari berita, layanan surat, hingga UMKM lokal dalam satu tempat.')}
           </p>
         </div>
 

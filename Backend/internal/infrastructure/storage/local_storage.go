@@ -34,9 +34,6 @@ func (s *LocalStorage) Save(ctx context.Context, folder string, file io.Reader, 
 		return "", err
 	}
 	path := filepath.Join(dir, name)
-	if err := filepath.Walk(s.root, func(_ string, _ os.FileInfo, err error) error { return err }); err != nil {
-		return "", err
-	}
 	out, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o640)
 	if err != nil {
 		return "", err

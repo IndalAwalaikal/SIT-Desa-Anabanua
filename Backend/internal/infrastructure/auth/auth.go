@@ -4,11 +4,17 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 
 	"desa-borong-api/internal/domain"
+)
+
+const (
+	tokenIssuer   = "desa-borong"
+	tokenAudience = "desa-borong-api"
 )
 
 type Claims struct {
@@ -23,7 +29,17 @@ type Service struct {
 func New(secret string, ttl time.Duration) *Service { return &Service{[]byte(secret), ttl} }
 func (s *Service) IssueAccess(id string, role domain.Role) (string, time.Time, error) {
 	exp := time.Now().Add(s.ttl)
-	t := jwt.NewWithClaims(jwt.SigningMethodHS256, Claims{Role: string(role), RegisteredClaims: jwt.RegisteredClaims{Subject: id, ExpiresAt: jwt.NewNumericDate(exp), IssuedAt: jwt.NewNumericDate(time.Now())}})
+	t := jwt.NewWithClaims(jwt.SigningMethodHS256, Claims{
+		Role: string(role),
+		RegisteredClaims: jwt.RegisteredClaims{
+			Subject:   id,
+			Issuer:    tokenIssuer,
+			Audience:  jwt.ClaimStrings{tokenAudience},
+			ExpiresAt: jwt.NewNumericDate(exp),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			NotBefore: jwt.NewNumericDate(time.Now()),
+		},
+	})
 	v, e := t.SignedString(s.secret)
 	return v, exp, e
 }
@@ -36,11 +52,18 @@ func (s *Service) Parse(v string) (Claims, error) {
 			return nil, fmt.Errorf("unexpected signing method")
 		}
 		return s.secret, nil
-	})
+	}, jwt.WithIssuer(tokenIssuer), jwt.WithAudience(tokenAudience))
 	if e != nil || !t.Valid {
-		return c, fmt.Errorf("invalid access token")
+		return c, fmt.Errorf("invalid access token: %w", errOrInvalid(e))
 	}
 	return c, nil
+}
+
+func errOrInvalid(e error) error {
+	if e == nil {
+		return errors.New("invalid token")
+	}
+	return e
 }
 func NewRefresh() (string, error) {
 	b := make([]byte, 32)

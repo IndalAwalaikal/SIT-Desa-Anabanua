@@ -137,16 +137,29 @@ func inspectUpload(r io.Reader, filename string, size int64) (persuratan.Submitt
 	detected := http.DetectContentType(buf)
 	baseType, _, _ := strings.Cut(detected, ";")
 	baseType = strings.TrimSpace(baseType)
-
 	ext := strings.ToLower(filepath.Ext(filename))
+	// ponytail: octet-stream hanya untuk PDF (cukup sering karena browser salah deteksi).
+	// File non-PDF dengan octet-stream ditolak untuk mencegah lampiran executable.
+	isPDF := ext == ".pdf"
 	allowedExts := map[string]bool{".jpg": true, ".jpeg": true, ".png": true, ".pdf": true, ".webp": true}
 	allowedMimes := map[string]bool{
 		"image/jpeg": true, "image/jpg": true, "image/png": true, "image/webp": true,
-		"application/pdf": true, "application/x-pdf": true, "application/octet-stream": true,
+		"application/pdf": true, "application/x-pdf": true,
+	}
+	if baseType == "application/octet-stream" {
+		if !isPDF || !hasPDFMagic(buf) {
+			slog.Warn("upload inspect failed: octet-stream without pdf magic", "ext", ext)
+			return persuratan.SubmittedFile{}, false
+		}
+		// Treat octet-stream-with-pdf-magic as PDF.
+		baseType = "application/pdf"
+	} else if !allowedMimes[baseType] {
+		slog.Warn("upload inspect failed: unsupported mime", "detected", detected, "baseType", baseType, "ext", ext)
+		return persuratan.SubmittedFile{}, false
 	}
 
-	if !allowedMimes[baseType] && !allowedExts[ext] {
-		slog.Warn("upload inspect failed: unsupported mime/ext", "detected", detected, "baseType", baseType, "ext", ext)
+	if !allowedExts[ext] {
+		slog.Warn("upload inspect failed: unsupported ext", "detected", detected, "baseType", baseType, "ext", ext)
 		return persuratan.SubmittedFile{}, false
 	}
 
@@ -154,6 +167,11 @@ func inspectUpload(r io.Reader, filename string, size int64) (persuratan.Submitt
 		Filename: filepath.Base(filename), Size: size, MimeType: baseType,
 		Reader: io.MultiReader(bytes.NewReader(buf), r),
 	}, true
+}
+
+// hasPDFMagic reports whether the first bytes look like a PDF (%PDF-).
+func hasPDFMagic(buf []byte) bool {
+	return len(buf) >= 5 && string(buf[:5]) == "%PDF-"
 }
 
 func (h *Handler) PengajuanSaya(w http.ResponseWriter, r *http.Request) {
@@ -180,9 +198,30 @@ func (h *Handler) PengajuanLampiran(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 	w.Header().Set("Content-Type", lampiran.MimeType)
-	w.Header().Set("Content-Disposition", `attachment; filename="`+strings.ReplaceAll(lampiran.Nama, `"`, "")+`"`)
+	// ponytail: sanitize filename to prevent CRLF header injection via filename.
+	// Strip control chars + quotes; fall back to "attachment" if empty.
+	safe := sanitizeFilename(lampiran.Nama)
+	w.Header().Set("Content-Disposition", `attachment; filename="`+safe+`"`)
 	w.Header().Set("Cache-Control", "private, no-store")
 	_, _ = io.Copy(w, file)
+}
+
+// sanitizeFilename strips control characters and quotes that could break out
+// of the Content-Disposition filename parameter or inject response headers.
+func sanitizeFilename(name string) string {
+	name = filepath.Base(name)
+	var b strings.Builder
+	for _, r := range name {
+		if r < 0x20 || r == 0x7f || r == '"' || r == '\\' {
+			continue
+		}
+		b.WriteRune(r)
+	}
+	out := strings.TrimSpace(b.String())
+	if out == "" {
+		return "attachment"
+	}
+	return out
 }
 
 func (h *Handler) PengajuanList(w http.ResponseWriter, r *http.Request) {

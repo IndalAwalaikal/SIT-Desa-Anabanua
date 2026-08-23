@@ -17,7 +17,7 @@ services:
       MYSQL_ROOT_HOST: '%'
     command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci", "--explicit-defaults-for-timestamp=1"]
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -62,7 +62,13 @@ services:
     volumes:
       - uploads:/app/uploads
     ports:
-      - "8088:8080"
+      - "127.0.0.1:8088:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8080/healthz"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -84,7 +90,7 @@ services:
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
       API_INTERNAL_URL: http://backend:8080
     ports:
-      - "3300:3000"
+      - "127.0.0.1:3300:3000"
     depends_on:
       backend:
         condition: service_started

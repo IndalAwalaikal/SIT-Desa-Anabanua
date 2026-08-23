@@ -22,6 +22,10 @@ func NewRouter(h *handler.Handler, tokens *iauth.Service, db *sql.DB) http.Handl
 
 	public := func(pattern string, fn http.HandlerFunc) { m.Handle(pattern, fn) }
 	rateLimited := func(pattern string, fn http.HandlerFunc) { m.Handle(pattern, limit(fn)) }
+	// ponytail: soft read-rate-limit on public GET endpoints (60/min/IP)
+	// protects against brute-force tracking-number enumeration and scraping.
+	readLimit := middleware.NewRateLimiter(60, time.Minute).Middleware
+	readLimited := func(pattern string, fn http.HandlerFunc) { m.Handle(pattern, readLimit(fn)) }
 	csrfSecure := func(pattern string, fn http.HandlerFunc) { m.Handle(pattern, csrf(auth(fn))) }
 	csrfAdministrate := func(pattern string, fn http.HandlerFunc) { m.Handle(pattern, csrf(auth(admin(fn)))) }
 
@@ -78,9 +82,9 @@ func NewRouter(h *handler.Handler, tokens *iauth.Service, db *sql.DB) http.Handl
 	csrfAdministrate("DELETE /api/layanan/{kode}", h.JenisDelete)
 	csrfSecure("POST /api/pengajuan", h.PengajuanCreate)
 	csrfSecure("GET /api/pengajuan/{id}/lampiran/{lampiranID}", h.PengajuanLampiran)
-	public("GET /api/pengajuan/{nomorResi}", h.PengajuanGet)
-	public("GET /api/surat/{nomorResi}", h.PengajuanGetSurat)
-	public("GET /api/verifikasi/surat/{code}", h.VerifikasiSurat)
+	readLimited("GET /api/pengajuan/{nomorResi}", h.PengajuanGet)
+	readLimited("GET /api/surat/{nomorResi}", h.PengajuanGetSurat)
+	readLimited("GET /api/verifikasi/surat/{code}", h.VerifikasiSurat)
 	csrfSecure("GET /api/penduduk/nik/{nik}", h.GetPendudukByNIK)
 	csrfSecure("GET /api/pengajuan/saya", h.PengajuanSaya)
 	csrfAdministrate("GET /api/pengajuan", h.PengajuanList)
@@ -90,7 +94,7 @@ func NewRouter(h *handler.Handler, tokens *iauth.Service, db *sql.DB) http.Handl
 	csrfAdministrate("DELETE /api/admin/pengajuan/{id}", h.PengajuanDelete)
 
 	csrfSecure("POST /api/pengaduan", h.PengaduanCreate)
-	public("GET /api/pengaduan/{nomorTiket}", h.PengaduanGet)
+	readLimited("GET /api/pengaduan/{nomorTiket}", h.PengaduanGet)
 	csrfSecure("GET /api/pengaduan/saya", h.PengaduanSaya)
 	csrfAdministrate("GET /api/pengaduan", h.PengaduanList)
 	csrfAdministrate("PATCH /api/pengaduan/{id}/status", h.PengaduanStatus)
@@ -135,6 +139,13 @@ func NewRouter(h *handler.Handler, tokens *iauth.Service, db *sql.DB) http.Handl
 	csrfAdministrate("POST /api/umkm", h.UmkmCreate)
 	csrfAdministrate("PUT /api/umkm/{id}", h.UmkmUpdate)
 	csrfAdministrate("DELETE /api/umkm/{id}", h.UmkmDelete)
+
+	// Pembagian sembako — publik untuk transparansi, admin untuk pengelolaan.
+	readLimited("GET /api/sembako", h.SembakoList)
+	readLimited("GET /api/sembako/{id}", h.SembakoGet)
+	csrfAdministrate("POST /api/admin/sembako", h.SembakoCreate)
+	csrfAdministrate("PUT /api/admin/sembako/{id}", h.SembakoUpdate)
+	csrfAdministrate("DELETE /api/admin/sembako/{id}", h.SembakoDelete)
 
 	public("GET /api/pajak/ringkasan", h.PajakRingkasan)
 	public("GET /api/pajak/jenis", h.PajakJenisList)

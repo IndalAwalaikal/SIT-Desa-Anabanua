@@ -10,7 +10,14 @@ export const LanguageToggle: React.FC = () => {
   const setLocale = useUiStore((s) => s.setLocale);
 
   const toggle = () => {
-    setLocale(locale === 'id' ? 'en' : 'id');
+    const next = locale === 'id' ? 'en' : 'id';
+    setLocale(next);
+    // Mirror to a non-HttpOnly cookie so Server Components on the next request
+    // can render in the same language as the client without an extra round trip.
+    if (typeof document !== 'undefined') {
+      const oneYear = 60 * 60 * 24 * 365;
+      document.cookie = `NEXT_LOCALE=${next};path=/;max-age=${oneYear};SameSite=Lax`;
+    }
   };
 
   const isId = locale === 'id';

@@ -4,6 +4,7 @@ import './globals.css';
 import { AppChrome } from '@/components/layout/AppChrome';
 import { Footer } from '@/components/layout/Footer';
 import { AutoRefreshListener } from '@/components/layout/AutoRefreshListener';
+import { getServerLocale } from '@/lib/i18n/server';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -71,8 +72,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = await getServerLocale();
   return (
-    <html lang="id" suppressHydrationWarning className={`${plusJakartaSans.variable}`}>
+    <html lang={lang} suppressHydrationWarning className={`${plusJakartaSans.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{

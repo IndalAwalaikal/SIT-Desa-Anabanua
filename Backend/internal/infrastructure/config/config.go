@@ -16,6 +16,7 @@ type Config struct {
 	BrevoFromEmail                                                                            string
 	FlowKirimAPIKey                                                                           string
 	FlowKirimBaseURL                                                                          string
+	FlowKirimWebhookSecret                                                                    string
 	AppURL                                                                                    string
 	OTPTTL                                                                                    time.Duration
 }
@@ -27,7 +28,7 @@ func get(k, d string) string {
 	return d
 }
 func Load() (Config, error) {
-	a, err := time.ParseDuration(get("JWT_ACCESS_TTL", "24h"))
+	a, err := time.ParseDuration(get("JWT_ACCESS_TTL", "15m"))
 	if err != nil {
 		return Config{}, fmt.Errorf("JWT_ACCESS_TTL: %w", err)
 	}
@@ -37,10 +38,26 @@ func Load() (Config, error) {
 	}
 	hmacSecret := strings.TrimSpace(os.Getenv("DOCUMENT_HMAC_SECRET"))
 	jwtSecret := os.Getenv("JWT_ACCESS_SECRET")
+	env := get("APP_ENV", "development")
+	// ponytail: HMAC secret MUST be independent from JWT secret in production.
+	// Fallback to JWT secret only in development for convenience, never in prod.
 	if hmacSecret == "" {
+		if env == "production" {
+			return Config{}, fmt.Errorf("DOCUMENT_HMAC_SECRET must be set independently in production")
+		}
 		hmacSecret = jwtSecret
 	}
-	c := Config{Env: get("APP_ENV", "development"), Port: get("APP_PORT", "8080"), DBHost: get("DB_HOST", "localhost"), DBPort: get("DB_PORT", "3306"), DBName: strings.TrimSpace(os.Getenv("DB_NAME")), DBUser: strings.TrimSpace(os.Getenv("DB_USER")), DBPassword: os.Getenv("DB_PASSWORD"), JWTSecret: jwtSecret, HMACSecret: hmacSecret, StoragePath: get("FILE_STORAGE_PATH", "./uploads"), BootstrapSuperAdminName: strings.TrimSpace(os.Getenv("BOOTSTRAP_SUPER_ADMIN_NAME")), BootstrapSuperAdminEmail: strings.TrimSpace(os.Getenv("BOOTSTRAP_SUPER_ADMIN_EMAIL")), BootstrapSuperAdminPassword: os.Getenv("BOOTSTRAP_SUPER_ADMIN_PASSWORD"), AccessTTL: a, RefreshTTL: r}
+	c := Config{
+		Env: env, Port: get("APP_PORT", "8080"),
+		DBHost: get("DB_HOST", "localhost"), DBPort: get("DB_PORT", "3306"),
+		DBName: strings.TrimSpace(os.Getenv("DB_NAME")), DBUser: strings.TrimSpace(os.Getenv("DB_USER")), DBPassword: os.Getenv("DB_PASSWORD"),
+		JWTSecret: jwtSecret, HMACSecret: hmacSecret, StoragePath: get("FILE_STORAGE_PATH", "./uploads"),
+		BootstrapSuperAdminName:     strings.TrimSpace(os.Getenv("BOOTSTRAP_SUPER_ADMIN_NAME")),
+		BootstrapSuperAdminEmail:    strings.TrimSpace(os.Getenv("BOOTSTRAP_SUPER_ADMIN_EMAIL")),
+		BootstrapSuperAdminPassword: os.Getenv("BOOTSTRAP_SUPER_ADMIN_PASSWORD"),
+		AccessTTL: a, RefreshTTL: r,
+		FlowKirimWebhookSecret: os.Getenv("FLOWKIRIM_WEBHOOK_SECRET"),
+	}
 	if c.DBName == "" || c.DBUser == "" || c.DBPassword == "" {
 		return Config{}, fmt.Errorf("DB_NAME, DB_USER, and DB_PASSWORD must be set")
 	}

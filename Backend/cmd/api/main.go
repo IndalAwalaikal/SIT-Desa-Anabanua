@@ -32,6 +32,7 @@ import (
 	"desa-borong-api/internal/usecase/pengaduan"
 	"desa-borong-api/internal/usecase/persuratan"
 	"desa-borong-api/internal/usecase/sekilas_info"
+	"desa-borong-api/internal/usecase/sembako"
 	"desa-borong-api/internal/usecase/umkm"
 	ucuser "desa-borong-api/internal/usecase/user"
 )
@@ -125,7 +126,7 @@ func main() {
 		}
 		return waSender.Send(ctx, payload.To, payload.Text)
 	})
-		jobWorker.Start(4)
+	jobWorker.Start(4)
 
 	// Persist jobs to DB so email/WA delivery survives process restarts.
 	jobStore := mysqlstore.NewJobStore(db, log)
@@ -162,6 +163,7 @@ func main() {
 	pajakRepo := mysqlstore.NewPajakRepo(db)
 	notifikasiRepo := mysqlstore.NewNotifikasiRepo(db)
 	sekilasInfoRepo := mysqlstore.NewSekilasInfoRepo(db)
+	sembakoRepo := mysqlstore.NewSembakoRepo(db)
 
 	// Use case services (business logic).
 	authSvc := asecase.NewService(userRepo, refreshRepo, otpRepo, pendingRepo, asyncMail, hasher, tokens, tx, cfg.RefreshTTL, cfg.OTPTTL)
@@ -171,7 +173,7 @@ func main() {
 			os.Exit(1)
 		}
 	}
-		notifSvc := notifikasi.NewService(notifikasiRepo, adminUserRepo)
+	notifSvc := notifikasi.NewService(notifikasiRepo, adminUserRepo)
 	beritaSvc := berita.NewService(beritaRepo, notifSvc)
 	notifDeduper := notif.NewDeduplicator(5 * time.Second)
 	persSvc := persuratan.NewService(jenisRepo, pengajuanRepo, pendudukRepo, fileStorage, tx, userRepo, asyncMail, asyncWa, cfg.AppURL, cfg.HMACSecret, perangkatRepo, notifikasiRepo, notifDeduper)
@@ -183,12 +185,14 @@ func main() {
 	userSvc := ucuser.NewService(adminUserRepo)
 	pajakSvc := pajak.NewService(pajakRepo)
 	sekilasInfoSvc := sekilasinfo.NewService(sekilasInfoRepo)
+	sembakoSvc := sembako.NewService(sembakoRepo)
 
-	app := usecase.New(authSvc, beritaSvc, persSvc, aduanSvc, desaSvc, finSvc, galSvc, umkmSvc, userSvc, pajakSvc, notifSvc, sekilasInfoSvc)
+	app := usecase.New(authSvc, beritaSvc, persSvc, aduanSvc, desaSvc, finSvc, galSvc, umkmSvc, userSvc, pajakSvc, notifSvc, sekilasInfoSvc, sembakoSvc)
 	h := handler.New(app)
 	r := httpapi.NewRouter(h, tokens, db)
 
 	// Enqueue periodic cleanup job.
+	cleanupCtx, cleanupCancel := context.WithCancel(context.Background())
 	go func() {
 		ticker := time.NewTicker(24 * time.Hour)
 		defer ticker.Stop()
@@ -204,20 +208,21 @@ func main() {
 					CreatedAt:  time.Now(),
 					MaxRetries: 1,
 				})
-			case <-context.Background().Done():
+			case <-cleanupCtx.Done():
 				return
 			}
 		}
 	}()
+	defer cleanupCancel()
 
 	// Serve locally-uploaded files (lampiran, galeri, UMKM) from the configured path.
 	mux := http.NewServeMux()
 	mux.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir(cfg.StoragePath))))
 	mux.Handle("/", r)
 
-		s := &http.Server{
+	s := &http.Server{
 		Addr:              ":" + cfg.Port,
-		Handler:           middleware.Common(cfg.CORSOrigins, cfg.Env, log)(mux),
+		Handler:           middleware.Common(cfg.CORSOrigins, cfg.Env, log)(middleware.BodyLimit(middleware.MaxBodyBytes)(mux)),
 		ReadHeaderTimeout: 10 * time.Second, // protects against slow-header attacks
 		// ReadTimeout / WriteTimeout are intentionally 0 (disabled).
 		// The /api/notifikasi/stream endpoint is a long-lived SSE connection

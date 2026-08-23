@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { getProfilDesa } from "@/lib/services/desa.service";
 import { FooterLinks } from "./FooterLinks";
+import { getServerT } from "@/lib/i18n/server";
 import type { ProfilDesa } from "@/types/desa";
 
 // Footer no debe bloquear la página nunca: si la API no está disponible
@@ -42,6 +43,7 @@ const FALLBACK_PROFIL: ProfilDesa = {
 };
 
 export const Footer = async () => {
+  const t = getServerT();
   const profil = await getProfilDesa().catch(() => FALLBACK_PROFIL);
   const logoBulukumba = "/logo-bulukumba.webp";
 
@@ -66,13 +68,12 @@ export const Footer = async () => {
                   DESA BORONG
                 </h3>
                 <p className="text-xs text-primary-400 font-semibold">
-                  Website Resmi Pemerintahan
+                  {t('Footer.officialWebsite', 'Website Resmi Pemerintahan')}
                 </p>
               </div>
             </div>
             <p className="text-xs text-neutral-400 leading-relaxed">
-              Platform layanan publik dan pusat informasi terpadu Desa Borong,
-              Kecamatan Herlang,{" "}
+              {t('Footer.portalDesc', 'Platform layanan publik dan pusat informasi terpadu Desa Borong, Kecamatan Herlang,')}
               <a
                 href="https://bulukumbakab.go.id"
                 target="_blank"
@@ -133,7 +134,7 @@ export const Footer = async () => {
           {/* Col 4: Info Kontak Kantor */}
           <div className="space-y-4">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider border-l-4 border-primary-500 pl-3">
-              Kontak Kantor Desa
+              {t('Footer.officeContact', 'Kontak Kantor Desa')}
             </h4>
             <ul className="space-y-3 text-xs text-neutral-400">
               <li className="flex items-start gap-3">
@@ -145,7 +146,7 @@ export const Footer = async () => {
                   className="hover:text-primary-400 transition-colors underline decoration-dotted"
                   title="Buka lokasi Desa Borong di Google Maps"
                 >
-                  {profil.alamatKantor} (Petunjuk Arah ↗)
+                  {profil.alamatKantor} ({t('Footer.directions', 'Petunjuk Arah ↗')})
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -167,16 +168,7 @@ export const Footer = async () => {
         {/* Bottom copyright bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
           <p>
-            © 2026 Pemerintah Desa Borong. Bagian dari{" "}
-            <a
-              href="https://bulukumbakab.go.id"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-neutral-400 hover:text-primary-400 font-semibold underline"
-            >
-              Kabupaten Bulukumba
-            </a>
-            . Hak Cipta Dilindungi.
+            © 2026 Pemerintah Desa Borong. {t('Footer.copyright', 'Bagian dari Kabupaten Bulukumba. Hak Cipta Dilindungi.')}
           </p>
           <div className="flex items-center gap-6">
             <Link
@@ -184,10 +176,10 @@ export const Footer = async () => {
               className="hover:text-primary-400 transition-colors flex items-center gap-1"
             >
               <Shield className="w-3.5 h-3.5 text-accent-500" />
-              Akses Admin Desa
+              {t('Footer.adminAccess', 'Akses Admin Desa')}
             </Link>
             <span className="flex items-center gap-1 italic">
-              Bersama Mewujudkan Desa Borong yang Maju, Mandiri, dan Terhubung
+              {t('Footer.motto', 'Bersama Mewujudkan Desa Borong yang Maju, Mandiri, dan Terhubung')}
             </span>
           </div>
         </div>

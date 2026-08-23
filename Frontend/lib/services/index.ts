@@ -10,5 +10,6 @@ export * from './fasilitas.service';
 export * from './auth.service';
 export * from './pajak.service';
 export * from './sekilas_info.service';
+export * from './sembako.service';
 export * from './notifikasi.service';
 

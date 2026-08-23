@@ -28,5 +28,6 @@ export type {
 } from './statistik';
 export type { Umkm } from './umkm';
 export type { GaleriAlbum, GaleriFoto } from './galeri';
+export type { SembakoPeriod, SembakoItem, SembakoStatus, SembakoPeriodInput } from './sembako';
 export * from './pajak';
 

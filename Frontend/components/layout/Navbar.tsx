@@ -60,6 +60,10 @@ const menuConfig: NavMenuItem[] = [
         i18nKey: "Navbar.menuInformationFasilitas",
         href: "/informasi/fasilitas",
       },
+      {
+        i18nKey: "Navbar.menuInformationSembako",
+        href: "/informasi/sembako",
+      },
     ],
   },
   {
@@ -70,6 +74,7 @@ const menuConfig: NavMenuItem[] = [
       { i18nKey: "Navbar.menuServicesTrack", href: "/layanan/lacak" },
       { i18nKey: "Navbar.menuServicesComplaints", href: "/pengaduan" },
       { i18nKey: "Navbar.menuServicesFaq", href: "/faq" },
+      { i18nKey: "Navbar.menuContact", href: "/kontak" },
     ],
   },
   {

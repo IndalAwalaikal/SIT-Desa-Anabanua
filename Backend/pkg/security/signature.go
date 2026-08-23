@@ -10,8 +10,10 @@ import (
 
 // GenerateDocumentHash computes an HMAC-SHA256 cryptographic signature for a published letter
 func GenerateDocumentHash(secretKey, nomorSurat, pemohonNIK, nomorResi, tanggal string) string {
+	// ponytail: empty secret panics in production (caller must enforce);
+	// HMAC with empty key is valid but produces trivially forgeable signatures.
 	if secretKey == "" {
-		secretKey = "UNCONFIGURED_ENVIRONMENT_SECRET"
+		panic("DOCUMENT_HMAC_SECRET must not be empty")
 	}
 	payload := fmt.Sprintf("SURAT:%s|NIK:%s|RESI:%s|TGL:%s",
 		strings.TrimSpace(nomorSurat),

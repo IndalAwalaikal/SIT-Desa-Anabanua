@@ -15,11 +15,13 @@ import {
   Phone,
   Quote,
 } from "lucide-react";
-import type { ProfilDesa } from "@/types/desa";
+import type { ProfilDesa, PerangkatDesa } from "@/types/desa";
+import { KepalaDesaCard, findKepalaDesa } from "@/components/features/KepalaDesaCard";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 
-export const ProfilRingkasanSection = ({ profil }: { profil: ProfilDesa }) => {
+export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: ProfilDesa; perangkat?: PerangkatDesa[] }) => {
   const { t } = useTranslation();
+  const kepalaDesa = findKepalaDesa(perangkat);
 
     // Preview sejarah yang cukup panjang namun tetap ringkas untuk tampilan beranda.
   const sejarahPreview = profil.sejarah
@@ -233,7 +235,7 @@ export const ProfilRingkasanSection = ({ profil }: { profil: ProfilDesa }) => {
             )}
 
             {/* Read-more footer */}
-            <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+            <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row sm:items-center gap-5">
               <Link
                 href="/profil/sejarah"
                 className="group inline-flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400 hover:gap-3 transition-all"
@@ -241,6 +243,11 @@ export const ProfilRingkasanSection = ({ profil }: { profil: ProfilDesa }) => {
                 {t("Home.profilReadFullHistory") || "Baca Seluruh Sejarah"}
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
+              {kepalaDesa && (
+                <div className="sm:ml-auto">
+                  <KepalaDesaCard kepala={kepalaDesa} variant="compact" />
+                </div>
+              )}
             </div>
           </div>
         </div>

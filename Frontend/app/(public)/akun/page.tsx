@@ -19,8 +19,10 @@ import { updateProfileService } from '@/lib/services/auth.service';
 import { formatTanggal } from '@/lib/utils/format';
 import { FileText, MessageSquare, Clock, LogOut, Download, Pencil, XCircle, UserCheck, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function AkunPage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const { user, isAuthenticated, hasHydrated, setHasHydrated, logout, setUser } = useAuthStore();
 
@@ -269,7 +271,7 @@ export default function AkunPage() {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-black text-neutral-900 dark:text-white flex items-center gap-3">
               <LayoutDashboard className="w-8 h-8 text-primary-600" />
-              Dashboard Warga
+              {t('Akun.title', 'Dashboard Warga')}
             </h1>
             <Link href="/layanan">
               <Button variant="primary" size="sm">

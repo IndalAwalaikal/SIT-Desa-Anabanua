@@ -12,7 +12,7 @@ import { AgendaSection } from '@/components/features/beranda/AgendaSection';
 import { ProfilRingkasanSection } from '@/components/features/beranda/ProfilRingkasanSection';
 import { GallerySection } from '@/components/features/beranda/GallerySection';
 import { Reveal } from '@/components/ui/Reveal';
-import { getProfilDesa } from '@/lib/services/desa.service';
+import { getProfilDesa, getPerangkatDesaList } from '@/lib/services/desa.service';
 import { getStatistikPenduduk } from '@/lib/services/statistik.service';
 import { getJenisSuratList } from '@/lib/services/persuratan.service';
 import { getBeritaList } from '@/lib/services/berita.service';
@@ -21,7 +21,7 @@ import { getAgendaKegiatan } from '@/lib/services/statistik.service';
 import { getGaleriAlbumList } from '@/lib/services/galeri.service';
 
 export default async function HomePage() {
-  const [profil, statistik, services, newsResult, businesses, agenda, gallery] = await Promise.all([
+  const [profil, statistik, services, newsResult, businesses, agenda, gallery, perangkat] = await Promise.all([
     getProfilDesa(),
     getStatistikPenduduk(),
     getJenisSuratList(),
@@ -29,6 +29,7 @@ export default async function HomePage() {
     getUmkmList(),
     getAgendaKegiatan(),
     getGaleriAlbumList(),
+    getPerangkatDesaList(),
   ]);
 
   return (
@@ -82,7 +83,7 @@ export default async function HomePage() {
         <AgendaSection agenda={agenda || []} />
       </Reveal>
       <Reveal delay={140}>
-        <ProfilRingkasanSection profil={profil} />
+        <ProfilRingkasanSection profil={profil} perangkat={perangkat ?? []} />
       </Reveal>
       <Reveal delay={160}>
         <GallerySection gallery={gallery || []} />

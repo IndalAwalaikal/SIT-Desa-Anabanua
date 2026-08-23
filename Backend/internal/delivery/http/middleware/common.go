@@ -8,11 +8,17 @@ import (
 	"time"
 )
 
+// MaxBodyBytes is the global cap for non-multipart request bodies (JSON etc.).
+// Multipart uploads have their own per-handler limit (see pengajuan_handler.go).
+const MaxBodyBytes int64 = 2 << 20 // 2 MiB
+
 // securityHeaders applied to every response. CSP is intentionally permissive
 // enough for a Next.js frontend (inline RSC payload/scripts) while still
 // blocking object/embed, inline frame embedding, and foreign origins. Tighten
 // to nonce-based 'strict-src' on script-src only after instrumenting Next.js
-// with per-request nonces.
+// with per-request nonces. In production, CORS_ALLOWED_ORIGINS must be exact
+// origins (no wildcards) to prevent credential-bearing cross-origin requests
+// from untrusted domains.
 const cspHeader = "default-src 'self'; " +
 	"script-src 'self' 'unsafe-inline' 'unsafe-eval'; " + // Next.js RSC runtime + dev overlay
 	"img-src 'self' data: https:; " + // next/image & unsplash
@@ -36,6 +42,25 @@ func addSecurityHeaders(w http.ResponseWriter, r *http.Request, env string) {
 	header.Set("Content-Security-Policy", cspHeader)
 	if env == "production" && (r.TLS != nil || strings.EqualFold(r.Header.Get("X-Forwarded-Proto"), "https")) {
 		header.Set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload")
+	}
+}
+
+// BodyLimit rejects requests whose Content-Length exceeds maxBytes and wraps
+// the body in an io.LimitReader for chunked / unknown-length requests. Apply
+// at the outermost middleware so a missing handler-side limit still caps
+// memory use.
+func BodyLimit(maxBytes int64) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.ContentLength > maxBytes {
+				http.Error(w, "request body too large", http.StatusRequestEntityTooLarge)
+				return
+			}
+			if r.Body != nil {
+				r.Body = http.MaxBytesReader(w, r.Body, maxBytes)
+			}
+			next.ServeHTTP(w, r)
+		})
 	}
 }
 

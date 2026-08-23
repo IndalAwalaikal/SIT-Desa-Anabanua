@@ -14,6 +14,7 @@ import (
 	"desa-borong-api/internal/usecase/pengaduan"
 	"desa-borong-api/internal/usecase/persuratan"
 	"desa-borong-api/internal/usecase/sekilas_info"
+	"desa-borong-api/internal/usecase/sembako"
 	"desa-borong-api/internal/usecase/umkm"
 	ucuser "desa-borong-api/internal/usecase/user"
 )
@@ -33,6 +34,7 @@ type App struct {
 	Pajak       *pajak.Service
 	Notifikasi  *notifikasi.Service
 	SekilasInfo *sekilasinfo.Service
+	Sembako     *sembako.Service
 }
 
 func New(
@@ -48,10 +50,11 @@ func New(
 	p *pajak.Service,
 	notif *notifikasi.Service,
 	sek *sekilasinfo.Service,
+	sbk *sembako.Service,
 ) *App {
 	return &App{
 		Auth: auth, Berita: b, Persuratan: pers, Pengaduan: aduan, Desa: ds,
 		Finance: f, Galeri: g, Umkm: u, User: us, Pajak: p, Notifikasi: notif,
-		SekilasInfo: sek,
+		SekilasInfo: sek, Sembako: sbk,
 	}
 }

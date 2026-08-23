@@ -33,6 +33,22 @@ jobs:
         with:
           go-version: '1.26'
       - run: go mod download
+      - name: Wait for MySQL
+        run: |
+          for i in {1..30}; do
+            mysqladmin ping -h 127.0.0.1 -u root -proot 2>/dev/null && break
+            echo "waiting for MySQL..."; sleep 2
+          done
+      - name: Set test env
+        run: |
+          echo "JWT_ACCESS_SECRET=ci-test-secret-of-at-least-thirty-two-bytes-1234567890" >> $GITHUB_ENV
+          echo "DOCUMENT_HMAC_SECRET=ci-test-hmac-secret-of-at-least-thirty-two-bytes-12" >> $GITHUB_ENV
+          echo "CORS_ALLOWED_ORIGINS=http://localhost:3000" >> $GITHUB_ENV
+          echo "DB_HOST=127.0.0.1" >> $GITHUB_ENV
+          echo "DB_USER=desa_app" >> $GITHUB_ENV
+          echo "DB_PASSWORD=password" >> $GITHUB_ENV
+          echo "DB_NAME=desa_digital_test" >> $GITHUB_ENV
+          echo "APP_ENV=development" >> $GITHUB_ENV
       - run: go vet ./...
       - run: go test ./...
       - run: go test -race ./...

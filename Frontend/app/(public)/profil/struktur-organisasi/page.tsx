@@ -10,8 +10,10 @@ import { AlertCircle, CalendarDays, ShieldCheck, User, Search } from "lucide-rea
 import { compareJabatan } from "@/lib/constants/jabatan";
 import { getPerangkatDesaList } from "@/lib/services/desa.service";
 import type { PerangkatDesa } from "@/types/desa";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 export default function StrukturOrganisasiPage() {
+  const { t } = useTranslation();
   const [perangkatList, setPerangkatList] = useState<PerangkatDesa[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -122,9 +124,9 @@ export default function StrukturOrganisasiPage() {
       <div className="container-desa space-y-10 sm:space-y-12 py-8 sm:py-12">
         {/* Header Masthead */}
         <PublicMasthead
-          eyebrow="TATALAKSANA & ORGANISASI PEMERINTAHAN DESA"
-          title="Struktur & Aparatur Pemerintah Desa Borong"
-          description="Jajaran pimpinan, sekretariat, kepala seksi, kepala urusan, dan kepala dusun yang berkomitmen melayani warga Desa Borong dengan profesional, transparan, dan akuntabel."
+          eyebrow={t('StrukturOrganisasi.eyebrow', 'TATALAKSANA & ORGANISASI PEMERINTAHAN DESA')}
+          title={t('StrukturOrganisasi.title', 'Struktur & Aparatur Pemerintah Desa Borong')}
+          description={t('StrukturOrganisasi.description', 'Jajaran pimpinan, sekretariat, kepala seksi, kepala urusan, dan kepala dusun yang berkomitmen melayani warga Desa Borong dengan profesional, transparan, dan akuntabel.')}
           image="/kantor_desa.png"
         />
 
@@ -241,7 +243,7 @@ export default function StrukturOrganisasiPage() {
             <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Cari nama atau jabatan..."
+              placeholder={t('StrukturOrganisasi.searchPlaceholder', 'Cari nama atau jabatan...')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 text-xs font-medium text-neutral-900 dark:text-white border border-transparent focus:border-primary-500 focus:outline-none transition-all"
@@ -278,7 +280,7 @@ export default function StrukturOrganisasiPage() {
                   <div className="rounded-3xl border-2 border-primary-200 dark:border-primary-800 shadow-xl max-w-sm w-full">
                     <Card className="p-6 sm:p-8 rounded-[22px] bg-white dark:bg-neutral-900 text-center relative overflow-hidden space-y-4">
                       <div className="absolute top-4 right-4">
-                        <span className="bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
+                        <span className="bg-primary-100 dark:bg-primary-950 text-primary-700 dark:text-primary-300 border border-primary-300 dark:border-primary-800 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1">
                           <ShieldCheck className="w-3.5 h-3.5" /> Pimpinan Resmi
                         </span>
                       </div>
@@ -308,7 +310,7 @@ export default function StrukturOrganisasiPage() {
                           </p>
                         )}
                         <div className="pt-2">
-                          <span className="inline-block bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-[11px] font-bold px-3 py-1 rounded-full">
+                          <span className="inline-block bg-primary-100 dark:bg-primary-950 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-800 text-[11px] font-bold px-3 py-1 rounded-full">
                             Masa Jabatan: {kades.periode}
                           </span>
                         </div>
@@ -414,7 +416,7 @@ export default function StrukturOrganisasiPage() {
                   kasiKaur.map((official) => (
                     <Card
                       key={official.id}
-                      className="p-5 text-center space-y-3 hover:border-primary-500 hover:shadow-lg transition-all group cursor-pointer border-2 border-neutral-200 dark:border-neutral-800"
+                      className="p-5 text-center space-y-3 hover:border-primary-500 hover:shadow-lg transition-all group cursor-pointer border-2 border-primary-200 dark:border-primary-800"
                       onClick={() => setSelectedOfficial(official)}
                     >
                       <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-primary-200 dark:border-primary-900 group-hover:border-primary-500 group-hover:scale-110 transition-all shadow-md">
@@ -470,10 +472,10 @@ export default function StrukturOrganisasiPage() {
                   {kadus.map((official) => (
                     <Card
                       key={official.id}
-                      className="p-5 text-center space-y-3 hover:border-emerald-500 hover:shadow-lg transition-all group cursor-pointer border-2 border-emerald-200 dark:border-emerald-900"
+                      className="p-5 text-center space-y-3 hover:border-primary-500 hover:shadow-lg transition-all group cursor-pointer border-2 border-primary-200 dark:border-primary-900"
                       onClick={() => setSelectedOfficial(official)}
                     >
-                      <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-emerald-300 dark:border-emerald-800 group-hover:border-emerald-500 group-hover:scale-110 transition-all shadow-md">
+                      <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-primary-300 dark:border-primary-800 group-hover:border-primary-500 group-hover:scale-110 transition-all shadow-md">
                         <Image
                           src={official.foto}
                           alt={official.nama}
@@ -483,14 +485,14 @@ export default function StrukturOrganisasiPage() {
                         />
                       </div>
                       <div className="space-y-1">
-                        <h4 className="text-sm font-bold text-neutral-900 dark:text-white group-hover:text-emerald-600 transition-colors">
+                        <h4 className="text-sm font-bold text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors">
                           {official.nama}
                         </h4>
-                        <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                        <p className="text-xs font-bold text-primary-600 dark:text-primary-400">
                           {official.jabatan}
                         </p>
                       </div>
-                      <span className="inline-block text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
+                      <span className="inline-block text-[10px] font-bold bg-primary-100 dark:bg-primary-950 text-primary-700 dark:text-primary-300 px-2.5 py-1 rounded-full border border-primary-200 dark:border-primary-800">
                         {official.periode}
                       </span>
                     </Card>
@@ -515,10 +517,10 @@ export default function StrukturOrganisasiPage() {
                   {remaining.map((official) => (
                     <Card
                       key={official.id}
-                      className="p-5 text-center space-y-3 hover:border-sky-500 hover:shadow-lg transition-all group cursor-pointer border-2 border-neutral-200 dark:border-neutral-700"
+                      className="p-5 text-center space-y-3 hover:border-primary-500 hover:shadow-lg transition-all group cursor-pointer border-2 border-primary-200 dark:border-primary-800"
                       onClick={() => setSelectedOfficial(official)}
                     >
-                      <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-sky-300 dark:border-sky-800 group-hover:border-sky-500 group-hover:scale-110 transition-all shadow-md">
+                      <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-primary-300 dark:border-primary-800 group-hover:border-primary-500 group-hover:scale-110 transition-all shadow-md">
                         <Image
                           src={official.foto}
                           alt={official.nama}
@@ -528,10 +530,10 @@ export default function StrukturOrganisasiPage() {
                         />
                       </div>
                       <div className="space-y-1">
-                        <h4 className="text-sm font-bold text-neutral-900 dark:text-white group-hover:text-sky-600 transition-colors line-clamp-2">
+                        <h4 className="text-sm font-bold text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors line-clamp-2">
                           {official.nama}
                         </h4>
-                        <p className="text-xs font-semibold text-sky-600 dark:text-sky-400 line-clamp-2">
+                        <p className="text-xs font-semibold text-primary-600 dark:text-primary-400 line-clamp-2">
                           {official.jabatan}
                         </p>
                         {official.nip && (
@@ -540,7 +542,7 @@ export default function StrukturOrganisasiPage() {
                           </p>
                         )}
                       </div>
-                      <span className="inline-block text-[10px] font-bold bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300 px-2.5 py-1 rounded-full border border-sky-200 dark:border-sky-800">
+                      <span className="inline-block text-[10px] font-bold bg-primary-100 dark:bg-primary-950 text-primary-700 dark:text-primary-300 px-2.5 py-1 rounded-full border border-primary-200 dark:border-primary-800">
                         {official.periode}
                       </span>
                     </Card>
@@ -591,7 +593,7 @@ export default function StrukturOrganisasiPage() {
                       </p>
                     )}
                   </div>
-                  <span className="inline-block text-[10px] font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 px-2.5 py-1 rounded-full">
+                  <span className="inline-block text-[10px] font-bold bg-primary-100 dark:bg-primary-950 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-800 px-2.5 py-1 rounded-full">
                     Periode {official.periode}
                   </span>
                 </Card>
@@ -611,7 +613,7 @@ export default function StrukturOrganisasiPage() {
         >
           {selectedOfficial && (
             <div className="text-center space-y-5 py-2">
-              <div className="relative w-28 h-28 mx-auto rounded-full p-1 bg-gradient-to-tr from-primary-500 to-secondary-500 shadow-xl">
+              <div className="relative w-28 h-28 mx-auto rounded-full p-1 bg-gradient-to-tr from-primary-500 to-primary-700 shadow-xl">
                 <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white dark:border-neutral-900">
                   <Image
                     src={selectedOfficial.foto}
@@ -650,7 +652,7 @@ export default function StrukturOrganisasiPage() {
                   <span className="text-[10px] font-bold uppercase text-neutral-400 block">
                     Status Pengangkatan
                   </span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                  <span className="font-bold text-primary-600 dark:text-primary-400">
                     SK Resmi Pemkab
                   </span>
                 </div>

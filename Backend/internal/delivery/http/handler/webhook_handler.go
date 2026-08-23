@@ -1,11 +1,13 @@
 package handler
 
 import (
+	"crypto/hmac"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
+	"os"
 	"strings"
 
 	"desa-borong-api/internal/delivery/http/apiresponse"
@@ -26,11 +28,22 @@ type WhatsAppDeliveryPayload struct {
 // WebhookWhatsApp menerima delivery receipt dari FlowKirim.
 // Endpoint ini tidak memerlukan autentikasi sesi (tidak ada cookie/JWT warga)
 // karena dipanggil oleh server FlowKirim. Validasi dilakukan lewat header
-// X-FlowKirim-Secret yang dibandingkan dengan env FLOWKIRIM_WEBHOOK_SECRET
-// (bila diset). Bila secret kosong, validasi dilewati — berguna saat development.
+// X-FlowKirim-Secret yang dibandingkan dengan env FLOWKIRIM_WEBHOOK_SECRET.
+// Bila secret kosong di development, validasi dilewati.
 //
 // POST /webhook/whatsapp
 func (h *Handler) WebhookWhatsApp(w http.ResponseWriter, r *http.Request) {
+	// Validasi webhook secret untuk mencegah spoofing.
+	// Di production FLOWKIRIM_WEBHOOK_SECRET wajib di-set.
+	webhookSecret := os.Getenv("FLOWKIRIM_WEBHOOK_SECRET")
+	if webhookSecret != "" {
+		provided := r.Header.Get("X-FlowKirim-Secret")
+		if provided == "" || !hmac.Equal([]byte(provided), []byte(webhookSecret)) {
+			apiresponse.Error(w, domain.ErrUnauthorized)
+			return
+		}
+	}
+
 	// Baca body maksimum 64 KB.
 	raw, err := io.ReadAll(io.LimitReader(r.Body, 64<<10))
 	if err != nil {

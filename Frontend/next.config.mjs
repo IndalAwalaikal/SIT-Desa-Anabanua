@@ -18,11 +18,13 @@ export default {
     remotePatterns: [
       // Unsplash — dipakai sebagai hero background HD
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      // ui-avatars.com — avatar generik perangkat desa bila belum ada foto unggah
+      { protocol: 'https', hostname: 'ui-avatars.com' },
       // Backend uploads yang diakses via rewrite /uploads/*
+      // ponytail: wildcard hostname '**' dihapus untuk mencegah SSRF;
+      // tambahkan hostname domain produksi saat deploy.
       { protocol: 'http',  hostname: 'localhost' },
       { protocol: 'http',  hostname: 'backend' },
-      // Wildcard untuk semua host pada deployment production
-      { protocol: 'https', hostname: '**' },
     ],
   },
 

@@ -4,7 +4,7 @@
    - Aset statis (JS/CSS/gambar): stale-while-revalidate (tampilkan cache, perbarui di belakang).
    - Pre-cache halaman penting agar tetap terbaca tanpa sinyal (PRD §5.11 PWA ringan).
 */
-const CACHE_NAME = 'desa-borong-v2';
+const CACHE_NAME = 'desa-borong-v3';
 
 // Halaman info penting yang di-pre-cache saat service worker terpasang.
 const PRECACHE_URLS = [

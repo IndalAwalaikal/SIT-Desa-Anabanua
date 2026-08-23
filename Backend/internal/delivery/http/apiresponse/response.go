@@ -68,6 +68,26 @@ func Error(w http.ResponseWriter, e error) {
 		s = 409
 		c = "EMAIL_ALREADY_VERIFIED"
 		m = "Email sudah terverifikasi"
+	case errors.Is(e, domain.ErrInvalidEmail):
+		s = 401
+		c = "INVALID_EMAIL"
+		m = "Email tidak terdaftar"
+	case errors.Is(e, domain.ErrWrongPassword):
+		s = 401
+		c = "WRONG_PASSWORD"
+		m = "Password salah"
+	case errors.Is(e, domain.ErrAccountNotActive):
+		s = 403
+		c = "ACCOUNT_INACTIVE"
+		m = "Akun dinonaktifkan, hubungi administrator desa"
+	case errors.Is(e, domain.ErrAccountInactiveOrNotFound):
+		s = 401
+		c = "ACCOUNT_INACTIVE_OR_NOT_FOUND"
+		m = "Email tidak terdaftar atau akun tidak aktif"
+	case errors.Is(e, domain.ErrEmailSendFailed):
+		s = http.StatusBadGateway
+		c = "EMAIL_SEND_FAILED"
+		m = "Layanan email sedang tidak tersedia"
 	case errors.Is(e, domain.ErrRateLimited):
 		s = http.StatusTooManyRequests
 		c = "RATE_LIMITED"

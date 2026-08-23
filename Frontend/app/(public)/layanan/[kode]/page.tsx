@@ -12,6 +12,8 @@ import {
   ArrowRight, ExternalLink,
 } from 'lucide-react';
 
+import { useTranslation } from '@/lib/i18n/useTranslation';
+
 const iconMap: Record<string, React.ReactNode> = {
   SKD: <Home className="w-6 h-6 text-primary-600" />,
   SKU: <Store className="w-6 h-6 text-secondary-600" />,
@@ -28,6 +30,7 @@ interface DetailProps { params: { kode: string }; }
 export const metadata = { title: 'Detail Layanan Surat' };
 
 function JenisSuratDetailClient({ surat }: { surat: JenisSurat }) {
+  const { t } = useTranslation();
   const icon = iconMap[surat.kode] || <FileText className="w-6 h-6 text-primary-600" />;
 
   return (
@@ -35,7 +38,7 @@ function JenisSuratDetailClient({ surat }: { surat: JenisSurat }) {
       <header className="text-center max-w-2xl mx-auto space-y-4 mb-10">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-950 text-primary-700 dark:text-primary-300 text-xs font-bold">
           <FileText className="w-3.5 h-3.5" />
-          <span>Layanan Persuratan Desa Borong</span>
+          <span>{t('LayananDetail.eyebrow')}</span>
         </div>
         <div className="flex items-center justify-center gap-4">
           <div className="w-16 h-16 rounded-2xl bg-white dark:bg-neutral-800 shadow-sm border border-neutral-200 dark:border-neutral-700 flex items-center justify-center">
@@ -65,17 +68,20 @@ function JenisSuratDetailClient({ surat }: { surat: JenisSurat }) {
           <Card className="p-6 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
             <div className="flex items-center gap-3 mb-3">
               <Clock className="w-5 h-5 text-primary-600" />
-              <h2 className="text-lg font-bold text-neutral-900 dark:text-white">Estimasi Penyelesaian</h2>
+              <h2 className="text-lg font-bold text-neutral-900 dark:text-white">{t('LayananDetail.estimation')}</h2>
             </div>
             <p className="text-sm text-neutral-600 dark:text-neutral-300">
-              Dokumen ini akan selesai dalam <strong className="text-neutral-900 dark:text-white">{surat.estimasiHari} hari kerja</strong> setelah berkas lengkap diterima.
+              {t('LayananDetail.estimationDesc')}{' '}
+              <strong className="text-neutral-900 dark:text-white">
+                {surat.estimasiHari} {t('LayananDetail.workDays')}
+              </strong>
             </p>
           </Card>
 
           {/* Persyaratan */}
           {surat.persyaratan && surat.persyaratan.length > 0 && (
             <Card className="p-6 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-              <h2 className="text-lg font-bold text-neutral-900 dark:text-white mb-4">Persyaratan</h2>
+              <h2 className="text-lg font-bold text-neutral-900 dark:text-white mb-4">{t('LayananDetail.requirements')}</h2>
               <ul className="space-y-2">
                 {surat.persyaratan.map((syarat, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-sm text-neutral-600 dark:text-neutral-300">
@@ -90,7 +96,7 @@ function JenisSuratDetailClient({ surat }: { surat: JenisSurat }) {
           {/* Form Fields */}
           {surat.formFields && surat.formFields.length > 0 && (
             <Card className="p-6 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-              <h2 className="text-lg font-bold text-neutral-900 dark:text-white mb-4">Data yang Diperlukan</h2>
+              <h2 className="text-lg font-bold text-neutral-900 dark:text-white mb-4">{t('LayananDetail.requiredFields')}</h2>
               <div className="space-y-3">
                 {surat.formFields.map((field) => (
                   <div key={field.name} className="flex items-start justify-between gap-4 text-sm">
@@ -110,7 +116,7 @@ function JenisSuratDetailClient({ surat }: { surat: JenisSurat }) {
           {/* Nomor Surat Format */}
           {surat.nomorSuratFormat && (
             <Card className="p-6 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-              <h2 className="text-lg font-bold text-neutral-900 dark:text-white mb-3">Format Nomor Surat</h2>
+              <h2 className="text-lg font-bold text-neutral-900 dark:text-white mb-3">{t('LayananDetail.letterFormat')}</h2>
               <code className="text-sm font-mono text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950 px-3 py-1 rounded">
                 {surat.nomorSuratFormat}
               </code>
@@ -125,32 +131,29 @@ function JenisSuratDetailClient({ surat }: { surat: JenisSurat }) {
               {icon}
             </div>
             <Badge variant={surat.aktif ? 'success' : 'neutral'} className="mb-2">
-              {surat.aktif ? 'Aktif' : 'Non-aktif'}
+              {surat.aktif ? t('LayananDetail.statusActive') : t('LayananDetail.statusInactive')}
             </Badge>
-            <p className="text-xs text-neutral-500 mb-4">
-              {surat.aktif ? 'Layanan ini sedang diterima dan dapat diajukan.' : 'Layanan ini sedang tidak tersedia.'}
-            </p>
           </Card>
 
           {surat.aktif && (
-                        <Link href={`/layanan/${surat.kode}/ajukan`}>
+            <Link href={`/layanan/${surat.kode}/ajukan`}>
               <Button variant="primary" size="lg" className="w-full font-bold">
-                Ajukan Sekarang
+                {t('LayananDetail.applyNow')}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
           )}
 
-                    <Link href="/layanan/lacak">
+          <Link href="/layanan/lacak">
             <Button variant="outline" size="sm" className="w-full font-bold">
-              Lacak Pengajuan
+              {t('LayananDetail.trackLetter')}
               <ExternalLink className="w-3.5 h-3.5 ml-2" />
             </Button>
           </Link>
 
-                    <Link href="/layanan">
+          <Link href="/layanan">
             <Button variant="ghost" size="sm" className="w-full">
-              Kembali ke Semua Layanan
+              {t('LayananDetail.backToServices')}
             </Button>
           </Link>
         </div>

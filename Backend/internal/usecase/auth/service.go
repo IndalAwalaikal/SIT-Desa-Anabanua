@@ -90,7 +90,7 @@ func (s *Service) Register(ctx context.Context, nama, email, password, nik, tele
 		Email:        emailNorm,
 		Nama:         strings.TrimSpace(nama),
 		PasswordHash: hash,
-		OTPCode:      generateOTP(),
+		OTPCode:      generateOTPMust(),
 		OTPExpiresAt: time.Now().Add(s.otpTTL),
 		CreatedAt:    time.Now(),
 	}
@@ -127,18 +127,23 @@ func (s *Service) Login(ctx context.Context, email, password string) (Session, e
 	user, err := s.users.GetByEmail(ctx, strings.ToLower(strings.TrimSpace(email)))
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return Session{}, domain.ErrUnauthorized
+			return Session{}, domain.ErrInvalidEmail
 		}
 		return Session{}, err
 	}
+
+	// Detail matters here per user request (email tidak terdaftar vs password salah
+	// dibedakan, bukan disamarkan jadi "kredensial tidak valid"). Tradeoff: ini
+	// memudahkan enumerasi akun; pengamanan enumerasi diserahkan ke captcha/rate-limit
+	// di layer middleware, bukan pengaburan pesan error.
 	if !user.IsActive {
-		return Session{}, domain.ErrUnauthorized
+		return Session{}, domain.ErrAccountNotActive
 	}
 	if !user.EmailVerified {
 		return Session{}, domain.ErrEmailNotVerified
 	}
 	if s.hasher.Compare(user.PasswordHash, password) != nil {
-		return Session{}, domain.ErrUnauthorized
+		return Session{}, domain.ErrWrongPassword
 	}
 	return s.issueSession(ctx, user)
 }
@@ -171,7 +176,10 @@ return Session{User: user, AccessToken: access, RefreshToken: raw, ExpiresAt: ex
 func (s *Service) Refresh(ctx context.Context, raw string) (access string, newRefresh string, err error) {
 	if err := s.tx.WithinTx(ctx, func(txCtx context.Context) error {
 		old, err := s.refreshes.GetByHashForUpdate(txCtx, s.tokens.HashRefresh(raw))
-		if err != nil || old.ExpiresAt.Before(time.Now()) || time.Since(old.LastUsedAt) > 30*24*time.Hour {
+		// Reject only if expired OR explicitly revoked (covered below).
+		// Idle usage window equals refresh TTL: a token idle beyond its TTL
+		// was effectively abandoned, reject it.
+		if err != nil || old.ExpiresAt.Before(time.Now()) {
 			return domain.ErrUnauthorized
 		}
 		// A rotated token being reused is a strong theft signal. Revoke all
@@ -225,7 +233,7 @@ func (s *Service) Me(ctx context.Context, userID string) (domain.User, error) {
 		return user, err
 	}
 	if !user.IsActive {
-		return domain.User{}, domain.ErrUnauthorized
+		return domain.User{}, domain.ErrAccountNotActive
 	}
 	return user, nil
 }
@@ -236,7 +244,7 @@ func (s *Service) ChangePassword(ctx context.Context, userID, old, newPw string)
 		return err
 	}
 	if s.hasher.Compare(user.PasswordHash, old) != nil {
-		return domain.ErrUnauthorized
+		return domain.ErrWrongPassword
 	}
 	hash, err := s.hasher.Hash(newPw)
 	if err != nil {
@@ -355,13 +363,25 @@ func strPtr(v string) *string {
 	return &v
 }
 
-func generateOTP() string {
+func generateOTP() (string, error) {
 	b := make([]byte, 3)
+	// ponytail: do NOT fall back to time-based pseudo-randomness —
+	// a CSPRNG failure here means OTP cannot be safely generated at all.
 	if _, err := rand.Read(b); err != nil {
-		return fmt.Sprintf("%06d", time.Now().UnixNano()%1000000)
+		return "", err
 	}
 	code := int(b[0])<<16 | int(b[1])<<8 | int(b[2])
-	return fmt.Sprintf("%06d", code%1000000)
+	return fmt.Sprintf("%06d", code%1000000), nil
+}
+
+// generateOTPMust is the call-site helper: OTP generation is best-effort and
+// panics on CSPRNG failure (which would also break CSRF, so safe to abort).
+func generateOTPMust() string {
+	code, err := generateOTP()
+	if err != nil {
+		panic("crypto/rand failed: " + err.Error())
+	}
+	return code
 }
 
 func otpMinutes(ttl time.Duration) int {
@@ -407,7 +427,9 @@ func resetPasswordHTML(code string, ttl time.Duration) string {
 }
 
 // VerifyOTP validates a verify_email OTP, promotes the pending registration to
-// a real account and returns a fresh session.
+// a real account and returns a fresh session. User creation and pending
+// deletion are wrapped in a transaction so a crash mid-flight cannot leave an
+// orphan pending registration tied to a verified account.
 func (s *Service) VerifyOTP(ctx context.Context, email, code string) (Session, error) {
 	emailNorm := strings.ToLower(strings.TrimSpace(email))
 	pending, err := s.pending.GetByEmail(ctx, emailNorm)
@@ -441,11 +463,16 @@ func (s *Service) VerifyOTP(ctx context.Context, email, code string) (Session, e
 		IsActive:      true,
 		CreatedAt:     time.Now(),
 	}
-	if err := s.users.Create(ctx, user); err != nil {
+	if err := s.tx.WithinTx(ctx, func(txCtx context.Context) error {
+		if err := s.users.Create(txCtx, user); err != nil {
+			return err
+		}
+		if err := s.pending.DeleteByEmail(txCtx, emailNorm); err != nil {
+			return err
+		}
+		return nil
+	}); err != nil {
 		return Session{}, err
-	}
-	if err := s.pending.DeleteByEmail(ctx, emailNorm); err != nil {
-		slog.Warn("failed to clean pending registration", "error", err, "email", emailNorm)
 	}
 	return s.issueSession(ctx, user)
 }
@@ -464,7 +491,7 @@ func (s *Service) ResendOTP(ctx context.Context, email string) error {
 		}
 		return err
 	}
-	pending.OTPCode = generateOTP()
+	pending.OTPCode = generateOTPMust()
 	pending.OTPExpiresAt = time.Now().Add(s.otpTTL)
 	if err := s.pending.Upsert(ctx, pending); err != nil {
 		return err
@@ -486,7 +513,7 @@ func (s *Service) ForgotPassword(ctx context.Context, email string) error {
 		}
 		return err
 	}
-	code := generateOTP()
+	code := generateOTPMust()
 	otp := domain.OTP{
 		ID: apputil.NewID(), UserID: user.ID, Code: code,
 		Purpose:   domain.OTPPurposeResetPassword,

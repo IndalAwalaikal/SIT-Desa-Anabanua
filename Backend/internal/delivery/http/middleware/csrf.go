@@ -77,7 +77,11 @@ func (c *CSRF) GenerateAndSetCookie(w http.ResponseWriter) string {
 
 func (c *CSRF) generateToken() string {
 	buf := make([]byte, 32)
-	_, _ = rand.Read(buf)
+	// ponytail: CSPRNG failure is critical — fall through to panic instead
+	// of silently emitting a zero-value token (predictable = CSRF bypass).
+	if _, err := rand.Read(buf); err != nil {
+		panic("crypto/rand failed: " + err.Error())
+	}
 	return base64.RawURLEncoding.EncodeToString(buf)
 }
 

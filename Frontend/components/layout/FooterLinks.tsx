@@ -22,6 +22,7 @@ export const FooterLinks = () => {
             { href: '/informasi/apbdes', label: t('Navbar.menuInformationApbdes') },
             { href: '/informasi/pajak', label: t('Navbar.menuInformationPajak') },
             { href: '/informasi/peta', label: t('Navbar.menuInformationPeta') },
+            { href: '/informasi/sembako', label: t('Navbar.menuInformationSembako') },
             { href: '/galeri', label: t('Navbar.menuNewsGallery') },
             { href: '/umkm', label: t('Navbar.menuNewsUmkm') },
           ].map((item) => (
@@ -49,6 +50,7 @@ export const FooterLinks = () => {
             { href: '/layanan/lacak', label: t('Navbar.menuServicesTrack') },
             { href: '/faq', label: t('Navbar.menuServicesFaq') },
             { href: '/pengaduan', label: t('Navbar.menuServicesComplaints') },
+            { href: '/kontak', label: t('Navbar.menuContact') },
             { href: '/login', label: t('Navbar.loginWarga') },
           ].map((item) => (
             <li key={item.href}>
