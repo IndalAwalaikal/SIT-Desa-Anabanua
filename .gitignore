@@ -36,7 +36,9 @@ pnpm-debug.log*
 Backend/bin/
 Backend/tmp/
 Backend/uploads/
-Backend/api
+# Go build artifact (binary), NOT cmd/api directory
+/Backend/api
+!/Backend/cmd/api
 Backend/api.exe
 # database backup output (scripts/backup.sh)
 Backend/backups/
