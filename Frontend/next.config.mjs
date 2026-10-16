@@ -6,7 +6,7 @@ const API_INTERNAL_URL = process.env.API_INTERNAL_URL || 'http://backend:8080';
 
 export default {
   reactStrictMode: true,
-  output: 'standalone',
+  output: process.env.VERCEL ? undefined : 'standalone',
   images: {
     // Aktifkan optimasi Next.js (membutuhkan sharp — sudah ada di package.json).
     // Gambar akan dikonversi ke WebP / AVIF dan di-resize sesuai layar pengguna.
