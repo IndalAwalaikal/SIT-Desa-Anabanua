@@ -13,6 +13,7 @@ WORKDIR /app
 COPY --from=build /api /app/api
 COPY --from=migrate-build /go/bin/migrate /usr/local/bin/migrate
 COPY migrations /app/migrations
+COPY entrypoint.sh /app/entrypoint.sh
 USER appuser
 EXPOSE 8080
-ENTRYPOINT ["/app/api"]
+ENTRYPOINT ["/app/entrypoint.sh"]
