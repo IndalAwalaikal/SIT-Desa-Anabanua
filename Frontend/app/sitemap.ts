@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getBeritaList } from '@/lib/services/berita.service';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://desaborong.bulukumbakab.go.id';
+  const baseUrl = 'https://desaanabanua.barrukab.go.id';
 
   // Fetch berita real dari API; fallback kosong jika API tidak tersedia
   // agar sitemap tetap valid meski backend sedang down.

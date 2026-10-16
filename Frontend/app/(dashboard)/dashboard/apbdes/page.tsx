@@ -141,7 +141,7 @@ export default function DashboardApbdesPage() {
           </h3>
           <div className="flex gap-4 text-[11px]">
             <span>Pendapatan: <b className="text-emerald-600 dark:text-emerald-300">{formatRupiah(pendapatanTotal)}</b></span>
-            <span>Belanja: <b className="text-blue-600 dark:text-blue-300">{formatRupiah(belanjaTotal)}</b></span>
+            <span>Belanja: <b className="text-primary-600 dark:text-primary-300">{formatRupiah(belanjaTotal)}</b></span>
           </div>
         </div>
 

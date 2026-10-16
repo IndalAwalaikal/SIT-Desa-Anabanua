@@ -2,21 +2,23 @@ package mysql
 
 import (
 	"context"
-	"strings"
 	"database/sql"
 	"encoding/json"
+	"strings"
 	"time"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
-	"desa-borong-api/internal/usecase/persuratan"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/usecase/persuratan"
 )
 
 type PengajuanRepo struct{ db *sql.DB }
 
 func NewPengajuanRepo(db *sql.DB) *PengajuanRepo { return &PengajuanRepo{db: db} }
 
-const pengajuanBase = "SELECT p.id, p.nomor_resi, p.nomor_surat_resmi, p.jenis_surat_kode, j.nama, p.pemohon_id, u.nama, p.subjek_nik, p.data_isian, p.data_snapshot, p.status, p.current_step, p.catatan_admin, p.file_pdf_url, p.qr_verification_code, p.dokumen_hasil, p.created_at, p.updated_at FROM pengajuan_surat p JOIN jenis_surat j ON j.kode=p.jenis_surat_kode JOIN users u ON u.id=p.pemohon_id"
+const pengajuanSelect = "p.id, p.nomor_resi, p.nomor_surat_resmi, p.jenis_surat_kode, j.nama, p.pemohon_id, u.nama, p.subjek_nik, p.data_isian, p.data_snapshot, p.status, p.current_step, p.catatan_admin, p.file_pdf_url, p.qr_verification_code, p.dokumen_hasil, p.created_at, p.updated_at"
+const pengajuanFrom = " FROM pengajuan_surat p JOIN jenis_surat j ON j.kode=p.jenis_surat_kode JOIN users u ON u.id=p.pemohon_id"
+const pengajuanBase = "SELECT " + pengajuanSelect + pengajuanFrom
 
 func scanPengajuanRow(s rowScanner) (domain.PengajuanSurat, error) {
 	var p domain.PengajuanSurat
@@ -208,11 +210,94 @@ func (r *PengajuanRepo) ListByPemohon(ctx context.Context, pemohonID string) ([]
 	return r.scanList(ctx, pengajuanBase+" WHERE p.pemohon_id=? ORDER BY p.created_at DESC", pemohonID)
 }
 
+func (r *PengajuanRepo) ListByPemohonPage(ctx context.Context, pemohonID string, page, limit int) ([]domain.PengajuanSurat, int, error) {
+	var total int
+	if err := q(ctx, r.db).QueryRowContext(ctx, "SELECT COUNT(*) FROM pengajuan_surat WHERE pemohon_id=?", pemohonID).Scan(&total); err != nil {
+		return nil, 0, err
+	}
+	items, err := r.scanList(ctx, pengajuanBase+" WHERE p.pemohon_id=? ORDER BY p.created_at DESC, p.id DESC LIMIT ? OFFSET ?", pemohonID, limit, (page-1)*limit)
+	return items, total, err
+}
+
 func (r *PengajuanRepo) ListAll(ctx context.Context, status string) ([]domain.PengajuanSurat, error) {
 	if status != "" {
 		return r.scanList(ctx, pengajuanBase+" WHERE p.status=? ORDER BY p.created_at DESC", status)
 	}
 	return r.scanList(ctx, pengajuanBase+" ORDER BY p.created_at DESC")
+}
+
+func (r *PengajuanRepo) ListPage(ctx context.Context, status, search, sort string, page, limit int) ([]domain.PengajuanSurat, int, error) {
+	where := []string{"1=1"}
+	args := []any{}
+	if status != "" {
+		where = append(where, "p.status=?")
+		args = append(args, status)
+	}
+	if search != "" {
+		pattern := "%" + search + "%"
+		where = append(where, "(p.nomor_resi LIKE ? OR u.nama LIKE ? OR j.nama LIKE ?)")
+		args = append(args, pattern, pattern, pattern)
+	}
+	base := pengajuanFrom + " WHERE " + strings.Join(where, " AND ")
+	var total int
+	if err := q(ctx, r.db).QueryRowContext(ctx, "SELECT COUNT(*)"+base, args...).Scan(&total); err != nil {
+		return nil, 0, err
+	}
+
+	orderBy := "p.created_at DESC, p.id DESC"
+	switch sort {
+	case "tanggal-asc":
+		orderBy = "p.created_at ASC, p.id ASC"
+	case "nama-asc":
+		orderBy = "u.nama ASC, p.created_at DESC"
+	case "nama-desc":
+		orderBy = "u.nama DESC, p.created_at DESC"
+	case "status":
+		orderBy = "p.status ASC, p.created_at DESC"
+	}
+	queryArgs := append(append([]any{}, args...), limit, (page-1)*limit)
+	rows, err := q(ctx, r.db).QueryContext(ctx,
+		"SELECT "+pengajuanSelect+base+" ORDER BY "+orderBy+" LIMIT ? OFFSET ?", queryArgs...)
+	if err != nil {
+		return nil, 0, err
+	}
+	defer rows.Close()
+	items := []domain.PengajuanSurat{}
+	for rows.Next() {
+		item, err := scanPengajuanRow(rows)
+		if err != nil {
+			return nil, 0, err
+		}
+		items = append(items, item)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, 0, err
+	}
+	if len(items) > 0 {
+		if err := r.loadPengajuanBatch(ctx, items); err != nil {
+			return nil, 0, err
+		}
+	}
+	return items, total, nil
+}
+
+// CountByStatus keeps dashboard summaries independent from the full request list.
+func (r *PengajuanRepo) CountByStatus(ctx context.Context) (map[string]int, error) {
+	rows, err := q(ctx, r.db).QueryContext(ctx, "SELECT status,COUNT(*) FROM pengajuan_surat GROUP BY status")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	counts := map[string]int{}
+	for rows.Next() {
+		var status string
+		var count int
+		if err := rows.Scan(&status, &count); err != nil {
+			return nil, err
+		}
+		counts[status] = count
+	}
+	return counts, rows.Err()
 }
 
 func (r *PengajuanRepo) scanList(ctx context.Context, qy string, args ...any) ([]domain.PengajuanSurat, error) {
@@ -406,4 +491,3 @@ func strPtrOrNull(p *string) any {
 }
 
 var _ persuratan.PengajuanRepository = (*PengajuanRepo)(nil)
-

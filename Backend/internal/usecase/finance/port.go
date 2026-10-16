@@ -4,7 +4,7 @@ package finance
 import (
 	"context"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 // StatistikRepository persists statistik penduduk (per-tahun JSON document).

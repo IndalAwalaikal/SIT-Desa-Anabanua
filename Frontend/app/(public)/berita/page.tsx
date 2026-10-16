@@ -4,8 +4,8 @@ import type { KategoriBerita } from '@/types/berita';
 import { BeritaClient } from './BeritaClient';
 
 export const metadata = {
-  title: 'Berita & Artikel Desa Borong',
-  description: 'Daftar berita, kegiatan, pembangunan, dan pengumuman resmi Desa Borong, Kecamatan Herlang, Kabupaten Bulukumba.',
+  title: 'Berita & Artikel Desa Anabanua',
+  description: 'Daftar berita, kegiatan, pembangunan, dan pengumuman resmi Desa Anabanua, Kecamatan Barru, Kabupaten Barru.',
 };
 
 interface BeritaPageProps {

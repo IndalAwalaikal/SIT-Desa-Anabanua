@@ -4,12 +4,12 @@ package umkm
 import (
 	"context"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 // Repository persists UMKM records.
 type Repository interface {
-	List(ctx context.Context, kategori string) ([]domain.Umkm, error)
+	List(ctx context.Context, kategori string, limit int) ([]domain.Umkm, error)
 	GetBySlug(ctx context.Context, slug string) (domain.Umkm, error)
 	GetByID(ctx context.Context, id string) (domain.Umkm, error)
 	Create(ctx context.Context, u domain.Umkm) error

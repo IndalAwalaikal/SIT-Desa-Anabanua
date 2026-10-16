@@ -21,7 +21,7 @@ interface HeroSectionProps {
 }
 
 /**
- * Slide hero — foto lokal Desa Borong. `imgFilter` menyeimbangkan terang-gelap
+ * Slide hero — foto lokal Desa Anabanua. `imgFilter` menyeimbangkan terang-gelap
  * agar tiap slide terlihat jernih (bukan "burik") sebelum gradien overlay
  * semisutny. Gradien overlay kemudian ditiup lembut agar teks putih tetap
  * readable tanpa menghancurkan warna foto asli.
@@ -42,6 +42,7 @@ interface ResolvedSlide extends SlideDef {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ profil }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [hasAdvanced, setHasAdvanced] = useState(false);
   const [trackingNumber, setTrackingNumber] = useState("");
   const router = useRouter();
   const { t } = useTranslation();
@@ -50,7 +51,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profil }) => {
     {
       // Lanskap desa tropis Indonesia — sawah & pepohonan (200 ✅)
       image:
-        "https://res.cloudinary.com/euwj88eq/image/upload/e_upscale/e_enhance/w_2560,h_1440,c_fill,g_auto,q_auto:good,f_auto,fl_progressive/4607254f1ee7b1105483aa08f706d240.jpg",
+        "https://res.cloudinary.com/dmualsp81/image/upload/e_upscale/e_enhance/w_2560,h_1440,c_fill,g_auto,q_auto:good,f_auto,fl_progressive/99cb2116-c651-4370-91c5-d730e4e3552e.png",
       imgFilter: "brightness-100 saturate-110",
       titleKey: "Home.heroSlide1Title",
       subtitleKey: "Home.heroSlide1Subtitle",
@@ -59,7 +60,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profil }) => {
     {
       // Lanskap sawah hijau Sulawesi / Jawa — tone hangat (200 ✅)
       image:
-        "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=2560&q=90&fit=crop&crop=entropy&cs=srgb",
+        "https://res.cloudinary.com/dmualsp81/image/upload/v1791541344/5f08fea3-95e3-4101-9521-1ce9c5af4bec.png",
       imgFilter: "brightness-105 saturate-115 contrast-100",
       titleKey: "Home.heroSlide2Title",
       subtitleKey: "Home.heroSlide2Subtitle",
@@ -68,7 +69,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profil }) => {
     {
       // Alam tropis pegunungan Indonesia — nuansa biru & hijau
       image:
-        "https://res.cloudinary.com/euwj88eq/image/upload/e_upscale/e_enhance/w_2560,h_1440,c_fill,g_auto,q_auto:good,f_auto,fl_progressive/825c228b351b3efc777594e8e2cc9e83.jpg",
+        "https://res.cloudinary.com/dmualsp81/image/upload/v1791541520/944ea255-4c85-4f00-bebe-cbede8505cb4.png",
       imgFilter: "brightness-100 saturate-110",
       titleKey: "Home.heroSlide2Title",
       subtitleKey: "Home.heroSlide2Subtitle",
@@ -82,10 +83,32 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profil }) => {
   }));
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
-    return () => clearInterval(timer);
+    let timer: number | undefined;
+    const stop = () => {
+      if (timer !== undefined) {
+        window.clearInterval(timer);
+        timer = undefined;
+      }
+    };
+    const start = () => {
+      if (timer === undefined && document.visibilityState === 'visible') {
+        timer = window.setInterval(() => {
+          setCurrentSlide((prev) => (prev + 1) % slides.length);
+          setHasAdvanced(true);
+        }, 6000);
+      }
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') start();
+      else stop();
+    };
+
+    start();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      stop();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [slides.length]);
 
   const handleTrackingSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -99,7 +122,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profil }) => {
   };
 
   return (
-    <section className="relative min-h-[74vh] overflow-hidden bg-[#061a3a] lg:min-h-[80vh]">
+    <section className="relative min-h-[74vh] overflow-hidden bg-[#174b17] lg:min-h-[80vh]">
       {/* Background Image Slider with Gradient Overlays */}
       {slides.map((slide, idx) => {
         const isActive = idx === currentSlide;
@@ -108,7 +131,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profil }) => {
         // Render hanya slide aktif + slide sebelumnya (untuk transisi memudar) agar
         // gambar yang tidak tampil tidak ikut diunduh sekaligus saat halaman dimuat,
         // sehingga hero tetap ringan & tidak menambah beban bandwidth desa.
-        if (!isActive && !isPrevious) return null;
+        // Jangan unduh gambar slide sebelumnya pada render pertama; cukup
+        // muat satu gambar untuk mempercepat tampilan awal hero.
+        if (!isActive && !(hasAdvanced && isPrevious)) return null;
         return (
           <div
             key={idx}
@@ -139,7 +164,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profil }) => {
       <div className="relative z-10 flex min-h-[74vh] items-center lg:min-h-[80vh]">
         <div className="container-desa py-20">
           {/* Top Badge */}
-          <div className="inline-flex items-center gap-2 border-l-2 border-primary-400 pl-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-100 mb-6 animate-fade-in-down">
+          <div className="inline-flex items-center gap-2 border-l-2 border-primary-400 pl-3 text-xs font-bold uppercase tracking-[0.18em] text-primary-100 mb-6 animate-fade-in-down">
             <span>{t("Home.heroTopBadge")}</span>
           </div>
 
@@ -149,13 +174,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ profil }) => {
               {slides[currentSlide].title}
             </h1>
             <p
-              className="text-lg text-blue-100 max-w-2xl leading-relaxed mb-4 animate-fade-in-up"
+              className="text-lg text-primary-100 max-w-2xl leading-relaxed mb-4 animate-fade-in-up"
               style={{ animationDelay: "120ms" }}
             >
               {slides[currentSlide].subtitle}
             </p>
             <p
-              className="flex items-center gap-2 text-sm text-blue-200 animate-fade-in-up"
+              className="flex items-center gap-2 text-sm text-primary-200 animate-fade-in-up"
               style={{ animationDelay: "200ms" }}
             >
               <MapPin className="w-4 h-4 text-primary-300" />

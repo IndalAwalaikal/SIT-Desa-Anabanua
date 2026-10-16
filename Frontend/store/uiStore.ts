@@ -55,10 +55,10 @@ export const useUiStore = create<UiState>()(
       setSearchQuery: (searchQuery) => set({ searchQuery }),
     }),
     {
-      name: 'desa-borong-ui',
+      name: 'desa-anabanua-ui',
       onRehydrateStorage: () => (state) => {
         if (state && typeof window !== 'undefined') {
-          const stored = localStorage.getItem('desa-borong-ui');
+          const stored = localStorage.getItem('desa-anabanua-ui');
           if (!stored) {
             const systemTheme = getSystemTheme();
             state.setTheme(systemTheme);

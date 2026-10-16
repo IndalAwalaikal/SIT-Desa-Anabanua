@@ -239,7 +239,7 @@ export default function DashboardFasilitasPage() {
             label="Dusun"
             value={form.dusun}
             onChange={(e) => setForm({ ...form, dusun: e.target.value })}
-            placeholder="Borong Utara"
+            placeholder="Anabanua Utara"
             required
           />
           <Input

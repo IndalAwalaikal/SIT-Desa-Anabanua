@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
 )
 
 func (h *Handler) StatistikGet(w http.ResponseWriter, r *http.Request) {

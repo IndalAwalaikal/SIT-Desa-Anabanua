@@ -4,21 +4,28 @@ import (
 	"net/http"
 	"time"
 
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
 )
 
 func (h *Handler) AnalyticsDashboard(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	startOfMonth := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
-	pengajuanList, _ := h.app.Persuratan.ListAll(r.Context(), "")
-	pengaduanList, _ := h.app.Pengaduan.ListAll(r.Context(), "")
-	pengajuanByStatus := map[string]int{}
-	pengaduanByStatus := map[string]int{}
-	for _, p := range pengajuanList {
-		pengajuanByStatus[string(p.Status)]++
+	pengajuanByStatus, err := h.app.Persuratan.CountByStatus(r.Context())
+	if err != nil {
+		httpapi.Error(w, err)
+		return
 	}
-	for _, p := range pengaduanList {
-		pengaduanByStatus[string(p.Status)]++
+	pengaduanByStatus, err := h.app.Pengaduan.CountByStatus(r.Context())
+	if err != nil {
+		httpapi.Error(w, err)
+		return
+	}
+	total := func(counts map[string]int) int {
+		n := 0
+		for _, count := range counts {
+			n += count
+		}
+		return n
 	}
 	httpapi.JSON(w, 200, map[string]any{
 		"period": map[string]string{
@@ -26,12 +33,12 @@ func (h *Handler) AnalyticsDashboard(w http.ResponseWriter, r *http.Request) {
 			"end":   now.Format("2006-01-02"),
 		},
 		"pengajuan": map[string]any{
-			"total":     len(pengajuanList),
-			"byStatus":  pengajuanByStatus,
+			"total":    total(pengajuanByStatus),
+			"byStatus": pengajuanByStatus,
 		},
 		"pengaduan": map[string]any{
-			"total":     len(pengaduanList),
-			"byStatus":  pengaduanByStatus,
+			"total":    total(pengaduanByStatus),
+			"byStatus": pengaduanByStatus,
 		},
 	})
 }

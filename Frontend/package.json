@@ -1,5 +1,5 @@
 {
-  "name": "desa-borong-frontend",
+  "name": "desa-anabanua-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,14 +14,17 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.0",
+    "@types/leaflet": "^1.9.22",
     "clsx": "^2.1.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.475.0",
     "next": "^16.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.0",
+    "react-leaflet": "^5.0.0",
     "recharts": "^2.15.0",
     "sharp": "0.35.3",
     "tailwind-merge": "^3.0.0",

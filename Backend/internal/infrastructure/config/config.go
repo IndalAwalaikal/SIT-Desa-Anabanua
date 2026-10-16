@@ -8,17 +8,16 @@ import (
 )
 
 type Config struct {
-	Env, Port, DBHost, DBPort, DBName, DBUser, DBPassword, JWTSecret, HMACSecret, StoragePath string
-	BootstrapSuperAdminName, BootstrapSuperAdminEmail, BootstrapSuperAdminPassword            string
-	AccessTTL, RefreshTTL                                                                     time.Duration
-	CORSOrigins                                                                               []string
-	BrevoAPIKey                                                                               string
-	BrevoFromEmail                                                                            string
-	FlowKirimAPIKey                                                                           string
-	FlowKirimBaseURL                                                                          string
-	FlowKirimWebhookSecret                                                                    string
-	AppURL                                                                                    string
-	OTPTTL                                                                                    time.Duration
+	Env, Port, DBHost, DBPort, DBName, DBUser, DBPassword, JWTSecret, HMACSecret, VisitorHMACSecret, StoragePath string
+	BootstrapSuperAdminName, BootstrapSuperAdminEmail, BootstrapSuperAdminPassword                               string
+	AccessTTL, RefreshTTL                                                                                        time.Duration
+	CORSOrigins                                                                                                  []string
+	MailjetAPIKey, MailjetAPISecret, MailjetFromEmail                                                            string
+	FlowKirimAPIKey                                                                                              string
+	FlowKirimBaseURL                                                                                             string
+	FlowKirimWebhookSecret                                                                                       string
+	AppURL                                                                                                       string
+	OTPTTL                                                                                                       time.Duration
 }
 
 func get(k, d string) string {
@@ -37,6 +36,7 @@ func Load() (Config, error) {
 		return Config{}, fmt.Errorf("JWT_REFRESH_TTL: %w", err)
 	}
 	hmacSecret := strings.TrimSpace(os.Getenv("DOCUMENT_HMAC_SECRET"))
+	visitorHMACSecret := strings.TrimSpace(os.Getenv("VISITOR_HMAC_SECRET"))
 	jwtSecret := os.Getenv("JWT_ACCESS_SECRET")
 	env := get("APP_ENV", "development")
 	// ponytail: HMAC secret MUST be independent from JWT secret in production.
@@ -47,15 +47,24 @@ func Load() (Config, error) {
 		}
 		hmacSecret = jwtSecret
 	}
+	if visitorHMACSecret == "" {
+		if env == "production" {
+			return Config{}, fmt.Errorf("VISITOR_HMAC_SECRET must be set independently in production")
+		}
+		visitorHMACSecret = hmacSecret
+	}
+	if len(visitorHMACSecret) < 32 {
+		return Config{}, fmt.Errorf("VISITOR_HMAC_SECRET must be at least 32 bytes")
+	}
 	c := Config{
-		Env: env, Port: get("APP_PORT", "8080"),
+		Env: env, Port: get("APP_PORT", get("PORT", "8080")),
 		DBHost: get("DB_HOST", "localhost"), DBPort: get("DB_PORT", "3306"),
 		DBName: strings.TrimSpace(os.Getenv("DB_NAME")), DBUser: strings.TrimSpace(os.Getenv("DB_USER")), DBPassword: os.Getenv("DB_PASSWORD"),
-		JWTSecret: jwtSecret, HMACSecret: hmacSecret, StoragePath: get("FILE_STORAGE_PATH", "./uploads"),
+		JWTSecret: jwtSecret, HMACSecret: hmacSecret, VisitorHMACSecret: visitorHMACSecret, StoragePath: get("FILE_STORAGE_PATH", "./uploads"),
 		BootstrapSuperAdminName:     strings.TrimSpace(os.Getenv("BOOTSTRAP_SUPER_ADMIN_NAME")),
 		BootstrapSuperAdminEmail:    strings.TrimSpace(os.Getenv("BOOTSTRAP_SUPER_ADMIN_EMAIL")),
 		BootstrapSuperAdminPassword: os.Getenv("BOOTSTRAP_SUPER_ADMIN_PASSWORD"),
-		AccessTTL: a, RefreshTTL: r,
+		AccessTTL:                   a, RefreshTTL: r,
 		FlowKirimWebhookSecret: os.Getenv("FLOWKIRIM_WEBHOOK_SECRET"),
 	}
 	if c.DBName == "" || c.DBUser == "" || c.DBPassword == "" {
@@ -89,8 +98,9 @@ func Load() (Config, error) {
 	if err != nil {
 		return Config{}, fmt.Errorf("OTP_TTL_MINUTES: %w", err)
 	}
-	c.BrevoAPIKey = os.Getenv("BREVO_API_KEY")
-	c.BrevoFromEmail = get("BREVO_FROM_EMAIL", "no-reply@desaborong.id")
+	c.MailjetAPIKey = strings.TrimSpace(os.Getenv("MAILJET_API_KEY"))
+	c.MailjetAPISecret = strings.TrimSpace(os.Getenv("MAILJET_API_SECRET"))
+	c.MailjetFromEmail = get("MAILJET_FROM_EMAIL", "no-reply@desaanabanua.id")
 	c.FlowKirimAPIKey = os.Getenv("FLOWKIRIM_API_KEY")
 	c.FlowKirimBaseURL = os.Getenv("FLOWKIRIM_BASE_URL")
 	c.AppURL = strings.TrimRight(get("APP_URL", "http://localhost:3300"), "/")

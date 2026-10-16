@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"time"
 
-	"desa-borong-api/internal/infrastructure/jobs"
+	"desa-anabanua-api/internal/infrastructure/jobs"
 )
 
 // Compile-time check — JobStore implements jobs.Store.

@@ -112,7 +112,7 @@ function CariContent() {
             <span>PENCARIAN WEBSITE</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white">
-            {t('Cari.title', 'Cari di Website Desa Borong')}
+            {t('Cari.title', 'Cari di Website Desa Anabanua')}
           </h1>
           <p className="text-sm text-neutral-500">
             {t('Cari.subtitle', 'Cari berita, layanan surat, hingga UMKM lokal dalam satu tempat.')}

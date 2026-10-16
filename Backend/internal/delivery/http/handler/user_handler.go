@@ -1,13 +1,14 @@
 package handler
 
 import (
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
 	"net/http"
 )
 
 func (h *Handler) UsersList(w http.ResponseWriter, r *http.Request) {
-	users, err := h.app.User.ListAll(r.Context())
+	pageNumber, limit := page(r)
+	users, total, err := h.app.User.ListPage(r.Context(), r.URL.Query().Get("search"), pageNumber, limit)
 	if err != nil {
 		httpapi.Error(w, err)
 		return
@@ -16,7 +17,7 @@ func (h *Handler) UsersList(w http.ResponseWriter, r *http.Request) {
 	for _, u := range users {
 		out = append(out, userResp(u))
 	}
-	httpapi.JSON(w, 200, out)
+	httpapi.List(w, out, pageNumber, limit, total)
 }
 
 func (h *Handler) UserUpdate(w http.ResponseWriter, r *http.Request) {

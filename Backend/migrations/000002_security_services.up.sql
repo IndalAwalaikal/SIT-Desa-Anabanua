@@ -106,7 +106,7 @@ INSERT IGNORE INTO jenis_surat (kode,nama,deskripsi,persyaratan,form_fields,esti
 ;
 
 -- consolidated from 000008_otp_email.up.sql
--- Migration 000008: Email verification via OTP (Brevo) + surat notification email.
+-- Migration 000008: Email verification via OTP (Mailjet) + surat notification email.
 -- Adds email_verified flag, otp_codes table, email_log table, and surat delivery
 -- tracking columns. Existing users (including bootstrap super admin) are marked
 -- as email-verified so they keep working.
@@ -249,10 +249,10 @@ CREATE TABLE IF NOT EXISTS pengajuan_approval_step (
 UPDATE jenis_surat 
 SET template_html = '<div style="font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.6; color: #000; padding: 20px;">
   <div style="text-align: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 20px;">
-    <h3 style="margin: 0; font-size: 14pt; text-transform: uppercase;">PEMERINTAH KABUPATEN BONE</h3>
-    <h3 style="margin: 0; font-size: 14pt; text-transform: uppercase;">KECAMATAN LAPPARIAJA</h3>
-    <h2 style="margin: 0; font-size: 16pt; font-weight: bold; text-transform: uppercase;">PEMERINTAH DESA BORONG</h2>
-    <p style="margin: 0; font-size: 10pt; font-style: italic;">Jl. Poros Bosowa Desa Borong, Kode Pos 92763</p>
+    <h3 style="margin: 0; font-size: 14pt; text-transform: uppercase;">PEMERINTAH KABUPATEN BARRU</h3>
+    <h3 style="margin: 0; font-size: 14pt; text-transform: uppercase;">KECAMATAN BARRU</h3>
+    <h2 style="margin: 0; font-size: 16pt; font-weight: bold; text-transform: uppercase;">PEMERINTAH DESA ANABANUA</h2>
+    <p style="margin: 0; font-size: 10pt; font-style: italic;">Jl. Poros Bosowa Desa Anabanua, Kode Pos 90712</p>
   </div>
 
   <div style="text-align: center; margin-bottom: 20px;">
@@ -261,7 +261,7 @@ SET template_html = '<div style="font-family: Arial, sans-serif; font-size: 12pt
   </div>
 
   <p style="text-indent: 40px; margin-bottom: 15px;">
-    Yang bertanda tangan di bawah ini Kepala Desa Borong, Kecamatan Lappariaja, Kabupaten Bone, menerangkan bahwa:
+    Yang bertanda tangan di bawah ini Kepala Desa Anabanua, Kecamatan Barru, Kabupaten Barru, menerangkan bahwa:
   </p>
 
   <table style="width: 100%; margin-left: 20px; margin-bottom: 15px; border-collapse: collapse;">
@@ -274,7 +274,7 @@ SET template_html = '<div style="font-family: Arial, sans-serif; font-size: 12pt
   </table>
 
   <p style="text-indent: 40px; margin-bottom: 15px;">
-    Bahwa nama tersebut di atas adalah benar warga Desa Borong yang memiliki dan menjalankan usaha <strong>{{form.namaUsaha}}</strong> yang bergerak di bidang <em>{{form.jenisUsaha}}</em> dan berlokasi di {{form.alamatUsaha}}.
+    Bahwa nama tersebut di atas adalah benar warga Desa Anabanua yang memiliki dan menjalankan usaha <strong>{{form.namaUsaha}}</strong> yang bergerak di bidang <em>{{form.jenisUsaha}}</em> dan berlokasi di {{form.alamatUsaha}}.
   </p>
 
   <p style="text-indent: 40px; margin-bottom: 30px;">
@@ -285,8 +285,8 @@ SET template_html = '<div style="font-family: Arial, sans-serif; font-size: 12pt
     <tr>
       <td style="width: 50%;"></td>
       <td style="width: 50%;">
-        <p style="margin: 0;">Borong, {{sys.meta.tanggal_surat}}</p>
-        <p style="margin: 0; font-weight: bold;">Kepala Desa Borong</p>
+        <p style="margin: 0;">Anabanua, {{sys.meta.tanggal_surat}}</p>
+        <p style="margin: 0; font-weight: bold;">Kepala Desa Anabanua</p>
         <div style="margin: 15px 0;">
           {{sys.meta.qr_code_img}}
         </div>
@@ -314,7 +314,7 @@ VALUES
 -- 1. KEPENDUDUKAN
 -- ============================================================================
 ('SKD', 'Kependudukan', 'Surat Keterangan Domisili', 
- 'Surat keterangan domisili atau tempat tinggal resmi warga di Desa Borong.',
+ 'Surat keterangan domisili atau tempat tinggal resmi warga di Desa Anabanua.',
  JSON_ARRAY('Fotokopi KTP','Fotokopi Kartu Keluarga','Surat Pengantar RT/RW'),
  JSON_ARRAY(
    JSON_OBJECT('name','tujuanKeperluan','label','Tujuan Keperluan','type','textarea','required',TRUE),
@@ -322,25 +322,25 @@ VALUES
  ),
  '<div style="font-family: Arial, sans-serif; padding: 20px; font-size: 12pt; line-height: 1.6;">
   <div style="text-align: center; border-bottom: 3px double #000; padding-bottom: 8px; margin-bottom: 15px;">
-    <h3 style="margin: 0; text-transform: uppercase;">PEMERINTAH KABUPATEN BONE</h3>
-    <h3 style="margin: 0; text-transform: uppercase;">KECAMATAN LAPPARIAJA</h3>
-    <h2 style="margin: 0; font-weight: bold; text-transform: uppercase;">PEMERINTAH DESA BORONG</h2>
+    <h3 style="margin: 0; text-transform: uppercase;">PEMERINTAH KABUPATEN BARRU</h3>
+    <h3 style="margin: 0; text-transform: uppercase;">KECAMATAN BARRU</h3>
+    <h2 style="margin: 0; font-weight: bold; text-transform: uppercase;">PEMERINTAH DESA ANABANUA</h2>
   </div>
   <div style="text-align: center; margin-bottom: 20px;">
     <h4 style="margin: 0; text-decoration: underline; font-size: 13pt;">SURAT KETERANGAN DOMISILI</h4>
     <p style="margin: 0;">Nomor: {{sys.meta.nomor_surat}}</p>
   </div>
-  <p style="text-indent: 40px;">Yang bertanda tangan di bawah ini Kepala Desa Borong menerangkan bahwa:</p>
+  <p style="text-indent: 40px;">Yang bertanda tangan di bawah ini Kepala Desa Anabanua menerangkan bahwa:</p>
   <table style="width: 100%; margin-left: 20px; margin-bottom: 15px;">
     <tr><td style="width: 30%;">Nama Lengkap</td><td>: <strong>{{sys.pemohon.nama}}</strong></td></tr>
     <tr><td>NIK</td><td>: {{sys.pemohon.nik}}</td></tr>
     <tr><td>Tempat/Tgl Lahir</td><td>: {{sys.pemohon.ttl}}</td></tr>
     <tr><td>Alamat</td><td>: {{sys.pemohon.alamat_lengkap}}</td></tr>
   </table>
-  <p style="text-indent: 40px;">Bahwa yang bersangkutan benar-benar berdomisili dan bertempat tinggal di Desa Borong sejak tahun {{form.sejakTahun}} hingga saat ini.</p>
+  <p style="text-indent: 40px;">Bahwa yang bersangkutan benar-benar berdomisili dan bertempat tinggal di Desa Anabanua sejak tahun {{form.sejakTahun}} hingga saat ini.</p>
   <p style="text-indent: 40px;">Demikian surat keterangan ini dibuat untuk dipergunakan sebagai {{form.tujuanKeperluan}}.</p>
   <table style="width: 100%; text-align: center; margin-top: 30px;">
-    <tr><td></td><td style="width: 50%;">Borong, {{sys.meta.tanggal_surat}}<br><strong>Kepala Desa Borong</strong><br><br>{{sys.meta.qr_code_img}}<br><br><u>{{sys.ttd.nama}}</u></td></tr>
+    <tr><td></td><td style="width: 50%;">Anabanua, {{sys.meta.tanggal_surat}}<br><strong>Kepala Desa Anabanua</strong><br><br>{{sys.meta.qr_code_img}}<br><br><u>{{sys.ttd.nama}}</u></td></tr>
   </table>
 </div>',
  JSON_ARRAY(
@@ -350,13 +350,13 @@ VALUES
  '470/{index}/DB/{bulan_romawi}/{tahun}', 1, 'Home', TRUE),
 
 ('SKP_IN', 'Kependudukan', 'Surat Keterangan Penduduk',
- 'Surat keterangan pendaftaran sebagai penduduk aktif di Desa Borong.',
+ 'Surat keterangan pendaftaran sebagai penduduk aktif di Desa Anabanua.',
  JSON_ARRAY('Fotokopi KTP','Fotokopi KK'),
  JSON_ARRAY(JSON_OBJECT('name','keperluan','label','Keperluan Surat','type','text','required',TRUE)),
  NULL, NULL, '470/{index}/DB/{bulan_romawi}/{tahun}', 1, 'UserCheck', TRUE),
 
 ('SKP_OUT', 'Kependudukan', 'Surat Keterangan Pindah',
- 'Surat pengantar perpindahan penduduk keluar dari Desa Borong ke daerah tujuan.',
+ 'Surat pengantar perpindahan penduduk keluar dari Desa Anabanua ke daerah tujuan.',
  JSON_ARRAY('KTP Asli','KK Asli','Pas foto 3x4 (4 lembar)'),
  JSON_ARRAY(
    JSON_OBJECT('name','alamatTujuan','label','Alamat Tujuan Pindah','type','textarea','required',TRUE),
@@ -365,7 +365,7 @@ VALUES
  NULL, NULL, '475/{index}/DB/{bulan_romawi}/{tahun}', 2, 'LogOut', TRUE),
 
 ('SK_DATANG', 'Kependudukan', 'Surat Keterangan Datang/Pendatang',
- 'Surat keterangan penerimaan kedatangan warga pendatang baru di Desa Borong.',
+ 'Surat keterangan penerimaan kedatangan warga pendatang baru di Desa Anabanua.',
  JSON_ARRAY('Surat Pindah dari Desa Asal','Fotokopi KTP/KK'),
  JSON_ARRAY(JSON_OBJECT('name','alamatAsal','label','Alamat Asal','type','textarea','required',TRUE)),
  NULL, NULL, '475/{index}/DB/{bulan_romawi}/{tahun}', 2, 'LogIn', TRUE),
@@ -509,7 +509,7 @@ VALUES
 -- 6. USAHA DAN EKONOMI
 -- ============================================================================
 ('SKU', 'Usaha & Ekonomi', 'Surat Keterangan Usaha (SKU)',
- 'Surat keterangan resmi kepemilikan dan legalitas operasional usaha mikro/kecil di Desa Borong.',
+ 'Surat keterangan resmi kepemilikan dan legalitas operasional usaha mikro/kecil di Desa Anabanua.',
  JSON_ARRAY('Fotokopi KTP','Fotokopi KK','Foto Lokasi Usaha'),
  JSON_ARRAY(
    JSON_OBJECT('name','namaUsaha','label','Nama Usaha','type','text','required',TRUE),
@@ -528,7 +528,7 @@ VALUES
  NULL, NULL, '520/{index}/DB/{bulan_romawi}/{tahun}', 1, 'Sprout', TRUE),
 
 ('SK_PETERNAK', 'Usaha & Ekonomi', 'Surat Keterangan Peternak',
- 'Surat keterangan aktif sebagai peternak hewan ternak di wilayah Desa Borong.',
+ 'Surat keterangan aktif sebagai peternak hewan ternak di wilayah Desa Anabanua.',
  JSON_ARRAY('Fotokopi KTP','Fotokopi KK'),
  JSON_ARRAY(
    JSON_OBJECT('name','jenisTernak','label','Jenis Ternak (Sapi, Kambing, Ayam)','type','text','required',TRUE),
@@ -561,7 +561,7 @@ VALUES
  NULL, NULL, '330/{index}/DB/{bulan_romawi}/{tahun}', 1, 'ShieldAlert', TRUE),
 
 ('SK_KEHILANGAN', 'Keamanan & Kepolisian', 'Surat Keterangan Kehilangan',
- 'Surat keterangan laporan kehilangan barang/dokumen di lingkungan Desa Borong.',
+ 'Surat keterangan laporan kehilangan barang/dokumen di lingkungan Desa Anabanua.',
  JSON_ARRAY('Fotokopi KTP Pelapor'),
  JSON_ARRAY(
    JSON_OBJECT('name','barangHilang','label','Nama Barang / Dokumen Hilang','type','text','required',TRUE),

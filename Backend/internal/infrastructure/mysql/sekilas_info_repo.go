@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"time"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/sekilas_info"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/sekilas_info"
 )
 
 type SekilasInfoRepo struct{ db *sql.DB }

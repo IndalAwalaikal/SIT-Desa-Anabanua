@@ -16,9 +16,9 @@ interface KontakClientProps {
 export const KontakClient: React.FC<KontakClientProps> = ({ profil }) => {
   const { t } = useTranslation();
 
-  const alamat = profil?.alamatKantor || 'Jl. Poros Borong – Herlang, Desa Borong, Kec. Herlang, Kab. Bulukumba';
+  const alamat = profil?.alamatKantor || 'Jl. Poros Anabanua – Barru, Desa Anabanua, Kec. Barru, Kab. Barru';
   const telepon = profil?.telepon || '+62 811-4000-xxxx';
-  const email = profil?.email || 'admin@desaborong.id';
+  const email = profil?.email || 'admin@desaanabanua.id';
   const jamLayanan = profil?.jamLayanan || 'Senin–Jumat, 08.00–16.00 WITA';
 
   return (
@@ -51,7 +51,7 @@ export const KontakClient: React.FC<KontakClientProps> = ({ profil }) => {
                     {alamat}
                   </p>
                   <a
-                    href="https://maps.app.goo.gl/nSJcjAg82dk2tuLm7"
+                    href="https://www.google.com/maps/search/?api=1&query=-4.47928,119.71651"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-xs font-bold text-primary-600 dark:text-primary-400 hover:underline pt-1"
@@ -106,13 +106,13 @@ export const KontakClient: React.FC<KontakClientProps> = ({ profil }) => {
                 <div className="text-center p-6 space-y-3">
                   <MapPin className="w-10 h-10 text-primary-600 mx-auto animate-bounce" />
                   <p className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
-                    Kantor Pemerintah Desa Borong
+                    Kantor Pemerintah Desa Anabanua
                   </p>
                   <p className="text-xs text-neutral-500 max-w-sm mx-auto">
-                    Kecamatan Herlang, Kabupaten Bulukumba, Sulawesi Selatan 92572
+                    Kecamatan Barru, Kabupaten Barru, Sulawesi Selatan 90712
                   </p>
                   <a
-                    href="https://maps.app.goo.gl/nSJcjAg82dk2tuLm7"
+                    href="https://www.google.com/maps/search/?api=1&query=-4.47928,119.71651"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold transition-all shadow-md"

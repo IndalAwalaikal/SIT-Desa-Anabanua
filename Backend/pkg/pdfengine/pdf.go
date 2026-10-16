@@ -10,7 +10,7 @@ import (
 func HTMLToPDFDataURL(htmlContent string, title string) (string, []byte) {
 	lines := extractTextLines(htmlContent)
 	if len(lines) == 0 {
-		lines = []string{"PEMERINTAH DESA BORONG", "SURAT KETERANGAN RESMI", title}
+		lines = []string{"PEMERINTAH DESA ANABANUA", "SURAT KETERANGAN RESMI", title}
 	}
 
 	var content strings.Builder

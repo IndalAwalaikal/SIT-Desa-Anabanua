@@ -50,11 +50,11 @@ export const NotificationBell: React.FC = () => {
                     "py-2.5 px-2 text-xs transition-colors rounded-lg cursor-pointer group flex gap-2 items-start justify-between",
                     n.isRead 
                       ? "hover:bg-neutral-50 dark:hover:bg-neutral-900/40 text-neutral-500 dark:text-neutral-400" 
-                      : "bg-blue-50/50 hover:bg-blue-50/80 dark:bg-blue-950/20 dark:hover:bg-blue-950/30 text-neutral-900 dark:text-neutral-100"
+                      : "bg-primary-50/50 hover:bg-primary-50/80 dark:bg-primary-950/20 dark:hover:bg-primary-950/30 text-neutral-900 dark:text-neutral-100"
                   )}
                 >
                   <div className="flex-1 space-y-0.5">
-                    <p className={cn("font-bold", !n.isRead && "text-blue-900 dark:text-blue-200")}>{n.title}</p>
+                    <p className={cn("font-bold", !n.isRead && "text-primary-900 dark:text-primary-200")}>{n.title}</p>
                     <p className="leading-relaxed text-[11px]">{n.message}</p>
                   </div>
                   {!n.isRead && (
@@ -63,7 +63,7 @@ export const NotificationBell: React.FC = () => {
                         e.stopPropagation();
                         void markRead(n.id);
                       }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-blue-100 dark:hover:bg-blue-900 rounded-md text-primary-600 dark:text-primary-400"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-primary-100 dark:hover:bg-primary-900 rounded-md text-primary-600 dark:text-primary-400"
                       title="Tandai dibaca"
                     >
                       <Check className="w-3.5 h-3.5" />

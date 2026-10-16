@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"encoding/json"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/umkm"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/umkm"
 )
 
 type UmkmRepo struct{ db *sql.DB }
@@ -32,7 +32,7 @@ func scanUmkm(s rowScanner) (domain.Umkm, error) {
 	return u, nil
 }
 
-func (r *UmkmRepo) List(ctx context.Context, kategori string) ([]domain.Umkm, error) {
+func (r *UmkmRepo) List(ctx context.Context, kategori string, limit int) ([]domain.Umkm, error) {
 	qy := "SELECT id,slug,nama_usaha,pemilik,kategori,deskripsi,foto,kontak,alamat,produk_unggulan,jam_operasional FROM umkm"
 	args := []any{}
 	if kategori != "" && kategori != "semua" {
@@ -40,6 +40,10 @@ func (r *UmkmRepo) List(ctx context.Context, kategori string) ([]domain.Umkm, er
 		args = append(args, "%"+kategori+"%")
 	}
 	qy += " ORDER BY nama_usaha"
+	if limit > 0 {
+		qy += " LIMIT ?"
+		args = append(args, limit)
+	}
 	rows, err := q(ctx, r.db).QueryContext(ctx, qy, args...)
 	if err != nil {
 		return nil, err

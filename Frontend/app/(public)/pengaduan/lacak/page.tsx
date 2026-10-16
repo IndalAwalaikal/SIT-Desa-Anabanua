@@ -127,7 +127,7 @@ function LacakContent() {
             <AlertCircle className="w-8 h-8 text-rose-500 mx-auto" />
             <h3 className="text-sm font-bold text-rose-800 dark:text-rose-300">Pengaduan Tidak Ditemukan</h3>
             <p className="text-xs text-rose-600 dark:text-rose-400">
-              Nomor tiket tidak terdaftar pada sistem pengaduan Desa Borong. Periksa kembali nomor tiket Anda.
+              Nomor tiket tidak terdaftar pada sistem pengaduan Desa Anabanua. Periksa kembali nomor tiket Anda.
             </p>
           </div>
         )}

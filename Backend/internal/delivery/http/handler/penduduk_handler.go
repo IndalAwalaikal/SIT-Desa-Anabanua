@@ -1,8 +1,8 @@
 package handler
 
 import (
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
 	"net/http"
 	"strings"
 )
@@ -40,8 +40,8 @@ func (h *Handler) VerifikasiSurat(w http.ResponseWriter, r *http.Request) {
 		"pemohonNama":          p.PemohonNama,
 		"status":               p.Status,
 		"tanggalTerbit":        p.UpdatedAt.Format("02 January 2006"),
-		"penandatangan":        "Kepala Desa Borong",
-		"jabatanPenandatangan": "Pemerintah Desa Borong",
+		"penandatangan":        "Kepala Desa Anabanua",
+		"jabatanPenandatangan": "Pemerintah Desa Anabanua",
 	}
 	httpapi.JSON(w, 200, out)
 }

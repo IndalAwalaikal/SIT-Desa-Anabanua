@@ -38,7 +38,7 @@ import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { Reveal } from "@/components/ui/Reveal";
 import { Skeleton } from "@/components/ui/Skeleton";
 
-const COLORS = ["#2474d4", "#0b5dbb", "#334e75", "#08376e", "#112642"];
+const COLORS = ["#37AB34", "#2c9029", "#334e75", "#1d5e1c", "#112642"];
 const TAHUN_OPTIONS = getTahunOptions();
 const BULAN_NAMES = [
   "Jan",
@@ -128,7 +128,7 @@ export default function PajakPublicPage() {
         );
       case "diverifikasi":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary-100 dark:bg-primary-950 text-primary-800 dark:text-primary-300 border border-primary-200 dark:border-primary-800">
             <ShieldCheck className="w-3 h-3" /> Diverifikasi
           </span>
         );
@@ -191,7 +191,7 @@ export default function PajakPublicPage() {
               Monitoring Pencatatan & Penyetoran Pajak Desa
             </h1>
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              Pantau alur penerimaan pajak warga Desa Borong secara transparan
+              Pantau alur penerimaan pajak warga Desa Anabanua secara transparan
               dari pencatatan di Pemerintah Desa hingga penyetoran resmi ke BPD
               / Bank Mitra.
             </p>
@@ -291,10 +291,10 @@ export default function PajakPublicPage() {
             {/* Metric 2 */}
             <Card className="p-5 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-sm rounded-2xl border border-neutral-200 dark:border-neutral-800">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold uppercase tracking-wider bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 px-2.5 py-0.5 rounded-full">
+                <span className="text-[11px] font-bold uppercase tracking-wider bg-primary-50 dark:bg-primary-950/50 text-primary-700 dark:text-primary-300 px-2.5 py-0.5 rounded-full">
                   Disetorkan ke BPD
                 </span>
-                <Building2 className="w-5 h-5 text-blue-600" />
+                <Building2 className="w-5 h-5 text-primary-600" />
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white">
                 {loading ? (
@@ -337,10 +337,10 @@ export default function PajakPublicPage() {
             {/* Metric 4 */}
             <Card className="p-5 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-sm rounded-2xl border border-neutral-200 dark:border-neutral-800">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-bold uppercase tracking-wider bg-violet-50 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300 px-2.5 py-0.5 rounded-full">
+                <span className="text-[11px] font-bold uppercase tracking-wider bg-primary-50 dark:bg-primary-950/50 text-primary-700 dark:text-primary-300 px-2.5 py-0.5 rounded-full">
                   Transparansi Ratio
                 </span>
-                <ShieldCheck className="w-5 h-5 text-violet-600" />
+                <ShieldCheck className="w-5 h-5 text-primary-600" />
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-neutral-900 dark:text-white">
                 {loading ? (
@@ -429,7 +429,7 @@ export default function PajakPublicPage() {
             <Card className="p-6 h-full" hoverable>
               <CardHeader className="px-0 pt-0 mb-4">
                 <h3 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
-                  <BarChart className="w-4 h-4 text-blue-600" /> Tren Penerimaan
+                  <BarChart className="w-4 h-4 text-primary-600" /> Tren Penerimaan
                   Pajak Bulanan ({selectedTahun})
                 </h3>
               </CardHeader>
@@ -487,7 +487,7 @@ export default function PajakPublicPage() {
                   Daftar Transparansi Pembayaran Pajak Warga
                 </h2>
                 <p className="text-xs text-neutral-500">
-                  Data pembayaran pajak tercatat di Desa Borong. Data NIK
+                  Data pembayaran pajak tercatat di Desa Anabanua. Data NIK
                   dilindungi sesuai standar privasi publik.
                 </p>
               </div>

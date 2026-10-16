@@ -82,6 +82,6 @@ jobs:
         with:
           context: .
           push: false
-          tags: desa-borong:latest
+          tags: desa-anabanua:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max

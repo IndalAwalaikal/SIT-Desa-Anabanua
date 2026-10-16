@@ -246,7 +246,7 @@ Tabel lain (`pengaduan`, `berita`, `profil_desa`, `statistik_penduduk`, `apbdes_
 | GET | `/api/pengajuan/{nomorResi}` | Publik | Lacak status |
 | GET | `/api/pengajuan/saya` | `warga+` | Riwayat pengajuan milik user login |
 | GET | `/api/pengajuan/{id}/lampiran/{lampiranId}` | Pemohon/admin | Unduh lampiran privat |
-| GET | `/api/pengajuan` | `admin+` | List semua pengajuan (filter status, jenis, tanggal) |
+| GET | `/api/pengajuan` | `admin+` | List pengajuan berhalaman: `page`, `limit` (maks. 100), `status`, `search`, `sort`; respons `{ items, meta }` |
 | PATCH | `/api/pengajuan/{id}/status` | `admin+` | `{ status, catatan? }` |
 
 ### 7.4 Pengaduan
@@ -254,7 +254,7 @@ Tabel lain (`pengaduan`, `berita`, `profil_desa`, `statistik_penduduk`, `apbdes_
 |---|---|---|---|
 | POST | `/api/pengaduan` | `warga+` | `{ kategori, judul, deskripsi, lokasi? }` |
 | GET | `/api/pengaduan/{nomorTiket}` | Publik | Lacak status |
-| GET | `/api/pengaduan` | `admin+` | List (filter status/kategori) |
+| GET | `/api/pengaduan` | `admin+` | List pengaduan berhalaman: `page`, `limit` (maks. 100), `status`, `search`, `sort`; respons `{ items, meta }` |
 | PATCH | `/api/pengaduan/{id}/status` | `admin+` | `{ status, tanggapanAdmin? }` |
 
 ### 7.5 Informasi Desa
@@ -282,7 +282,7 @@ Tabel lain (`pengaduan`, `berita`, `profil_desa`, `statistik_penduduk`, `apbdes_
 ### 7.7 Dashboard & Manajemen Pengguna
 | Method | Path | Auth | Keterangan |
 |---|---|---|---|
-| GET | `/api/users` | `super_admin` | List pengguna admin |
+| GET | `/api/users` | `super_admin` | List pengguna berhalaman: `page`, `limit` (maks. 100), `search`; respons `{ items, meta }` |
 | POST | `/api/users` | `super_admin` | Buat akun admin baru |
 | PUT | `/api/users/{id}` | `super_admin` | Ubah role/status aktif |
 | DELETE | `/api/users/{id}` | `super_admin` | Nonaktifkan akun |

@@ -26,7 +26,7 @@ import { Reveal } from '@/components/ui/Reveal';
 import { Select } from '@/components/ui/Select';
 import { Skeleton } from '@/components/ui/Skeleton';
 
-const COLORS = ['#16a34a', '#2563eb', '#f59e0b', '#dc2626', '#8b5cf6'];
+const COLORS = ['#16a34a', '#37AB34', '#f59e0b', '#dc2626', '#0d9488'];
 const TAHUN_OPTIONS = getTahunOptions();
 const BULAN_NAMES = [
   'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -274,19 +274,19 @@ export default function ApbdesPage() {
             </Card>
 
             <Card
-              className="p-6 bg-gradient-to-br from-blue-600 to-secondary-800 text-white shadow-xl lg:col-span-4"
+              className="p-6 bg-gradient-to-br from-primary-600 to-secondary-800 text-white shadow-xl lg:col-span-4"
               hoverable
             >
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs font-bold uppercase tracking-wide bg-white/20 px-3 py-1 rounded-full">
                   {t('Apbdes.expenses')}
                 </span>
-                <TrendingDown className="w-6 h-6 text-blue-300" />
+                <TrendingDown className="w-6 h-6 text-primary-300" />
               </div>
               <h2 className="text-xl sm:text-2xl md:text-3xl font-black break-all">
                 <AnimatedCounter value={apbdes.totalBelanja} formatter={formatRupiah} />
               </h2>
-              <p className="text-xs text-blue-100 mt-2">
+              <p className="text-xs text-primary-100 mt-2">
                 {t('Apbdes.expensesDesc')}
               </p>
             </Card>
@@ -339,7 +339,7 @@ export default function ApbdesPage() {
                     <Tooltip {...lightTooltipRupiahProps} />
                     <Bar dataKey="jumlah" radius={[10, 10, 0, 0]}>
                       <Cell fill="#16a34a" />
-                      <Cell fill="#2563eb" />
+                      <Cell fill="#37AB34" />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -350,7 +350,7 @@ export default function ApbdesPage() {
                   <span className="h-3 w-3 rounded-sm bg-emerald-600" /> {t('Apbdes.legendRevenue')}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-3 w-3 rounded-sm bg-blue-600" /> {t('Apbdes.legendExpenses')}
+                  <span className="h-3 w-3 rounded-sm bg-primary-600" /> {t('Apbdes.legendExpenses')}
                 </span>
                 <span>
                   {t('Apbdes.surplusLabel')} {apbdes.tahun}:{' '}

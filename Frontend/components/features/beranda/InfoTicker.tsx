@@ -31,12 +31,17 @@ export const InfoTicker: React.FC = () => {
         if (active) setLoading(false);
       }
     };
-    void load();
-    // Sinkron otomatis tiap 20 detik — data Sekilas Info baru dari admin langsung muncul.
-    const tmr = setInterval(() => void load(), 20000);
+    const syncWhenVisible = () => {
+      if (document.visibilityState === 'visible') void load();
+    };
+    syncWhenVisible();
+    // Perbarui secara berkala tanpa polling saat tab berada di latar belakang.
+    const tmr = setInterval(syncWhenVisible, 60000);
+    document.addEventListener('visibilitychange', syncWhenVisible);
     return () => {
       active = false;
       clearInterval(tmr);
+      document.removeEventListener('visibilitychange', syncWhenVisible);
     };
   }, []);
 

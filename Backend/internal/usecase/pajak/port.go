@@ -6,7 +6,7 @@ package pajak
 import (
 	"context"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 // TransaksiFilter menyaring daftar transaksi pajak.

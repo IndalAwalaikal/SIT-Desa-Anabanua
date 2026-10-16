@@ -3,7 +3,7 @@ package mysql
 import (
 	"context"
 	"database/sql"
-	"desa-borong-api/internal/infrastructure/config"
+	"desa-anabanua-api/internal/infrastructure/config"
 	"fmt"
 	"github.com/go-sql-driver/mysql"
 	"time"

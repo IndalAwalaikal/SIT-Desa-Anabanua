@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
 )
 
 // CSRF protects state-changing endpoints using a double-submit cookie pattern.

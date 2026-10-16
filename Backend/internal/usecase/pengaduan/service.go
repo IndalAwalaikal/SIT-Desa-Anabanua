@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
-	"desa-borong-api/internal/usecase/notifikasi"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/usecase/notifikasi"
 )
 
 type Service struct {
@@ -35,7 +35,7 @@ func (s *Service) Submit(ctx context.Context, pelapor domain.User, kategori, jud
 	if v := strings.TrimSpace(lokasi); v != "" {
 		p.Lokasi = &v
 	}
-		if err := s.repo.Create(ctx, p); err != nil {
+	if err := s.repo.Create(ctx, p); err != nil {
 		return p, err
 	}
 	// Notify admins of new complaint submission.
@@ -55,8 +55,20 @@ func (s *Service) ListByPelapor(ctx context.Context, pelaporID string) ([]domain
 	return s.repo.ListByPelapor(ctx, pelaporID)
 }
 
+func (s *Service) ListByPelaporPage(ctx context.Context, pelaporID string, page, limit int) ([]domain.Pengaduan, int, error) {
+	return s.repo.ListByPelaporPage(ctx, pelaporID, page, limit)
+}
+
 func (s *Service) ListAll(ctx context.Context, status string) ([]domain.Pengaduan, error) {
 	return s.repo.ListAll(ctx, strings.TrimSpace(status))
+}
+
+func (s *Service) ListPage(ctx context.Context, status, search, sort string, page, limit int) ([]domain.Pengaduan, int, error) {
+	return s.repo.ListPage(ctx, strings.TrimSpace(status), strings.TrimSpace(search), sort, page, limit)
+}
+
+func (s *Service) CountByStatus(ctx context.Context) (map[string]int, error) {
+	return s.repo.CountByStatus(ctx)
 }
 
 func (s *Service) Respond(ctx context.Context, id string, status domain.StatusPengaduan, tanggapan string, changedBy *string) (domain.Pengaduan, error) {

@@ -174,7 +174,7 @@ export const ApbdesSection = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-white py-24 dark:bg-neutral-950 sm:py-28">
+    <section className="relative overflow-hidden bg-[#f1f7ed] py-24 dark:bg-neutral-950 sm:py-28">
       {/* ── Hairline top ─────────────────────────────────────────────────────── */}
       <div
         aria-hidden="true"
@@ -304,7 +304,7 @@ export const ApbdesSection = () => {
             {/* ── Card ─────────────────────────────────────────────────────── */}
             <div
               ref={panelRef}
-              className="relative rounded-2xl border border-neutral-200 bg-[#fcfcfb] shadow-[0_20px_50px_-24px_rgba(12,43,86,0.22)] dark:border-neutral-800 dark:bg-neutral-900 dark:shadow-none"
+              className="relative rounded-2xl border border-neutral-200 bg-[#fcfcfb] shadow-[0_20px_50px_-24px_rgba(36,61,33,0.12)] dark:border-neutral-800 dark:bg-neutral-900 dark:shadow-none"
               style={{
                 opacity: panelVisible ? 1 : 0,
                 transform: panelVisible
@@ -344,7 +344,7 @@ export const ApbdesSection = () => {
               <div className="px-6 py-6 sm:px-8">
                 <div className="flex items-center gap-4">
 
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-600/10 text-primary-600 dark:text-primary-400">
                     <ArrowUpRight className="h-5 w-5" />
                   </div>
 
@@ -356,7 +356,7 @@ export const ApbdesSection = () => {
                           "Pendapatan Desa"}
                       </h3>
 
-                      <p className="font-mono text-xl font-bold tabular-nums text-blue-600 dark:text-blue-400 sm:text-2xl">
+                      <p className="font-mono text-xl font-bold tabular-nums text-primary-600 dark:text-primary-400 sm:text-2xl">
                         {formatJuta(pPend)}
                       </p>
                     </div>
@@ -364,7 +364,7 @@ export const ApbdesSection = () => {
                     {/* Progress */}
                     <div className="mt-3 h-2 overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-blue-600 to-sky-400"
+                        className="h-full rounded-full bg-gradient-to-r from-primary-600 to-primary-400"
                         style={{
                           width: panelVisible
                             ? `${pendPct}%`
@@ -387,7 +387,7 @@ export const ApbdesSection = () => {
               <div className="border-t border-dashed border-neutral-200 px-6 py-6 dark:border-neutral-800 sm:px-8">
                 <div className="flex items-center gap-4">
 
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-600/10 text-violet-600 dark:text-violet-400">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-600/10 text-primary-600 dark:text-primary-400">
                     <ArrowDownRight className="h-5 w-5" />
                   </div>
 
@@ -399,7 +399,7 @@ export const ApbdesSection = () => {
                           "Belanja Desa"}
                       </h3>
 
-                      <p className="font-mono text-xl font-bold tabular-nums text-violet-600 dark:text-violet-400 sm:text-2xl">
+                      <p className="font-mono text-xl font-bold tabular-nums text-primary-600 dark:text-primary-400 sm:text-2xl">
                         {formatJuta(pBelanja)}
                       </p>
                     </div>
@@ -407,7 +407,7 @@ export const ApbdesSection = () => {
                     {/* Progress */}
                     <div className="mt-3 h-2 overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-violet-600 to-indigo-400"
+                        className="h-full rounded-full bg-gradient-to-r from-primary-600 to-primary-400"
                         style={{
                           width: panelVisible
                             ? `${belanjaPct}%`

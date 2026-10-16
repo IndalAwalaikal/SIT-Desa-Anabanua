@@ -14,21 +14,16 @@ import {
   MapPin,
   Phone,
   Quote,
+  Users,
 } from "lucide-react";
 import type { ProfilDesa, PerangkatDesa } from "@/types/desa";
-import { KepalaDesaCard, findKepalaDesa } from "@/components/features/KepalaDesaCard";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 
-export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: ProfilDesa; perangkat?: PerangkatDesa[] }) => {
+export const ProfilRingkasanSection = ({ profil }: { profil: ProfilDesa; perangkat?: PerangkatDesa[] }) => {
   const { t } = useTranslation();
-  const kepalaDesa = findKepalaDesa(perangkat);
 
     // Preview sejarah yang cukup panjang namun tetap ringkas untuk tampilan beranda.
-  const sejarahPreview = profil.sejarah
-    ? profil.sejarah.length > 660
-      ? `${profil.sejarah.substring(0, 660)}\u2026`
-      : profil.sejarah
-    : "Sejarah desa belum tersedia untuk saat ini. Silakan jelajahi profil lengkap untuk informasi lebih lanjut mengenai asal-usul Desa Borong.";
+  const sejarahPreview = "Desa Anabanua merupakan hasil pemekaran dari Desa Palakka. Desa Persiapan Latuttu dibentuk pada 1990, berstatus definitif pada 1993, dan mengadakan pemilihan kepala desa pertama pada 1994.";
 
   // Pecah preview jadi dua paragraf agar tidak kelihatan kering / "kempes".
   const sejarahParts = sejarahPreview.split(/(?<=[.!?])\s+/u).filter(Boolean);
@@ -45,7 +40,7 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
     {
       icon: MapPin,
       label: t("Home.profilFactLuas") || "Luas Wilayah",
-      value: profil.luasWilayah || "12,5 km\u00b2",
+      value: "± 20 km²",
     },
     {
       icon: Compass,
@@ -53,14 +48,14 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
       value: `${profil.jumlahDusun ?? 4}`,
     },
     {
-      icon: Map,
-      label: t("Home.profilFactRW") || "RW",
-      value: `${profil.jumlahRW ?? 8}`,
+      icon: Users,
+      label: "Jiwa (data Kampung KB)",
+      value: "2.419",
     },
     {
       icon: History,
       label: t("Home.profilFactRT") || "RT",
-      value: `${profil.jumlahRT ?? 16}`,
+      value: '14',
     },
   ];
 
@@ -81,11 +76,11 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
               <span>{t("Home.profilBadge") || "PROFIL DESA"}</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight">
-              {t("Home.profilTitle") || "Profil Desa Borong"}
+              {t("Home.profilTitle") || "Profil Desa Anabanua"}
             </h2>
             <p className="text-neutral-500 dark:text-neutral-400 mt-3 max-w-xl text-base">
               {t("Home.profilSubtitle") ||
-                "Mengenal lebih dekat sejarah, visi, dan potensi wilayah Desa Borong."}
+                "Mengenal lebih dekat sejarah, visi, dan potensi wilayah Desa Anabanua."}
             </p>
           </div>
 
@@ -113,7 +108,7 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
           <div className="lg:col-span-5 relative group rounded-3xl overflow-hidden shadow-xl ring-1 ring-neutral-200 dark:ring-neutral-800 min-h-[420px]">
             <Image
               src="/kantor_desa.png"
-              alt={`Kantor ${profil.nama || "Desa Borong"}`}
+              alt={`Kantor ${profil.nama || "Desa Anabanua"}`}
               fill
               sizes="(max-width: 1024px) 100vw, 40vw"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -124,7 +119,7 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
             {/* Floating Location Tag */}
             <div className="absolute top-5 right-5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 text-white text-xs font-medium backdrop-blur-md border border-white/30">
               <MapPin className="w-3.5 h-3.5" />
-              {profil.kecamatan || "Kecamatan Herlang"}
+              {profil.kecamatan || "Kecamatan Barru"}
             </div>
 
             {/* Bottom identity + kontak singkat (langsung logo, tidak ada border bundar) */}
@@ -133,10 +128,10 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
                 <Building2 className="w-6 h-6 text-white/90 shrink-0" />
                 <div className="min-w-0">
                   <h4 className="text-base font-bold leading-tight truncate">
-                    {profil.nama || "Desa Borong"}
+                    {profil.nama || "Desa Anabanua"}
                   </h4>
                   <p className="text-xs text-white/80">
-                    {profil.kabupaten || "Bulukumba"}
+                    {profil.kabupaten || "Barru"}
                   </p>
                 </div>
               </div>
@@ -174,7 +169,7 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
             />
 
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-4">
+            <div className="inline-flex items-center gap-2 text-primary-600 dark:text-primary-400 mb-4">
               <History className="w-4 h-4" />
               <span className="text-xs font-bold uppercase tracking-wider">
                 {t("Navbar.menuProfileHistory") || "Sejarah Desa"}
@@ -183,7 +178,7 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
 
             <h3 className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white leading-tight mb-6">
               {t("Home.profilHistoryTitle") ||
-                "Sejarah dan Asal-Usul Desa Borong"}
+                "Sejarah dan Asal-Usul Desa Anabanua"}
             </h3>
 
             {/* Quick facts grid */}
@@ -208,7 +203,7 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
               <blockquote className="relative text-neutral-700 dark:text-neutral-200 text-base md:text-lg leading-relaxed">
                 <Quote
                   aria-hidden="true"
-                  className="absolute -left-3 -top-6 h-10 w-10 text-blue-200 dark:text-blue-900/30 opacity-50"
+                  className="absolute -left-3 -top-6 h-10 w-10 text-primary-200 dark:text-primary-900/30 opacity-50"
                 />
                 {sejarahParagraphs.map((p, i) => (
                   <p key={i} className="mb-3 last:mb-0">
@@ -220,14 +215,14 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
 
             {/* Visi blockquote - Elegant & Soft */}
             {profil.visi && profil.visi.trim() && (
-              <div className="relative mt-auto bg-blue-50 dark:bg-blue-950/30 rounded-xl p-6 overflow-hidden border border-blue-100 dark:border-blue-900/50">
+              <div className="relative mt-auto bg-primary-50 dark:bg-primary-950/30 rounded-xl p-6 overflow-hidden border border-primary-100 dark:border-primary-900/50">
                 {/* Decorative Large Quote Icon */}
-                <Quote className="absolute -top-2 -left-2 h-16 w-16 text-blue-100 dark:text-blue-900/50 transform scale-150 opacity-50 pointer-events-none" />
+                <Quote className="absolute -top-2 -left-2 h-16 w-16 text-primary-100 dark:text-primary-900/50 transform scale-150 opacity-50 pointer-events-none" />
                 <div className="relative z-10">
                   <p className="font-serif text-lg md:text-xl italic text-neutral-800 dark:text-neutral-100 leading-relaxed">
                     &ldquo;{profil.visi}&rdquo;
                   </p>
-                  <span className="mt-3 block text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
+                  <span className="mt-3 block text-xs font-bold uppercase tracking-widest text-primary-600 dark:text-primary-400">
                     — {t("Home.profilVisionLabel") || "Visi Desa"}
                   </span>
                 </div>
@@ -238,16 +233,11 @@ export const ProfilRingkasanSection = ({ profil, perangkat = [] }: { profil: Pro
             <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row sm:items-center gap-5">
               <Link
                 href="/profil/sejarah"
-                className="group inline-flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400 hover:gap-3 transition-all"
+                className="group inline-flex items-center gap-2 text-sm font-bold text-primary-600 dark:text-primary-400 hover:gap-3 transition-all"
               >
                 {t("Home.profilReadFullHistory") || "Baca Seluruh Sejarah"}
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
-              {kepalaDesa && (
-                <div className="sm:ml-auto">
-                  <KepalaDesaCard kepala={kepalaDesa} variant="compact" />
-                </div>
-              )}
             </div>
           </div>
         </div>

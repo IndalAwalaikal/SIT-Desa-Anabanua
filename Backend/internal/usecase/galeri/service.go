@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
-	"desa-borong-api/internal/usecase/notifikasi"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/usecase/notifikasi"
 )
 
 type Service struct {
@@ -22,6 +22,10 @@ func (s *Service) List(ctx context.Context) ([]domain.GaleriAlbum, error) {
 	return s.repo.List(ctx)
 }
 
+func (s *Service) ListPreview(ctx context.Context, limit int) ([]domain.GaleriAlbum, error) {
+	return s.repo.ListPreview(ctx, limit)
+}
+
 func (s *Service) GetByID(ctx context.Context, id string) (domain.GaleriAlbum, error) {
 	return s.repo.GetByID(ctx, id)
 }
@@ -33,7 +37,7 @@ func (s *Service) Create(ctx context.Context, album domain.GaleriAlbum) (domain.
 			album.Fotos[i].ID = apputil.NewID()
 		}
 	}
-		if err := s.repo.Create(ctx, album); err != nil {
+	if err := s.repo.Create(ctx, album); err != nil {
 		return album, err
 	}
 	// Notify admins of new galeri album.

@@ -3,9 +3,10 @@ package mysql
 import (
 	"context"
 	"database/sql"
+	"strings"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/galeri"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/galeri"
 )
 
 type GaleriRepo struct{ db *sql.DB }
@@ -35,12 +36,66 @@ func (r *GaleriRepo) List(ctx context.Context) ([]domain.GaleriAlbum, error) {
 		if err != nil {
 			return nil, err
 		}
-		photos, err := r.fotos(ctx, a.ID)
+		a.Fotos = []domain.GaleriFoto{}
+		out = append(out, a)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	if len(out) == 0 {
+		return out, nil
+	}
+
+	// Ambil foto semua album sekaligus untuk menghindari satu query per album.
+	placeholders := strings.TrimRight(strings.Repeat("?,", len(out)), ",")
+	args := make([]any, len(out))
+	indices := make(map[string]int, len(out))
+	for i := range out {
+		args[i] = out[i].ID
+		indices[out[i].ID] = i
+	}
+	photoRows, err := q(ctx, r.db).QueryContext(ctx,
+		"SELECT album_id,id,url,caption,DATE_FORMAT(tanggal,'%Y-%m-%d') FROM galeri_item WHERE album_id IN ("+placeholders+") ORDER BY album_id,tanggal", args...)
+	if err != nil {
+		return nil, err
+	}
+	defer photoRows.Close()
+	for photoRows.Next() {
+		var albumID string
+		var photo domain.GaleriFoto
+		if err := photoRows.Scan(&albumID, &photo.ID, &photo.URL, &photo.Caption, &photo.Tanggal); err != nil {
+			return nil, err
+		}
+		if index, ok := indices[albumID]; ok {
+			out[index].Fotos = append(out[index].Fotos, photo)
+		}
+	}
+	if err := photoRows.Err(); err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ListPreview returns only recent album metadata and cover URLs. It avoids
+// loading every photo when the caller only needs a gallery carousel preview.
+func (r *GaleriRepo) ListPreview(ctx context.Context, limit int) ([]domain.GaleriAlbum, error) {
+	if limit <= 0 || limit > 100 {
+		limit = 12
+	}
+	rows, err := q(ctx, r.db).QueryContext(ctx,
+		"SELECT id,judul,deskripsi,DATE_FORMAT(tanggal,'%Y-%m-%d'),kategori,cover_foto FROM galeri_album ORDER BY tanggal DESC LIMIT ?", limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	out := []domain.GaleriAlbum{}
+	for rows.Next() {
+		album, err := scanAlbum(rows)
 		if err != nil {
 			return nil, err
 		}
-		a.Fotos = photos
-		out = append(out, a)
+		album.Fotos = []domain.GaleriFoto{}
+		out = append(out, album)
 	}
 	return out, rows.Err()
 }

@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 BACKUP_DIR="${PROJECT_ROOT}/backups"
 DATE=$(date +%Y%m%d_%H%M%S)
-BACKUP_FILE="${BACKUP_DIR}/desa_borong_${DATE}.sql.gz"
+BACKUP_FILE="${BACKUP_DIR}/desa_anabanua_${DATE}.sql.gz"
 
 mkdir -p "$BACKUP_DIR"
 
@@ -37,6 +37,6 @@ echo "[backup] Size: $(du -h "$BACKUP_FILE" | cut -f1)"
 
 RETENTION_DAYS=${BACKUP_RETENTION_DAYS:-30}
 echo "[backup] Pruning backups older than ${RETENTION_DAYS} days..."
-find "$BACKUP_DIR" -name 'desa_borong_*.sql.gz' -mtime +${RETENTION_DAYS} -delete
+find "$BACKUP_DIR" -name 'desa_anabanua_*.sql.gz' -mtime +${RETENTION_DAYS} -delete
 
 echo "[backup] Done."

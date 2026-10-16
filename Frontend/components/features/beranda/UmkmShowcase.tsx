@@ -17,13 +17,13 @@ export const UmkmShowcase: React.FC<UmkmShowcaseProps> = ({ businesses }) => {
   const { t } = useTranslation();
 
   return (
-    <section className="py-20 bg-neutral-100 dark:bg-neutral-900/60 relative overflow-hidden">
+    <section className="py-20 bg-white dark:bg-neutral-950 relative overflow-hidden">
       {/* Decorative backdrop glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full opacity-[0.05] dark:opacity-[0.03] blur-3xl"
         style={{
-          background: "radial-gradient(circle, #2474d4 0%, transparent 70%)",
+          background: "radial-gradient(circle, #37AB34 0%, transparent 70%)",
         }}
       />
       <div className="container-desa relative z-10">
@@ -50,7 +50,7 @@ export const UmkmShowcase: React.FC<UmkmShowcaseProps> = ({ businesses }) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {businesses.slice(0, 4).map((item) => (
-            <Card key={item.id} hoverable className="group hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary-500/5 dark:hover:shadow-black/30 transition-all duration-300">
+            <Card key={item.id} hoverable className="group hover:scale-[1.02] hover:shadow-xl hover:shadow-primary-500/5 dark:hover:shadow-black/30 transition-all duration-300">
               <div className="relative h-52 w-full overflow-hidden rounded-t-2xl">
                 <Image
                   src={item.foto[0]}

@@ -20,6 +20,7 @@ import { formatTanggal } from '@/lib/utils/format';
 import { FileText, MessageSquare, Clock, LogOut, Download, Pencil, XCircle, UserCheck, LayoutDashboard } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import { PaginationControls } from '@/components/ui/PaginationControls';
 
 export default function AkunPage() {
   const { t } = useTranslation();
@@ -28,6 +29,12 @@ export default function AkunPage() {
 
   const [pengajuanList, setPengajuanList] = useState<PengajuanSurat[]>([]);
   const [pengaduanList, setPengaduanList] = useState<Pengaduan[]>([]);
+  const [pengajuanPage, setPengajuanPage] = useState(1);
+  const [pengaduanPage, setPengaduanPage] = useState(1);
+  const [pengajuanTotal, setPengajuanTotal] = useState(0);
+  const [pengaduanTotal, setPengaduanTotal] = useState(0);
+  const [pengajuanTotalPages, setPengajuanTotalPages] = useState(0);
+  const [pengaduanTotalPages, setPengaduanTotalPages] = useState(0);
   const [profileOpen, setProfileOpen] = useState(false);
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileForm, setProfileForm] = useState({
@@ -71,9 +78,17 @@ export default function AkunPage() {
       router.replace('/dashboard');
       return;
     }
-    getPengajuanByUser(user.id).then(setPengajuanList);
-    getPengaduanByUser(user.id).then(setPengaduanList);
-  }, [hasHydrated, isAuthenticated, user, router]);
+    getPengajuanByUser(user.id, pengajuanPage).then((result) => {
+      setPengajuanList(result.data);
+      setPengajuanTotal(result.total);
+      setPengajuanTotalPages(result.totalPages);
+    });
+    getPengaduanByUser(user.id, pengaduanPage).then((result) => {
+      setPengaduanList(result.data);
+      setPengaduanTotal(result.total);
+      setPengaduanTotalPages(result.totalPages);
+    });
+  }, [hasHydrated, isAuthenticated, user, router, pengajuanPage, pengaduanPage]);
 
     if (!hasHydrated) {
     return (
@@ -171,7 +186,7 @@ export default function AkunPage() {
                 </span>
               </div>
               <p className="text-xs text-primary-200 mt-1">{user.email} • NIK: {user.nik || '-'}</p>
-              <p className="text-xs text-primary-300">{user.alamat || 'Desa Borong'}</p>
+              <p className="text-xs text-primary-300">{user.alamat || 'Desa Anabanua'}</p>
             </div>
           </div>
 
@@ -240,7 +255,7 @@ export default function AkunPage() {
               <FileText className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-2xl font-black text-neutral-900 dark:text-white">{pengajuanList.length}</p>
+              <p className="text-2xl font-black text-neutral-900 dark:text-white">{pengajuanTotal}</p>
               <p className="text-[11px] font-bold text-neutral-500 uppercase">Permohonan Surat</p>
             </div>
           </Card>
@@ -260,7 +275,7 @@ export default function AkunPage() {
               <MessageSquare className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-2xl font-black text-neutral-900 dark:text-white">{pengaduanList.length}</p>
+              <p className="text-2xl font-black text-neutral-900 dark:text-white">{pengaduanTotal}</p>
               <p className="text-[11px] font-bold text-neutral-500 uppercase">Pengaduan</p>
             </div>
           </Card>
@@ -281,6 +296,7 @@ export default function AkunPage() {
           </div>
 
           {pengajuanList.length > 0 ? (
+            <>
             <div className="space-y-4">
               {pengajuanList.map((item) => (
                 <Card key={item.id} className={`p-5 flex flex-col gap-4 border ${
@@ -335,6 +351,8 @@ export default function AkunPage() {
                 </Card>
               ))}
             </div>
+            <PaginationControls page={pengajuanPage} totalPages={pengajuanTotalPages} total={pengajuanTotal} onPageChange={setPengajuanPage} />
+            </>
           ) : (
             <Card className="p-8 text-center space-y-4">
               <p className="text-xs text-neutral-500">Belum ada riwayat permohonan surat.</p>
@@ -358,6 +376,7 @@ export default function AkunPage() {
           </h2>
 
           {pengaduanList.length > 0 ? (
+            <>
             <div className="space-y-4">
               {pengaduanList.map((adg) => (
                 <Card key={adg.id} className="p-5 space-y-2">
@@ -374,6 +393,8 @@ export default function AkunPage() {
                 </Card>
               ))}
             </div>
+            <PaginationControls page={pengaduanPage} totalPages={pengaduanTotalPages} total={pengaduanTotal} onPageChange={setPengaduanPage} />
+            </>
           ) : (
             <Card className="p-8 text-center space-y-4">
               <p className="text-xs text-neutral-500">Belum ada riwayat pengaduan.</p>
@@ -518,7 +539,7 @@ export default function AkunPage() {
                 className="uppercase placeholder:normal-case"
                 value={profileForm.alamat}
                 onChange={(e) => setProfileForm({ ...profileForm, alamat: e.target.value })}
-                placeholder="Jl. Poros Desa Borong No..."
+                placeholder="Jl. Poros Desa Anabanua No..."
               />
             </div>
 

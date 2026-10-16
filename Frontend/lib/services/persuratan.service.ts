@@ -1,5 +1,7 @@
 import { ApiError, apiBlob, apiRequest, query } from '@/lib/services/api';
 import type { JenisSurat, LampiranFile, PengajuanSurat, StatusPengajuan, SubmitPengajuanInput } from '@/types/persuratan';
+import type { PaginatedResult, PaginatedResponse } from '@/types/pagination';
+import { toPaginatedResult } from '@/lib/services/pagination';
 
 export type PengajuanTracking = Pick<
   PengajuanSurat,
@@ -57,8 +59,24 @@ export async function getSuratByResi(nomorResi: string): Promise<PengajuanSurat 
   try { return await apiRequest<PengajuanSurat>(`/surat/${encodeURIComponent(nomorResi)}`); }
   catch (error) { if (error instanceof ApiError && error.status === 404) return null; throw error; }
 }
-export async function getPengajuanByUser(_userId: string): Promise<PengajuanSurat[]> { return apiRequest<PengajuanSurat[]>('/pengajuan/saya', { auth: true }); }
-export async function getAllPengajuanAdmin(status?: StatusPengajuan): Promise<PengajuanSurat[]> { return apiRequest<PengajuanSurat[]>(`/pengajuan${query({ status })}`, { auth: true }); }
+export async function getPengajuanByUser(_userId: string, page = 1, limit = 10): Promise<PaginatedResult<PengajuanSurat>> {
+  const response = await apiRequest<PaginatedResponse<PengajuanSurat>>(`/pengajuan/saya${query({ page, limit })}`, { auth: true });
+  return toPaginatedResult(response);
+}
+export interface PengajuanAdminPageParams {
+  page?: number;
+  limit?: number;
+  status?: StatusPengajuan;
+  search?: string;
+  sort?: string;
+}
+export async function getAllPengajuanAdmin(params: PengajuanAdminPageParams = {}): Promise<PaginatedResult<PengajuanSurat>> {
+  const response = await apiRequest<PaginatedResponse<PengajuanSurat>>(
+    `/pengajuan${query({ page: params.page ?? 1, limit: params.limit ?? 20, status: params.status, search: params.search, sort: params.sort })}`,
+    { auth: true },
+  );
+  return toPaginatedResult(response);
+}
 export async function updateStatusPengajuanAdmin(id: string, status: StatusPengajuan, catatan?: string, _adminNama?: string): Promise<PengajuanSurat> { return apiRequest<PengajuanSurat>(`/pengajuan/${encodeURIComponent(id)}/status`, { method: 'PATCH', auth: true, body: { status, catatan } }); }
 export async function terbitkanSuratAdmin(id: string, nomorSurat?: string, catatan?: string, _adminNama?: string): Promise<PengajuanSurat> { return apiRequest<PengajuanSurat>(`/pengajuan/${encodeURIComponent(id)}/publish`, { method: 'POST', auth: true, body: { nomorSurat, catatan } }); }
 
@@ -118,6 +136,4 @@ export async function getPendudukByNIK(nik: string): Promise<Record<string, unkn
 export async function getBukuAgendaAdmin(): Promise<BukuAgendaItem[]> {
   return apiRequest<BukuAgendaItem[]>('/admin/pengajuan/buku-agenda', { auth: true });
 }
-
-
 

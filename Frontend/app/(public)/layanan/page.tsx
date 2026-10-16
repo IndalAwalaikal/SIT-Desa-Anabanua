@@ -4,7 +4,7 @@ import { getProfilDesa } from '@/lib/services/desa.service';
 import { LayananClient } from './LayananClient';
 
 export const metadata = {
-  title: 'Layanan Persuratan Online Desa Borong',
+  title: 'Layanan Persuratan Online Desa Anabanua',
   description: 'Daftar 50+ jenis surat keterangan & pengantar resmi desa yang dapat diajukan secara daring.',
 };
 

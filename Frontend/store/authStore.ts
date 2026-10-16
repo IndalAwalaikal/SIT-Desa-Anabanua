@@ -29,7 +29,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'desa-borong-auth',
+      name: 'desa-anabanua-auth',
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },

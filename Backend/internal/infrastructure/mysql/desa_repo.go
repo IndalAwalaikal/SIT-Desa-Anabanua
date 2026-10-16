@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"errors"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/desa"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/desa"
 )
 
 // ---- Profil Desa (singleton JSON doc) ----

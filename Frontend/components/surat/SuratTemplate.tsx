@@ -181,7 +181,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
 
       {/* Pembuka Formal */}
       <p className="mt-6 text-justify text-neutral-950 leading-relaxed font-serif">
-        Yang bertanda tangan di bawah ini, Kepala Desa Borong, Kecamatan Herlang, Kabupaten Bulukumba, Provinsi Sulawesi Selatan, dengan ini menerangkan dengan sebenarnya bahwa:
+        Yang bertanda tangan di bawah ini, Kepala Desa Anabanua, Kecamatan Barru, Kabupaten Barru, Provinsi Sulawesi Selatan, dengan ini menerangkan dengan sebenarnya bahwa:
       </p>
 
       {/* Seksi I: Identitas Pemohon */}
@@ -216,7 +216,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {kode === 'SKU' && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Berdasarkan hasil pemeriksaan data administrasi pertanahan/kewargaan serta verifikasi di lapangan oleh Pemerintah Desa Borong, bahwa nama yang bersangkutan tersebut di atas adalah benar-benar warga Desa Borong yang memiliki dan mengelola kegiatan usaha aktif sebagai berikut:
+              Berdasarkan hasil pemeriksaan data administrasi pertanahan/kewargaan serta verifikasi di lapangan oleh Pemerintah Desa Anabanua, bahwa nama yang bersangkutan tersebut di atas adalah benar-benar warga Desa Anabanua yang memiliki dan mengelola kegiatan usaha aktif sebagai berikut:
             </p>
             <div className="pl-2 sm:pl-6 overflow-x-auto">
               <table className="w-full text-xs sm:text-sm border-collapse">
@@ -228,7 +228,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
               </table>
             </div>
             <p className="text-justify leading-relaxed">
-              Usaha tersebut di atas saat ini aktif beroperasi di wilayah hukum Desa Borong, Kecamatan Herlang, serta tidak sedang dalam sengketa dengan pihak manapun.
+              Usaha tersebut di atas saat ini aktif beroperasi di wilayah hukum Desa Anabanua, Kecamatan Barru, serta tidak sedang dalam sengketa dengan pihak manapun.
             </p>
           </div>
         )}
@@ -236,7 +236,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {kode === 'SKTM' && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Berdasarkan hasil verifikasi lapangan dan pendataan kesejahteraan sosial oleh Pemerintah Desa Borong, bahwa yang bersangkutan adalah benar-benar warga masyarakat Desa Borong yang tergolong ke dalam <strong>Keluarga Kurang Mampu / Prasejahtera (Golongan Ekonomi Lemah)</strong>.
+              Berdasarkan hasil verifikasi lapangan dan pendataan kesejahteraan sosial oleh Pemerintah Desa Anabanua, bahwa yang bersangkutan adalah benar-benar warga masyarakat Desa Anabanua yang tergolong ke dalam <strong>Keluarga Kurang Mampu / Prasejahtera (Golongan Ekonomi Lemah)</strong>.
             </p>
             <div className="pl-2 sm:pl-6 overflow-x-auto">
               <table className="w-full text-xs sm:text-sm border-collapse">
@@ -253,7 +253,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {kode === 'SKH' && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Berdasarkan laporan dan keterangan lisan yang disampaikan oleh yang bersangkutan kepada Pemerintah Desa Borong, bahwa yang bersangkutan telah mengalami kehilangan barang/dokumen penting dengan rincian sebagai berikut:
+              Berdasarkan laporan dan keterangan lisan yang disampaikan oleh yang bersangkutan kepada Pemerintah Desa Anabanua, bahwa yang bersangkutan telah mengalami kehilangan barang/dokumen penting dengan rincian sebagai berikut:
             </p>
             <div className="pl-2 sm:pl-6 overflow-x-auto">
               <table className="w-full text-xs sm:text-sm border-collapse">
@@ -266,7 +266,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
               </table>
             </div>
             <p className="text-justify leading-relaxed">
-              Surat keterangan ini diterbitkan sebagai pengantar resmi dari Pemerintah Desa Borong untuk melapor dan membuat Surat Tanda Penerimaan Laporan Kehilangan (STPLK) pada kepolisian setempat (Polsek Herlang / Polres Bulukumba).
+              Surat keterangan ini diterbitkan sebagai pengantar resmi dari Pemerintah Desa Anabanua untuk melapor dan membuat Surat Tanda Penerimaan Laporan Kehilangan (STPLK) pada kepolisian setempat (Polsek Barru / Polres Barru).
             </p>
           </div>
         )}
@@ -274,7 +274,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {kode === 'SKL' && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Berdasarkan Surat Keterangan Lahir dari Penolong Persalinan dan laporan resmi dari pihak keluarga, bahwa telah lahir seorang anak di wilayah Desa Borong dengan rincian data sebagai berikut:
+              Berdasarkan Surat Keterangan Lahir dari Penolong Persalinan dan laporan resmi dari pihak keluarga, bahwa telah lahir seorang anak di wilayah Desa Anabanua dengan rincian data sebagai berikut:
             </p>
             <div className="pl-2 sm:pl-6 overflow-x-auto">
               <table className="w-full text-xs sm:text-sm border-collapse">
@@ -287,7 +287,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
               </table>
             </div>
             <p className="text-justify leading-relaxed">
-              Surat keterangan ini dibuat sebagai bukti pelaporan kelahiran warga desa dan sebagai pengantar pengurusan Akta Kelahiran pada Dinas Kependudukan dan Pencatatan Sipil (Disdukcapil) Kabupaten Bulukumba.
+              Surat keterangan ini dibuat sebagai bukti pelaporan kelahiran warga desa dan sebagai pengantar pengurusan Akta Kelahiran pada Dinas Kependudukan dan Pencatatan Sipil (Disdukcapil) Kabupaten Barru.
             </p>
           </div>
         )}
@@ -295,7 +295,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {kode === 'SKM' && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Berdasarkan laporan dari pihak keluarga dan keterangan pemerintah setempat (RT/RW), bahwa telah meninggal dunia seorang warga masyarakat Desa Borong dengan rincian sebagai berikut:
+              Berdasarkan laporan dari pihak keluarga dan keterangan pemerintah setempat (RT/RW), bahwa telah meninggal dunia seorang warga masyarakat Desa Anabanua dengan rincian sebagai berikut:
             </p>
             <div className="pl-2 sm:pl-6 overflow-x-auto">
               <table className="w-full text-xs sm:text-sm border-collapse">
@@ -317,7 +317,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {kode === 'SKP' && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Bahwa yang bersangkutan bermaksud mengajukan Permohonan Pindah Domisili Kependudukan dari Desa Borong dengan data rencana kepindahan sebagai berikut:
+              Bahwa yang bersangkutan bermaksud mengajukan Permohonan Pindah Domisili Kependudukan dari Desa Anabanua dengan data rencana kepindahan sebagai berikut:
             </p>
             <div className="pl-2 sm:pl-6 overflow-x-auto">
               <table className="w-full text-xs sm:text-sm border-collapse">
@@ -334,7 +334,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {(kode === 'SPK' || kode === 'SPKTP') && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Surat pengantar ini diterbitkan oleh Pemerintah Desa Borong untuk keperluan pengurusan Kartu Tanda Penduduk Elektronik (KTP-el) pada Dinas Kependudukan dan Pencatatan Sipil Kabupaten Bulukumba dengan rincian:
+              Surat pengantar ini diterbitkan oleh Pemerintah Desa Anabanua untuk keperluan pengurusan Kartu Tanda Penduduk Elektronik (KTP-el) pada Dinas Kependudukan dan Pencatatan Sipil Kabupaten Barru dengan rincian:
             </p>
             <div className="pl-2 sm:pl-6 overflow-x-auto">
               <table className="w-full text-xs sm:text-sm border-collapse">
@@ -350,7 +350,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {kode === 'SPKK' && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Surat pengantar ini diterbitkan untuk pengurusan penerbitan / perbaikan Kartu Keluarga (KK) pada Kantor Disdukcapil Kabupaten Bulukumba dengan rincian:
+              Surat pengantar ini diterbitkan untuk pengurusan penerbitan / perbaikan Kartu Keluarga (KK) pada Kantor Disdukcapil Kabupaten Barru dengan rincian:
             </p>
             <div className="pl-2 sm:pl-6 overflow-x-auto">
               <table className="w-full text-xs sm:text-sm border-collapse">
@@ -367,7 +367,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {kode === 'SPN' && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Berdasarkan pendaftaran kehendak nikah, Pemerintah Desa Borong memberikan pengantar untuk melangsungkan pernikahan di Kantor Urusan Agama (KUA) / Disdukcapil bagi calon pengantin:
+              Berdasarkan pendaftaran kehendak nikah, Pemerintah Desa Anabanua memberikan pengantar untuk melangsungkan pernikahan di Kantor Urusan Agama (KUA) / Disdukcapil bagi calon pengantin:
             </p>
             <div className="pl-2 sm:pl-6 overflow-x-auto">
               <table className="w-full text-xs sm:text-sm border-collapse">
@@ -384,7 +384,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {kode === 'SKBM' && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Berdasarkan catatan register kependudukan Desa Borong dan surat pernyataan yang bersangkutan, bahwa sampai dengan tanggal diterbitkannya surat keterangan ini, yang bersangkutan adalah benar-benar <strong>Belum Pernah Menikah / Berkeluarga (Jejaka / Perawan)</strong>.
+              Berdasarkan catatan register kependudukan Desa Anabanua dan surat pernyataan yang bersangkutan, bahwa sampai dengan tanggal diterbitkannya surat keterangan ini, yang bersangkutan adalah benar-benar <strong>Belum Pernah Menikah / Berkeluarga (Jejaka / Perawan)</strong>.
             </p>
           </div>
         )}
@@ -392,7 +392,7 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         {kode === 'SKD' && (
           <div className="space-y-3">
             <p className="text-justify leading-relaxed">
-              Berdasarkan data register kependudukan Desa Borong, bahwa yang bersangkutan tersebut di atas adalah benar-benar berdomisili dan bertempat tinggal di wilayah Desa Borong, Kecamatan Herlang, Kabupaten Bulukumba. Yang bersangkutan terdaftar aktif dalam administrasi kependudukan desa.
+              Berdasarkan data register kependudukan Desa Anabanua, bahwa yang bersangkutan tersebut di atas adalah benar-benar berdomisili dan bertempat tinggal di wilayah Desa Anabanua, Kecamatan Barru, Kabupaten Barru. Yang bersangkutan terdaftar aktif dalam administrasi kependudukan desa.
             </p>
           </div>
         )}
@@ -454,15 +454,15 @@ export default function SuratTemplate({ surat }: { surat: PengajuanSurat }) {
         )}
 
         <div className={`text-center w-56 sm:w-72 md:w-80 ${fotoPas.length === 0 ? 'ml-auto' : ''}`}>
-          <p className="text-neutral-950 text-xs sm:text-sm">Diterbitkan di : Borong</p>
+          <p className="text-neutral-950 text-xs sm:text-sm">Diterbitkan di : Anabanua</p>
           <p className="text-neutral-950 text-xs sm:text-sm">Pada Tanggal &nbsp;: {tanggalTerbit}</p>
           <div className="border-b border-neutral-950 my-1 w-full" aria-hidden="true" />
-          <p className="font-bold uppercase text-neutral-950 tracking-wider text-xs sm:text-sm">KEPALA DESA BORONG</p>
+          <p className="font-bold uppercase text-neutral-950 tracking-wider text-xs sm:text-sm">KEPALA DESA ANABANUA</p>
           <div className="h-20 sm:h-24 flex items-end justify-center">
             {/* Ruang Stempel Basah & Tanda Tangan */}
           </div>
           <p className="font-bold underline text-xs sm:text-base uppercase text-neutral-950 tracking-wide">
-            {surat.penandatangan?.nama || 'Kepala Desa Borong'}
+            {surat.penandatangan?.nama || 'Kepala Desa Anabanua'}
           </p>
           <p className="text-[10px] sm:text-xs font-mono text-neutral-800 mt-0.5">
             NIP. {surat.penandatangan?.nip || '........................................'}

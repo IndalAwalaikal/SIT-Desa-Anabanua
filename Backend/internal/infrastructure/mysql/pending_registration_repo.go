@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"time"
 
-	"desa-borong-api/internal/domain"
-	asecase "desa-borong-api/internal/usecase/auth"
+	"desa-anabanua-api/internal/domain"
+	asecase "desa-anabanua-api/internal/usecase/auth"
 )
 
 // PendingRegistrationRepo persists accounts that are still awaiting email OTP

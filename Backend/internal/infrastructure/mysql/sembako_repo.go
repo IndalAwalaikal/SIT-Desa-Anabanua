@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"time"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
 )
 
 type SembakoRepo struct{ db *sql.DB }

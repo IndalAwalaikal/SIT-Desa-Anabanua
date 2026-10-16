@@ -3,9 +3,9 @@ package handler
 import (
 	"time"
 
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/berita"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/berita"
 	"net/http"
 	"strings"
 )
@@ -48,7 +48,7 @@ func (h *Handler) BeritaGet(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) BeritaCreate(w http.ResponseWriter, r *http.Request) {
 	var v struct {
 		Judul, Ringkasan, Konten, Kategori, GambarSampul, GambarTengah, Status string
-		Tags                                                                    []string
+		Tags                                                                   []string
 	}
 	if decode(r, &v) != nil || !valid(v.Judul, 5, 220) || !valid(v.Ringkasan, 10, 1000) || !valid(v.Konten, 10, 200000) || !one(v.Kategori, "pengumuman", "kegiatan", "pembangunan", "lainnya") {
 		httpapi.Error(w, domain.ErrValidation)
@@ -71,7 +71,7 @@ func (h *Handler) BeritaCreate(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) BeritaUpdate(w http.ResponseWriter, r *http.Request) {
 	var v struct {
 		Judul, Ringkasan, Konten, Kategori, GambarSampul, GambarTengah, Status string
-		Tags                                                                    []string
+		Tags                                                                   []string
 	}
 	if decode(r, &v) != nil {
 		httpapi.Error(w, domain.ErrValidation)

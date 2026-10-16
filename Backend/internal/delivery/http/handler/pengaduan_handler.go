@@ -3,8 +3,8 @@ package handler
 import (
 	"time"
 
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
 	"net/http"
 	"strings"
 )
@@ -50,7 +50,8 @@ func pengaduanTrackingResp(p domain.Pengaduan) map[string]any {
 }
 
 func (h *Handler) PengaduanSaya(w http.ResponseWriter, r *http.Request) {
-	items, err := h.app.Pengaduan.ListByPelapor(r.Context(), principalID(r))
+	pageNumber, limit := page(r)
+	items, total, err := h.app.Pengaduan.ListByPelaporPage(r.Context(), principalID(r), pageNumber, limit)
 	if err != nil {
 		httpapi.Error(w, err)
 		return
@@ -59,11 +60,15 @@ func (h *Handler) PengaduanSaya(w http.ResponseWriter, r *http.Request) {
 	for _, p := range items {
 		out = append(out, pengaduanResp(p))
 	}
-	httpapi.JSON(w, 200, out)
+	httpapi.List(w, out, pageNumber, limit, total)
 }
 
 func (h *Handler) PengaduanList(w http.ResponseWriter, r *http.Request) {
-	items, err := h.app.Pengaduan.ListAll(r.Context(), r.URL.Query().Get("status"))
+	pageNumber, limit := page(r)
+	items, total, err := h.app.Pengaduan.ListPage(
+		r.Context(), r.URL.Query().Get("status"), r.URL.Query().Get("search"),
+		r.URL.Query().Get("sort"), pageNumber, limit,
+	)
 	if err != nil {
 		httpapi.Error(w, err)
 		return
@@ -72,7 +77,7 @@ func (h *Handler) PengaduanList(w http.ResponseWriter, r *http.Request) {
 	for _, p := range items {
 		out = append(out, pengaduanResp(p))
 	}
-	httpapi.JSON(w, 200, out)
+	httpapi.List(w, out, pageNumber, limit, total)
 }
 
 func (h *Handler) PengaduanStatus(w http.ResponseWriter, r *http.Request) {

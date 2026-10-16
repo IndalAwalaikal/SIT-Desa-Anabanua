@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/berita"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/berita"
 )
 
 type BeritaRepo struct{ db *sql.DB }
@@ -16,7 +16,7 @@ type BeritaRepo struct{ db *sql.DB }
 func NewBeritaRepo(db *sql.DB) *BeritaRepo { return &BeritaRepo{db: db} }
 
 // NOTE: COALESCE(b.gambar_tengah,'') prevents a sql scan error when the column is NULL.
-const beritaCols = "b.id,b.slug,b.judul,b.ringkasan,b.konten,b.kategori,b.gambar_sampul,COALESCE(b.gambar_tengah,''),COALESCE(u.nama,'Admin Desa Borong'),b.tags,b.status,b.tanggal_terbit,b.dibaca,b.created_at,b.updated_at"
+const beritaCols = "b.id,b.slug,b.judul,b.ringkasan,b.konten,b.kategori,b.gambar_sampul,COALESCE(b.gambar_tengah,''),COALESCE(u.nama,'Admin Desa Anabanua'),b.tags,b.status,b.tanggal_terbit,b.dibaca,b.created_at,b.updated_at"
 
 func scanBerita(s rowScanner) (domain.Berita, error) {
 	var b domain.Berita

@@ -58,7 +58,7 @@ export default function VerifikasiSuratPage() {
               Sistem Verifikasi Keaslian Surat
             </h1>
             <p className="text-xs sm:text-sm text-neutral-500 mt-1">
-                            Pemerintah Desa Borong, Kec. Herlang, Kab. Bulukumba
+                            Pemerintah Desa Anabanua, Kec. Barru, Kab. Barru
             </p>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default function VerifikasiSuratPage() {
 
             <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-900 text-center">
               <p className="text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
-                Dokumen ini dinyatakan SAH dan diakui secara hukum oleh Pemerintah Desa Borong.
+                Dokumen ini dinyatakan SAH dan diakui secara hukum oleh Pemerintah Desa Anabanua.
               </p>
             </div>
           </div>
@@ -118,14 +118,14 @@ export default function VerifikasiSuratPage() {
             <ShieldAlert className="w-8 h-8 text-rose-500 mx-auto" />
             <h3 className="text-sm font-bold text-rose-800 dark:text-rose-300">Dokumen Tidak Ditemukan</h3>
             <p className="text-xs text-rose-600 dark:text-rose-400">
-              Kode verifikasi tidak terdaftar pada sistem persuratan resmi Desa Borong.
+              Kode verifikasi tidak terdaftar pada sistem persuratan resmi Desa Anabanua.
             </p>
           </div>
         )}
 
         <div className="text-center pt-2 border-t border-neutral-100 dark:border-neutral-800">
           <p className="text-[11px] text-neutral-400">
-            &copy; 2026 Layanan Persuratan Digital Desa Borong. All rights reserved.
+            &copy; 2026 Layanan Persuratan Digital Desa Anabanua. All rights reserved.
           </p>
         </div>
       </Card>

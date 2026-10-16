@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	apiresponse "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/delivery/http/handler"
-	"desa-borong-api/internal/delivery/http/middleware"
-	iauth "desa-borong-api/internal/infrastructure/auth"
+	apiresponse "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/delivery/http/handler"
+	"desa-anabanua-api/internal/delivery/http/middleware"
+	iauth "desa-anabanua-api/internal/infrastructure/auth"
 )
 
 func NewRouter(h *handler.Handler, tokens *iauth.Service, db *sql.DB) http.Handler {
@@ -181,6 +181,11 @@ func NewRouter(h *handler.Handler, tokens *iauth.Service, db *sql.DB) http.Handl
 	csrfSecure("POST /api/notifikasi/mark-all-read", h.NotifikasiMarkAllRead)
 	csrfSecure("GET /api/notifikasi/stream", h.NotifikasiStream)
 	csrfAdministrate("GET /api/admin/analytics", h.AnalyticsDashboard)
+
+	// Statistik pengunjung situs publik (per hari).
+	// track = catat kunjungan (dedup per hash IP per hari); stats = ringkasan harian.
+	public("GET /api/pengunjung", h.PengunjungStats)
+	public("POST /api/pengunjung/track", h.PengunjungTrack)
 
 	// Webhook FlowKirim — dipanggil oleh server FlowKirim (bukan browser),
 	// sehingga tidak memerlukan autentikasi sesi atau CSRF token.

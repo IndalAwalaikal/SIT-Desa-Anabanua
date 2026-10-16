@@ -4,7 +4,7 @@ package desa
 import (
 	"context"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 // ProfilRepository stores the singleton profil desa JSON document.

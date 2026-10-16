@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/pajak"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/pajak"
 )
 
 type PajakRepo struct {

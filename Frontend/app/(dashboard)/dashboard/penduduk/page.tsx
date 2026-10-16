@@ -234,7 +234,7 @@ export default function DashboardPendudukPage() {
           <JumlahTable
             labelHead="Per Dusun (jumlah penduduk)"
             labelKey="dusun"
-            labelPlaceholder="cth. Borong Utara"
+            labelPlaceholder="cth. Anabanua Utara"
             rows={perDusun}
             onRows={setPerDusun}
             newRow={(): PerDusunRow => ({ dusun: '', jumlah: 0 })}

@@ -1,4 +1,4 @@
-# Frontend Desa Borong
+# Frontend Desa Anabanua
 
 <p align="center">
   <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
@@ -11,9 +11,9 @@
   <img src="https://img.shields.io/badge/Author-Indal_Awalaikal-blue.svg?style=for-the-badge" alt="Author" />
 </p>
 
-Frontend Desa Borong adalah aplikasi web **Next.js 16 (App Router)** berbasis TypeScript yang menampilkan informasi publik desa dan **dashboard admin operasional**. Aplikasi ini ditujukan untuk pengunjung umum maupun admin/operator desa, dengan fokus pada pengalaman yang cepat, responsif, aksesibel, dan **PWA-ready** (bisa dipasang seperti aplikasi native).
+Frontend Desa Anabanua adalah aplikasi web **Next.js 16 (App Router)** berbasis TypeScript yang menampilkan informasi publik desa dan **dashboard admin operasional**. Aplikasi ini ditujukan untuk pengunjung umum maupun admin/operator desa, dengan fokus pada pengalaman yang cepat, responsif, aksesibel, dan **PWA-ready** (bisa dipasang seperti aplikasi native).
 
-> **Desa Borong, Kecamatan Herlang, Kabupaten Bulukumba, Sulawesi Selatan.** MIT License (c) 2026 Indal Awalaikal.
+> **Desa Anabanua, Kecamatan Barru, Kabupaten Barru, Sulawesi Selatan.** MIT License (c) 2026 Indal Awalaikal.
 
 ## Daftar Isi
 
@@ -195,7 +195,7 @@ cp .env.example .env.local
 
 | Variabel | Deskripsi | Contoh |
 |---|---|---|
-| `NEXT_PUBLIC_APP_NAME` | Nama aplikasi | `"Website Desa Borong"` |
+| `NEXT_PUBLIC_APP_NAME` | Nama aplikasi | `"Website Desa Anabanua"` |
 | `NEXT_PUBLIC_SITE_URL` | URL situs publik | `http://localhost:3000` |
 | `NEXT_PUBLIC_API_BASE_URL` | Base URL API (di browser) | `/api` (via rewrite) |
 | `API_INTERNAL_URL` | URL backend (server-only) | `http://localhost:8080` |
@@ -279,4 +279,4 @@ Saat menambahkan fitur baru, ikuti pola:
 
 ---
 
-Frontend Desa Borong adalah lapisan *user experience* dari sistem informasi desa digital. Dengan Next.js 16, TypeScript, Tailwind CSS, Zustand, PWA, dan arsitektur service-driven, frontend ini dirancang agar **cepat diakses, modern, responsif, dan siap terintegrasi dengan backend API**.
+Frontend Desa Anabanua adalah lapisan *user experience* dari sistem informasi desa digital. Dengan Next.js 16, TypeScript, Tailwind CSS, Zustand, PWA, dan arsitektur service-driven, frontend ini dirancang agar **cepat diakses, modern, responsif, dan siap terintegrasi dengan backend API**.

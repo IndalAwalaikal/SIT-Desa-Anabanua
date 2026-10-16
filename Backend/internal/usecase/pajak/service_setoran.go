@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
 )
 
 // nomorUrut membentuk nomor bukti/setoran tahunan, mis. PK-2026-00042.

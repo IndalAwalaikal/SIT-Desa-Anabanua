@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getAllPengaduanAdmin, updateStatusPengaduanAdmin } from '@/lib/services/pengaduan.service';
 import type { Pengaduan } from '@/types/pengaduan';
 import { Card } from '@/components/ui/Card';
@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Textarea } from '@/components/ui/Textarea';
 import { Modal } from '@/components/ui/Modal';
+import { PaginationControls } from '@/components/ui/PaginationControls';
 import { Search, Filter } from 'lucide-react';
 
 export default function DashboardPengaduanPage() {
@@ -20,34 +21,43 @@ export default function DashboardPengaduanPage() {
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState<'semua' | 'terbuka' | 'selesai'>('semua');
   const [sortBy, setSortBy] = useState<'terbaru' | 'terlama' | 'status'>('terbaru');
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const refreshList = useCallback(async (requestedPage = page) => {
+    try {
+      const result = await getAllPengaduanAdmin({
+        page: requestedPage,
+        limit: 20,
+        status: filterStatus === 'semua' ? undefined : filterStatus,
+        search,
+        sort: sortBy,
+      });
+      setList(result.data);
+      setTotal(result.total);
+      setTotalPages(result.totalPages);
+      if (requestedPage > Math.max(1, result.totalPages)) setPage(Math.max(1, result.totalPages));
+      return result.data;
+    } catch {
+      setList([]);
+      setTotal(0);
+      setTotalPages(1);
+      return null;
+    }
+  }, [page, filterStatus, search, sortBy]);
 
   useEffect(() => {
-    getAllPengaduanAdmin().then(setList);
-  }, []);
+    const timer = window.setTimeout(() => { void refreshList(); }, search ? 300 : 0);
+    return () => window.clearTimeout(timer);
+  }, [refreshList, search]);
 
-  const filtered = list.filter((p) => {
-    const matchSearch =
-      !search ||
-      [p.judul, p.deskripsi, p.pelaporNama, p.nomorTiket]
-        .join(' ')
-        .toLowerCase()
-        .includes(search.toLowerCase());
-    const matchStatus =
-      filterStatus === 'semua' ||
-      (filterStatus === 'selesai' ? p.status === 'selesai' : p.status !== 'selesai');
-    return matchSearch && matchStatus;
-  });
-
-  const sortedFiltered = [...filtered].sort((a, b) => {
-    if (sortBy === 'terlama') return new Date(a.dibuatPada ?? 0).getTime() - new Date(b.dibuatPada ?? 0).getTime();
-    if (sortBy === 'status') return (a.status === 'selesai' ? 1 : 0) - (b.status === 'selesai' ? 1 : 0);
-    return new Date(b.dibuatPada ?? 0).getTime() - new Date(a.dibuatPada ?? 0).getTime();
-  });
+  const sortedFiltered = list;
 
   const handleRespond = async () => {
     if (!selected) return;
-    const updated = await updateStatusPengaduanAdmin(selected.id, 'selesai', tanggapan);
-    setList(list.map((p) => (p.id === updated.id ? updated : p)));
+    await updateStatusPengaduanAdmin(selected.id, 'selesai', tanggapan);
+    await refreshList();
     setModalOpen(false);
   };
 
@@ -64,7 +74,7 @@ export default function DashboardPengaduanPage() {
           <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" aria-hidden="true" />
           <Input
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             placeholder="Cari judul, pelapor, atau no. tiket..."
             aria-label="Cari pengaduan"
             className="pl-10"
@@ -72,7 +82,7 @@ export default function DashboardPengaduanPage() {
         </div>
         <Select
           value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
+          onChange={(e) => { setFilterStatus(e.target.value as typeof filterStatus); setPage(1); }}
           options={[
             { value: 'semua', label: 'Semua Status' },
             { value: 'terbuka', label: 'Terbuka (Belum Selesai)' },
@@ -83,7 +93,7 @@ export default function DashboardPengaduanPage() {
         />
         <select
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+          onChange={(e) => { setSortBy(e.target.value as typeof sortBy); setPage(1); }}
           className="text-xs font-bold bg-neutral-100 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-xl px-3 py-2 text-neutral-700 dark:text-neutral-300 focus:outline-none focus:border-primary-500 transition-colors sm:w-36"
           aria-label="Urutkan pengaduan"
         >
@@ -131,6 +141,8 @@ export default function DashboardPengaduanPage() {
           ))
         )}
       </div>
+
+      <PaginationControls page={page} totalPages={totalPages} total={total} onPageChange={setPage} />
 
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Tanggapi Pengaduan Warga">
         <div className="space-y-4">

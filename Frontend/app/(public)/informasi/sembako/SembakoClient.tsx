@@ -15,7 +15,7 @@ interface SembakoClientProps {
 
 const STATUS_STYLES: Record<SembakoStatus, string> = {
   ongoing: 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300',
-  upcoming: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
+  upcoming: 'bg-primary-100 text-primary-700 dark:bg-primary-950 dark:text-primary-300',
   completed: 'bg-slate-100 text-slate-600 dark:bg-neutral-800 dark:text-neutral-400',
 };
 
@@ -93,18 +93,18 @@ export const SembakoClient: React.FC<SembakoClientProps> = ({ periods }) => {
                         <span className={`rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide ${STATUS_STYLES[period.status]} bg-white`}>
                           {t(`Sembako.status${period.status.charAt(0).toUpperCase()}${period.status.slice(1)}`)}
                         </span>
-                        <span className="text-[11px] font-bold uppercase tracking-widest text-blue-100">{period.periode}</span>
+                        <span className="text-[11px] font-bold uppercase tracking-widest text-primary-100">{period.periode}</span>
                       </div>
                       <h2 className="mt-3 text-xl font-extrabold leading-tight sm:text-2xl">{period.nama}</h2>
                       {period.keterangan && (
-                        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-blue-50/90">{period.keterangan}</p>
+                        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-primary-50/90">{period.keterangan}</p>
                       )}
                     </div>
                     <div className="shrink-0 rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
                       <Package className="h-7 w-7" aria-hidden="true" />
                     </div>
                   </div>
-                  <div className="relative mt-5 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-blue-50">
+                  <div className="relative mt-5 flex flex-wrap gap-x-6 gap-y-2 text-xs font-semibold text-primary-50">
                     <span className="inline-flex items-center gap-1.5">
                       <CalendarDays className="h-4 w-4" aria-hidden="true" />
                       {formatDate(period.tanggalMulai, locale)}

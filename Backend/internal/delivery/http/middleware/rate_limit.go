@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	apiresponse "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
+	apiresponse "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
 )
 
 type visitor struct {

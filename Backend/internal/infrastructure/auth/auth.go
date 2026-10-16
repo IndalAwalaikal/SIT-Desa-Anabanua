@@ -9,12 +9,12 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 const (
-	tokenIssuer   = "desa-borong"
-	tokenAudience = "desa-borong-api"
+	tokenIssuer   = "desa-anabanua"
+	tokenAudience = "desa-anabanua-api"
 )
 
 type Claims struct {

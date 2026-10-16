@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"encoding/json"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/persuratan"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/persuratan"
 )
 
 // ---- Jenis Surat ----

@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"desa-borong-api/internal/delivery/http/middleware"
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase"
+	"desa-anabanua-api/internal/delivery/http/middleware"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase"
 )
 
 // Handler is a thin HTTP adapter: it decodes requests, delegates to use case
@@ -75,6 +75,9 @@ func page(r *http.Request) (int, int) {
 	l, _ := strconv.Atoi(r.URL.Query().Get("limit"))
 	if p < 1 {
 		p = 1
+	}
+	if p > 1_000_000 {
+		p = 1_000_000
 	}
 	if l < 1 {
 		l = 10

@@ -1,6 +1,6 @@
 'use client';
 
-// Kop resmi surat dinas — Pemerintah Kabupaten Bulukumba / Kecamatan Herlang / Desa Borong.
+// Kop resmi surat dinas — Pemerintah Kabupaten Barru / Kecamatan Barru / Desa Anabanua.
 
 type KopProps = {
   title?: string;
@@ -11,8 +11,8 @@ function LogoEmblem() {
     <div className="shrink-0 flex items-center justify-center pr-2 sm:pr-4">
       {/* eslint-disable-next-line @next/next/no-img-element -- logo untuk template cetak/PDF (next/image tidak cocok untuk print) */}
       <img
-        src="/logo-bulukumba.png"
-        alt="Logo Kabupaten Bulukumba"
+        src="/logo-barru.png"
+        alt="Logo Kabupaten Barru"
         className="h-32 sm:h-40 w-auto object-contain"
       />
     </div>
@@ -28,22 +28,22 @@ export default function KopSurat({ title }: KopProps) {
         </div>
         <div className="flex-1 leading-snug text-center space-y-0.5">
           <p className="text-xs sm:text-sm font-bold tracking-widest uppercase text-neutral-950">
-            PEMERINTAH KABUPATEN BULUKUMBA
+            PEMERINTAH KABUPATEN BARRU
           </p>
           <p className="text-sm sm:text-base font-extrabold tracking-wider uppercase text-neutral-950">
-            KECAMATAN HERLANG
+            KECAMATAN BARRU
           </p>
           <p className="text-base sm:text-2xl font-black tracking-wider uppercase text-neutral-950">
-            PEMERINTAH DESA BORONG
+            PEMERINTAH DESA ANABANUA
           </p>
           <p className="text-[11px] sm:text-xs text-neutral-900 leading-tight">
-            Alamat: Jl. Poros Borong–Herlang KM 3, Desa Borong
+            Alamat: Dusun Gellengnge, Jl. Poros Pekkae–Soppeng
           </p>
           <p className="text-[11px] sm:text-xs text-neutral-900 leading-tight">
-            Kec. Herlang, Kab. Bulukumba, Kode Pos 92552
+            Kec. Barru, Kab. Barru, Kode Pos 90712
           </p>
           <p className="text-[10px] sm:text-[11px] text-neutral-800 font-sans italic">
-            Email: desaborong.id@gmail.com | Website: https://desaborong.id
+            Email: desaanabanua.id@gmail.com | Website: https://desaanabanua.id
           </p>
           {title ? <p className="mt-1 text-xs sm:text-sm font-bold text-neutral-900 uppercase">{title}</p> : null}
         </div>

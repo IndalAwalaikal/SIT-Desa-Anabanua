@@ -1,5 +1,5 @@
 # AGENTS-FRONTEND.md
-Panduan kerja untuk AI Coding Agent pada frontend Website Desa Borong. Frontend adalah aplikasi Next.js 15 (App Router) yang mengonsumsi REST API dari backend Go.
+Panduan kerja untuk AI Coding Agent pada frontend Website Desa Anabanua. Frontend adalah aplikasi Next.js 15 (App Router) yang mengonsumsi REST API dari backend Go.
 
 Baca juga `SPEC.md` dan `PRD.md` sebelum mulai. Pastikan kontrak API di `Backend/internal/delivery/http/router.go` konsisten dengan pemanggilan di `lib/services/`.
 

@@ -8,16 +8,11 @@
 # =====================================================================
 # Node.js / Frontend (Next.js 16)
 # =====================================================================
-Frontend/node_modules/
-Frontend/.next/
-Frontend/out/
-Frontend/dist/
-Frontend/build/
-Frontend/.turbo/
-Frontend/.cache/
-Frontend/coverage/
-Frontend/.env.local
 Frontend/.eslintcache
+
+# Local platform metadata
+.vercel/
+.railway/
 
 # General Node tooling (covers stray root-level artifacts)
 node_modules/
@@ -41,13 +36,18 @@ pnpm-debug.log*
 Backend/bin/
 Backend/tmp/
 Backend/uploads/
+Backend/api
+Backend/api.exe
 # database backup output (scripts/backup.sh)
 Backend/backups/
-Backend/.env.local
 Backend/.eslintcache
-Backend/*.test
 Backend/*.out
-Backend/*.prof
+*.test
+*.exe
+coverage.out
+*.cover
+*.prof
+*.pprof
 go-build-cache/
 
 # =====================================================================
@@ -70,6 +70,7 @@ Thumbs.db
 .vscode/
 *.iml
 *.ipynb_checkpoints
+*.~lock.*#
 
 # =====================================================================
 # Docker
@@ -83,6 +84,10 @@ docker-compose.override.yml
 *.key
 *.crt
 *.cer
+*.p12
+*.pfx
+*.jks
+*.keystore
 *.sqlite
 *.sqlite3
 *.db
@@ -110,3 +115,10 @@ temp/
 .Trash-*
 .turbo
 .pnpm-store
+
+# Python tooling (whitepaper generator)
+__pycache__/
+*.pyc
+
+# Backup migrasi lama (jangan di-commit)
+Backend/migrations.bak*/

@@ -19,10 +19,10 @@ const iconMap: Record<string, React.ReactNode> = {
   SKU: <Store className="w-6 h-6 text-secondary-600" />,
   SKTM: <Heart className="w-6 h-6 text-rose-600" />,
   SPK: <CreditCard className="w-6 h-6 text-amber-600" />,
-  SPKK: <Users className="w-6 h-6 text-indigo-600" />,
+  SPKK: <Users className="w-6 h-6 text-emerald-600" />,
   SPN: <HeartHandshake className="w-6 h-6 text-pink-600" />,
   SKL: <Baby className="w-6 h-6 text-sky-600" />,
-  SKM: <FileHeart className="w-6 h-6 text-purple-600" />,
+  SKM: <FileHeart className="w-6 h-6 text-teal-600" />,
 };
 
 interface DetailProps { params: { kode: string }; }

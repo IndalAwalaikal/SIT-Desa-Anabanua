@@ -10,8 +10,8 @@ import (
 	"os"
 	"strings"
 
-	"desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
 )
 
 // WhatsAppDeliveryPayload adalah struktur webhook delivery receipt dari FlowKirim.
@@ -75,4 +75,3 @@ func (h *Handler) WebhookWhatsApp(w http.ResponseWriter, r *http.Request) {
 	// Respons 200 OK agar FlowKirim tidak melakukan retry.
 	apiresponse.JSON(w, http.StatusOK, map[string]string{"status": "received"})
 }
-

@@ -6,9 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
-	"desa-borong-api/internal/usecase/finance"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/usecase/finance"
 )
 
 // ---- Statistik Penduduk ----

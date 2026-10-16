@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useCallback,
   useMemo,
+  useRef,
 } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -16,7 +17,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import type { GaleriAlbum } from "@/types/galeri";
-import { getGaleriAlbumList } from "@/lib/services/galeri.service";
+import { getGaleriAlbumPreview } from "@/lib/services/galeri.service";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 
 interface GallerySectionProps {
@@ -122,7 +123,7 @@ const GalleryCard: React.FC<CardProps> = ({ item, position, locale, onClick }) =
         className="absolute -inset-2 rounded-3xl pointer-events-none"
         style={{
           background:
-            "linear-gradient(135deg, #60a5fa55, #0b5dbb33)",
+            "linear-gradient(135deg, #5bc45655, #2c902933)",
           opacity: isCenter && hovered ? 1 : 0,
           transition: "opacity 400ms ease",
           filter: "blur(8px)",
@@ -166,7 +167,7 @@ const GalleryCard: React.FC<CardProps> = ({ item, position, locale, onClick }) =
         {/* Caption — hanya kartu tengah */}
         {isCenter && (
           <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7">
-            <p className="text-neutral-300 text-[11px] sm:text-xs mb-1.5 font-medium tracking-widest uppercase">
+            <p className="text-white text-[11px] sm:text-xs mb-1.5 font-semibold tracking-widest uppercase drop-shadow-md">
               {fmtDate(item.tanggal, locale)}
             </p>
             <h3 className="font-extrabold text-white text-lg sm:text-2xl leading-snug line-clamp-2 drop-shadow-lg">
@@ -190,17 +191,36 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ gallery }) => {
   const [items, setItems] = useState<GaleriAlbum[]>(() => normalise(gallery));
   const [activeIdx, setActiveIdx] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [progressKey, setProgressKey] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Tunda polling dan animasi sampai galeri mendekati viewport.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { rootMargin: "200px 0px" },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   // ── Sync data dari DB galeri kegiatan ──────────────────────────────────
   useEffect(() => {
     const norm = normalise(gallery);
     setItems(norm);
     setActiveIdx(0);
+  }, [gallery]);
+
+  useEffect(() => {
+    if (!isVisible) return;
 
     const sync = setInterval(() => {
-      getGaleriAlbumList()
+      getGaleriAlbumPreview(12)
         .then((list) => {
           const next = normalise(list);
           if (next.length > 0) {
@@ -215,7 +235,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ gallery }) => {
     }, SYNC_MS);
 
     return () => clearInterval(sync);
-  }, [gallery]);
+  }, [isVisible]);
 
   // ── Auto-rotate ────────────────────────────────────────────────────────
   const advance = useCallback(
@@ -230,10 +250,10 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ gallery }) => {
   );
 
   useEffect(() => {
-    if (paused || items.length < 2) return;
+    if (paused || !isVisible || items.length < 2) return;
     const tmr = setInterval(() => advance(1), ROTATE_MS);
     return () => clearInterval(tmr);
-  }, [paused, advance, items.length]);
+  }, [paused, isVisible, advance, items.length]);
 
   // Pause saat tab tidak aktif
   useEffect(() => {
@@ -272,15 +292,16 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ gallery }) => {
 
   return (
     <section
-      className="relative w-full overflow-hidden py-20 bg-neutral-100 dark:bg-neutral-900/60"
-      aria-label="Galeri Kegiatan Desa Borong"
+      ref={sectionRef}
+      className="relative w-full overflow-hidden py-20 bg-[#f1f7ed] dark:bg-neutral-950"
+      aria-label="Galeri Kegiatan Desa Anabanua"
     >
       {/* Orbs dekoratif latar belakang */}
       <div
         aria-hidden
         className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full"
         style={{
-          background: "radial-gradient(ellipse at center, #0b5dbb1a 0%, transparent 65%)",
+          background: "radial-gradient(ellipse at center, #2c90291a 0%, transparent 65%)",
           filter: "blur(60px)",
           top: "-80px",
         }}
@@ -289,7 +310,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ gallery }) => {
         aria-hidden
         className="pointer-events-none absolute bottom-0 right-0 w-[400px] h-[300px] rounded-full"
         style={{
-          background: "radial-gradient(ellipse at center, #60a5fa10 0%, transparent 65%)",
+          background: "radial-gradient(ellipse at center, #5bc45610 0%, transparent 65%)",
           filter: "blur(60px)",
           bottom: "-60px",
         }}
@@ -305,12 +326,12 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ gallery }) => {
           {t("Galeri.title", "Galeri Kegiatan")}
         </h2>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary-600 dark:text-primary-400 leading-tight tracking-tight mt-0.5">
-          {t("Galeri.titleAlt", "& Momen Desa Borong")}
+          {t("Galeri.titleAlt", "& Momen Desa Anabanua")}
         </h2>
         <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 mt-4 max-w-lg mx-auto leading-relaxed">
           {t(
             "Galeri.subtitle",
-            "Kumpulan dokumentasi kegiatan, tradisi, dan kehidupan masyarakat Desa Borong.",
+            "Kumpulan dokumentasi kegiatan, tradisi, dan kehidupan masyarakat Desa Anabanua.",
           )}
         </p>
       </div>
@@ -422,7 +443,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ gallery }) => {
           href="/galeri"
           className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-2xl bg-primary-600 hover:bg-primary-500 text-white font-bold text-sm transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2"
           style={{
-            boxShadow: "0 8px 30px rgba(11,93,187,0.3)",
+            boxShadow: "0 8px 30px rgba(55,171,52,0.3)",
           }}
         >
           {t("Galeri.seeAll", "Lihat Semua Galeri")}

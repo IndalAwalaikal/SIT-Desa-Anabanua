@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/dashboard/', '/api/'],
     },
-    sitemap: 'https://desaborong.bulukumbakab.go.id/sitemap.xml',
+    sitemap: 'https://desaanabanua.barrukab.go.id/sitemap.xml',
   };
 }

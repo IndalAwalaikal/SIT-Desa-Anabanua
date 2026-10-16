@@ -1,10 +1,10 @@
-/* Service Worker — Website Desa Borong
+/* Service Worker — Website Desa Anabanua
    Strategi cache:
    - Navigasi halaman (mode 'navigate'): network-first, fallback ke cache, terakhir ke halaman "/".
    - Aset statis (JS/CSS/gambar): stale-while-revalidate (tampilkan cache, perbarui di belakang).
    - Pre-cache halaman penting agar tetap terbaca tanpa sinyal (PRD §5.11 PWA ringan).
 */
-const CACHE_NAME = 'desa-borong-v3';
+const CACHE_NAME = 'desa-anabanua-v3';
 
 // Halaman info penting yang di-pre-cache saat service worker terpasang.
 const PRECACHE_URLS = [

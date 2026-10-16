@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"time"
 
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/auth"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/auth"
 )
 
 func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {

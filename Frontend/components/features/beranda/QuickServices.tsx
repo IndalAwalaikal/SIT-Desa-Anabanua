@@ -40,7 +40,7 @@ export const QuickServices: React.FC<QuickServicesProps> = ({ services }) => {
   const popularServices = services.slice(0, 6);
 
   return (
-    <section className="py-20 bg-white dark:bg-neutral-950">
+    <section className="py-20 bg-neutral-50 dark:bg-neutral-900/60">
       <div className="container-desa">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>

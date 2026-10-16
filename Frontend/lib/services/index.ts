@@ -12,4 +12,5 @@ export * from './pajak.service';
 export * from './sekilas_info.service';
 export * from './sembako.service';
 export * from './notifikasi.service';
+export * from './pengunjung.service';
 

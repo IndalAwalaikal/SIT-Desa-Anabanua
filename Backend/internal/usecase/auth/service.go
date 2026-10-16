@@ -12,8 +12,8 @@ import (
 
 	"log/slog"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
 )
 
 // Session bundles the tokens and user returned by login/register.
@@ -111,7 +111,7 @@ func (s *Service) Register(ctx context.Context, nama, email, password, nik, tele
 	}
 
 	sent := false
-	if err := s.mailer.Send(ctx, emailNorm, "Kode Verifikasi Akun Desa Borong", verifyEmailHTML(pending.OTPCode, s.otpTTL)); err != nil {
+	if err := s.mailer.Send(ctx, emailNorm, "Kode Verifikasi Akun Desa Anabanua", verifyEmailHTML(pending.OTPCode, s.otpTTL)); err != nil {
 		slog.Warn("failed to send verification email", "error", err, "email", emailNorm)
 	} else {
 		sent = true
@@ -394,34 +394,34 @@ func otpMinutes(ttl time.Duration) int {
 
 func verifyEmailHTML(code string, ttl time.Duration) string {
 	return fmt.Sprintf(`<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Kode Verifikasi Akun Desa Borong</title></head>
+<html><head><meta charset="utf-8"><title>Kode Verifikasi Akun Desa Anabanua</title></head>
 <body style="font-family:Arial,sans-serif;background:#f5f7fa;padding:32px;color:#1f2937">
 <div style="max-width:480px;margin:0 auto;background:#fff;border-radius:12px;padding:32px;box-shadow:0 4px 16px rgba(0,0,0,.06)">
-<h1 style="color:#2563eb;font-size:22px;margin:0 0 16px">Verifikasi Akun Desa Borong</h1>
+<h1 style="color:#2563eb;font-size:22px;margin:0 0 16px">Verifikasi Akun Desa Anabanua</h1>
 <p style="margin:0 0 16px">Hai,</p>
 <p style="margin:0 0 16px">Terima kasih telah mendaftar. Gunakan kode verifikasi di bawah ini untuk mengaktifkan akun Anda.</p>
 <div style="background:#f0f9ff;border:1px dashed #3b82f6;border-radius:8px;padding:20px;text-align:center;margin:20px 0">
 <span style="font-size:36px;font-weight:800;letter-spacing:8px;color:#2563eb">%s</span>
 </div>
 <p style="margin:0 0 16px;font-size:13px;color:#6b7280">Kode ini berlaku selama <strong>%d menit</strong>. Jika tidak meminta ini, abaikan email ini.</p>
-<p style="margin:0">Salam hangat,<br><strong>Desa Borong</strong></p>
+<p style="margin:0">Salam hangat,<br><strong>Desa Anabanua</strong></p>
 </div></div>
 </body></html>`, code, otpMinutes(ttl))
 }
 
 func resetPasswordHTML(code string, ttl time.Duration) string {
 	return fmt.Sprintf(`<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Kode Reset Password Desa Borong</title></head>
+<html><head><meta charset="utf-8"><title>Kode Reset Password Desa Anabanua</title></head>
 <body style="font-family:Arial,sans-serif;background:#f5f7fa;padding:32px;color:#1f2937">
 <div style="max-width:480px;margin:0 auto;background:#fff;border-radius:12px;padding:32px;box-shadow:0 4px 16px rgba(0,0,0,.06)">
 <h1 style="color:#2563eb;font-size:22px;margin:0 0 16px">Reset Password Akun</h1>
 <p style="margin:0 0 16px">Hai,</p>
-<p style="margin:0 0 16px">Kami menerima permintaan reset password akun Desa Borong Anda. Gunakan kode di bawah ini.</p>
+<p style="margin:0 0 16px">Kami menerima permintaan reset password akun Desa Anabanua Anda. Gunakan kode di bawah ini.</p>
 <div style="background:#f0f9ff;border:1px dashed #3b82f6;border-radius:8px;padding:20px;text-align:center;margin:20px 0">
 <span style="font-size:36px;font-weight:800;letter-spacing:8px;color:#2563eb">%s</span>
 </div>
 <p style="margin:0 0 16px;font-size:13px;color:#6b7280">Kode ini berlaku selama <strong>%d menit</strong>. Jika tidak meminta ini, abaikan email ini.</p>
-<p style="margin:0">Salam hangat,<br><strong>Desa Borong</strong></p>
+<p style="margin:0">Salam hangat,<br><strong>Desa Anabanua</strong></p>
 </div></div>
 </body></html>`, code, otpMinutes(ttl))
 }
@@ -496,7 +496,7 @@ func (s *Service) ResendOTP(ctx context.Context, email string) error {
 	if err := s.pending.Upsert(ctx, pending); err != nil {
 		return err
 	}
-	if err := s.mailer.Send(ctx, emailNorm, "Kode Verifikasi Akun Desa Borong", verifyEmailHTML(pending.OTPCode, s.otpTTL)); err != nil {
+	if err := s.mailer.Send(ctx, emailNorm, "Kode Verifikasi Akun Desa Anabanua", verifyEmailHTML(pending.OTPCode, s.otpTTL)); err != nil {
 		slog.Warn("failed to resend verification email", "error", err, "email", emailNorm)
 		return domain.ErrEmailSendFailed
 	}
@@ -524,7 +524,7 @@ func (s *Service) ForgotPassword(ctx context.Context, email string) error {
 	if err := s.otp.Create(ctx, otp); err != nil {
 		return err
 	}
-	return s.mailer.Send(ctx, user.Email, "Kode Reset Password Desa Borong", resetPasswordHTML(code, s.otpTTL))
+	return s.mailer.Send(ctx, user.Email, "Kode Reset Password Desa Anabanua", resetPasswordHTML(code, s.otpTTL))
 }
 
 // ResetPassword validates a reset_password OTP and updates the password,

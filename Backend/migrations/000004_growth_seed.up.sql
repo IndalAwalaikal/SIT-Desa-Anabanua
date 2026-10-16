@@ -40,29 +40,29 @@ ALTER TABLE `galeri_item` MODIFY `url` VARCHAR(2048) NOT NULL;
 
 -- ── Wajib Pajak ───────────────────────────────────────────────────────────────
 INSERT IGNORE INTO wajib_pajak (id, no_objek, nama, nik, alamat, rt, rw, dusun) VALUES
-('wp-001','73.02.09.01.001','Andi Bakri','7302091211800001','Jl. Poros Desa, Dusun Borong Utara','001','002','Borong Utara'),
-('wp-002','73.02.09.01.002','Sitti Rahma','7302094403850002','Jl. Poros Desa, Dusun Borong Utara','001','002','Borong Utara'),
-('wp-003','73.02.09.01.003','Hasan Basri','7302092206790003','Jl. Poros Desa, Dusun Borong Utara','002','002','Borong Utara'),
-('wp-004','73.02.09.02.001','Nur Aisyah','7302095105900004','Jl. Pendidikan, Dusun Borong Selatan','003','004','Borong Selatan'),
-('wp-005','73.02.09.02.002','Jumiati','7302094504830005','Pasar Rakyat, Dusun Borong Selatan','003','004','Borong Selatan'),
-('wp-006','73.02.09.02.003','Syamsuddin','7302091007820006','Jl. Pendidikan, Dusun Borong Selatan','004','004','Borong Selatan'),
+('wp-001','73.02.09.01.001','Andi Bakri','7302091211800001','Jl. Poros Desa, Dusun Anabanua Utara','001','002','Anabanua Utara'),
+('wp-002','73.02.09.01.002','Sitti Rahma','7302094403850002','Jl. Poros Desa, Dusun Anabanua Utara','001','002','Anabanua Utara'),
+('wp-003','73.02.09.01.003','Hasan Basri','7302092206790003','Jl. Poros Desa, Dusun Anabanua Utara','002','002','Anabanua Utara'),
+('wp-004','73.02.09.02.001','Nur Aisyah','7302095105900004','Jl. Pendidikan, Dusun Anabanua Selatan','003','004','Anabanua Selatan'),
+('wp-005','73.02.09.02.002','Jumiati','7302094504830005','Pasar Rakyat, Dusun Anabanua Selatan','003','004','Anabanua Selatan'),
+('wp-006','73.02.09.02.003','Syamsuddin','7302091007820006','Jl. Pendidikan, Dusun Anabanua Selatan','004','004','Anabanua Selatan'),
 ('wp-007','73.02.09.03.001','Karta Mappangara','7302091902780007','Jl. Wisata, Dusun Tondon','001','001','Tondon'),
 ('wp-008','73.02.09.03.002','Darmawati','7302094208920008','Jl. Wisata, Dusun Tondon','001','001','Tondon'),
 ('wp-009','73.02.09.03.003','Muhammad Yusuf','7302090111760009','Jl. Wisata, Dusun Tondon','002','001','Tondon'),
 ('wp-010','73.02.09.04.001','Rosmawati','7302094804880010','Jl. Sepakat, Dusun Lembang','001','002','Lembang'),
 ('wp-011','73.02.09.04.002','Abd. Karim','7302091506740011','Jl. Sepakat, Dusun Lembang','001','002','Lembang'),
 ('wp-012','73.02.09.04.003','Baharuddin','7302090903840012','Pasar Rakyat, Dusun Lembang','002','002','Lembang'),
-('wp-013','73.02.09.01.004','Murniati','7302095007950013','Jl. Poros Desa, Dusun Borong Utara','002','002','Borong Utara'),
+('wp-013','73.02.09.01.004','Murniati','7302095007950013','Jl. Poros Desa, Dusun Anabanua Utara','002','002','Anabanua Utara'),
 ('wp-014','73.02.09.03.004','Syahrul','7302091511900014','Jl. Wisata, Dusun Tondon','002','001','Tondon');
 
 -- ── Setoran Pajak (harus di-insert sebelum transaksi karena FK setoran_id) ────
 INSERT IGNORE INTO setoran_pajak
 (id, nomor_setoran, tujuan, tanggal_setor, total_setor, status, disetor_oleh, diterima_oleh, nomor_bukti_penerimaan, tgl_konfirmasi, catatan, dibuat_oleh)
 VALUES
-('stn-2025-001','ST-2025-00001','Setoran PBB ke BPD Desa Borong','2025-04-10',2875000,'dikonfirmasi','Yohanes Pasang','BPD Desa Borong','BUKTI-2025-0001','2025-04-12 09:00:00','Setoran TA 2025 periode Januari - Maret.',NULL),
+('stn-2025-001','ST-2025-00001','Setoran PBB ke BPD Desa Anabanua','2025-04-10',2875000,'dikonfirmasi','Yohanes Pasang','BPD Desa Anabanua','BUKTI-2025-0001','2025-04-12 09:00:00','Setoran TA 2025 periode Januari - Maret.',NULL),
 ('stn-2026-001','ST-2026-00001','Setoran Pajak & Retribusi ke BPD','2026-02-28',1455000,'disetor','Yohanes Pasang',NULL,NULL,NULL,'Setoran tahap I TA 2026.',NULL),
 ('stn-2026-002','ST-2026-00002','Setoran Pajak & Retribusi ke BPD','2026-04-30',1695000,'disetor','Yohanes Pasang',NULL,NULL,NULL,'Setoran tahap II TA 2026.',NULL),
-('stn-2026-003','ST-2026-00003','Setoran PBB ke BPD Desa Borong','2026-05-12',615000,'dikonfirmasi','Yohanes Pasang','BPD Desa Borong','BUKTI-2026-0007','2026-05-15 10:00:00','Setoran PBB tahap I, telah diterima BPD.',NULL);
+('stn-2026-003','ST-2026-00003','Setoran PBB ke BPD Desa Anabanua','2026-05-12',615000,'dikonfirmasi','Yohanes Pasang','BPD Desa Anabanua','BUKTI-2026-0007','2026-05-15 10:00:00','Setoran PBB tahap I, telah diterima BPD.',NULL);
 
 -- ── Transaksi Pajak TA 2026 (tahun berjalan): 12 PBB + 6 Retribusi Sampah + 4 Retribusi Pasar ──
 INSERT IGNORE INTO transaksi_pajak
@@ -150,8 +150,8 @@ CREATE TABLE sembako_item (
 
 -- Seed demo: satu periode berjalan + satu periode lampau.
 INSERT INTO sembako_period (id,nama,periode,tanggal_mulai,tanggal_selesai,target_penerima,lokasi,keterangan) VALUES
-('sbp-001','Pembagian Sembako Semester I 2026','Semester I 2026','2026-08-10','2026-08-25',812,'Balai Desa Borong','Bansos sembaka BLT-DD untuk 812 KK penerima manfaat.'),
-('sbp-002','Pembagian Sembako Semester II 2025','Semester II 2025','2025-11-03','2025-11-14',798,'Balai Desa Borong','Distribusi rutin Bansos sembaka melalui Bulog.');
+('sbp-001','Pembagian Sembako Semester I 2026','Semester I 2026','2026-08-10','2026-08-25',812,'Balai Desa Anabanua','Bansos sembaka BLT-DD untuk 812 KK penerima manfaat.'),
+('sbp-002','Pembagian Sembako Semester II 2025','Semester II 2025','2025-11-03','2025-11-14',798,'Balai Desa Anabanua','Distribusi rutin Bansos sembaka melalui Bulog.');
 
 INSERT INTO sembako_item (id,period_id,nama_barang,satuan,jumlah_per_kk,keterangan,sort_order) VALUES
 ('sbi-001-01','sbp-001','Beras Premium','kg',10.00,'Bulog kualitas premium',1),

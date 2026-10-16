@@ -4,7 +4,7 @@ package sekilasinfo
 import (
 	"context"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 // Repository persists sekilas-info records.

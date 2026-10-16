@@ -14,55 +14,55 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Desa Borong | Sistem Informasi & Layanan Terintegrasi',
-    template: '%s | Desa Borong Digital',
+    default: 'Desa Anabanua | Sistem Informasi & Layanan Terintegrasi',
+    template: '%s | Desa Anabanua Digital',
   },
   description:
-    'Portal informasi resmi, transparansi anggaran APBDes, layanan persuratan online, dan direktori UMKM Desa Borong, Kecamatan Herlang, Kabupaten Bulukumba, Sulawesi Selatan.',
+    'Portal informasi resmi, transparansi anggaran APBDes, layanan persuratan online, dan direktori UMKM Desa Anabanua, Kecamatan Barru, Kabupaten Barru, Sulawesi Selatan.',
   keywords: [
-    'Desa Borong',
-    'Bulukumba',
-    'Herlang',
+    'Desa Anabanua',
+    'Barru',
+    'Barru',
     'Desa Digital',
     'Surat Online Desa',
-    'Desa Borong Herlang',
-    'APBDes Borong',
+    'Desa Anabanua Barru',
+    'APBDes Anabanua',
     'Layanan Desa',
   ],
-  authors: [{ name: 'Pemerintah Desa Borong' }],
+  authors: [{ name: 'Pemerintah Desa Anabanua' }],
   openGraph: {
     type: 'website',
     locale: 'id_ID',
-    url: 'https://desaborong.bulukumbakab.go.id',
-    title: 'Website Resmi Desa Borong - Bulukumba',
-    description: 'Portal layanan publik dan informasi resmi Desa Borong',
-    siteName: 'Desa Borong Digital',
+    url: 'https://desaanabanua.barrukab.go.id',
+    title: 'Website Resmi Desa Anabanua - Barru',
+    description: 'Portal layanan publik dan informasi resmi Desa Anabanua',
+    siteName: 'Desa Anabanua Digital',
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://desaborong.bulukumbakab.go.id'}/kantor_desa.png`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://desaanabanua.barrukab.go.id'}/kantor_desa_og.jpg`,
         width: 1200,
         height: 630,
-        alt: 'Kantor Desa Borong, Kecamatan Herlang, Kabupaten Bulukumba',
+        alt: 'Kantor Desa Anabanua, Kecamatan Barru, Kabupaten Barru',
       },
     ],
   },
   // Ikon / tab logo agar tampil di header browser dan saat PWA dipasang.
-  // Menggunakan icon_pwa_app.png yang sama dengan manifest.json agar konsisten.
+  // Versi kecil per ukuran (bukan satu file 710KB) agar hemat bandwidth.
   icons: {
-    icon: '/icon_pwa_app.png',
-    shortcut: '/icon_pwa_app.png',
-    apple: '/icon_pwa_app.png',
+    icon: '/favicon-32x32.png',
+    shortcut: '/favicon-32x32.png',
+    apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Desa Borong',
+    title: 'Desa Anabanua',
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0f4c81',
+  themeColor: '#37AB34',
 };
 
 import { ToastContainer } from '@/components/ui/ToastContainer';
@@ -80,7 +80,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                const stored = localStorage.getItem('desa-borong-ui');
+                const stored = localStorage.getItem('desa-anabanua-ui');
                 if (stored) {
                   const state = JSON.parse(stored).state;
                   if (state && state.theme === 'dark') {

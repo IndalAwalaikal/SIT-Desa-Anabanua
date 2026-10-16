@@ -1,4 +1,4 @@
-# Backend Desa Borong
+# Backend Desa Anabanua
 
 <p align="center">
   <img src="https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go" />
@@ -10,9 +10,9 @@
   <img src="https://img.shields.io/badge/Author-Indal_Awalaikal-blue.svg?style=for-the-badge" alt="Author" />
 </p>
 
-Backend Desa Borong adalah layanan **REST API** yang digunakan frontend website desa untuk mengelola konten, data operasional desa, layanan warga, autentikasi, notifikasi, dan transparansi keuangan/pajak. Aplikasi ini dibangun dengan **Go 1.26** dan menggunakan **MySQL 8.4** sebagai database utama, mengikuti **Clean/Hexagonal Architecture** dengan lapisan yang jelas dan dependency inversion.
+Backend Desa Anabanua adalah layanan **REST API** yang digunakan frontend website desa untuk mengelola konten, data operasional desa, layanan warga, autentikasi, notifikasi, dan transparansi keuangan/pajak. Aplikasi ini dibangun dengan **Go 1.26** dan menggunakan **MySQL 8.4** sebagai database utama, mengikuti **Clean/Hexagonal Architecture** dengan lapisan yang jelas dan dependency inversion.
 
-> **Desa Borong, Kecamatan Herlang, Kabupaten Bulukumba, Sulawesi Selatan.** MIT License (c) 2026 Indal Awalaikal.
+> **Desa Anabanua, Kecamatan Barru, Kabupaten Barru, Sulawesi Selatan.** MIT License (c) 2026 Indal Awalaikal.
 
 ## Daftar Isi
 
@@ -162,7 +162,7 @@ Salin `Backend/.env.example` ke `.env` dan sesuaikan (untuk dev lokal pakai `DB_
 | `FILE_STORAGE_PATH` | folder upload lokal | `./uploads` |
 | `CORS_ALLOWED_ORIGINS` | origin yang diizinkan | `http://localhost:3000` |
 | `LOG_LEVEL` | level log | `info` |
-| `BREVO_API_KEY` / `BREVO_FROM_EMAIL` | email provider (opsional; NOOP di dev) | - |
+| `MAILJET_API_KEY` / `MAILJET_API_SECRET` / `MAILJET_FROM_EMAIL` | Sinch Mailjet email provider (opsional; NOOP di dev) | - |
 | `FLOWKIRIM_API_KEY` / `FLOWKIRIM_BASE_URL` | provider WhatsApp (opsional; NOOP di dev) | - |
 
 > **Docker:** gunakan template `.env` di root repository (`.env.example`) yang meng‑override `DB_HOST=mysql` dan `FILE_STORAGE_PATH=/app/uploads`.
@@ -172,7 +172,7 @@ Salin `Backend/.env.example` ke `.env` dan sesuaikan (untuk dev lokal pakai `DB_
 ### Lewat Docker Compose (disertakan frontend + mysql + migrasi)
 
 ```bash
-cd /home/rex/projek/Desa Borong
+cd /home/rex/projek/Desa Anabanua
 cp .env.example .env
 docker compose up --build -d backend
 # semua service: docker compose up --build -d
@@ -213,7 +213,7 @@ sqlc generate    # baca Backend/sqlc.yaml -> Backend/internal/infrastructure/mys
 ## Pencatatan & Background Jobs
 
 - Backend memakai `log/slog` terstruktur (JSON ke stdout).
-- **Job worker** memproses queue: email (Brevo), WhatsApp (FlowKirim), generasi PDF surat, dan pembersihan data kadaluarsa — sehingga request responsif.
+- **Job worker** memproses queue: email (Sinch Mailjet), WhatsApp (FlowKirim), generasi PDF surat, dan pembersihan data kadaluarsa — sehingga request responsif.
 - Email & WhatsApp bersifat **asynchronous**: jika provider tidak dikonfigurasi, berada di mode **NOOP** dan pesan dicetak ke log (bisa di‑tes verifikasi/OTP di dev).
 - Notifikasi push ke browser lewat **SSE** di `/api/notifikasi/stream`.
 
@@ -298,4 +298,4 @@ Persiapan production:
 
 ---
 
-Backend Desa Borong adalah tulang punggung sistem informasi desa digital. Dengan Go, MySQL, JWT, migrasi database, job worker async, dan arsitektur modular, backend ini dirancang untuk mendukung kebutuhan operasional desa yang kompleks namun tetap **terstruktur, aman, dan mudah dikembangkan**.
+Backend Desa Anabanua adalah tulang punggung sistem informasi desa digital. Dengan Go, MySQL, JWT, migrasi database, job worker async, dan arsitektur modular, backend ini dirancang untuk mendukung kebutuhan operasional desa yang kompleks namun tetap **terstruktur, aman, dan mudah dikembangkan**.

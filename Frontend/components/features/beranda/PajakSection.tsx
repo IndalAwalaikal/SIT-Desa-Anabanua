@@ -72,7 +72,7 @@ const features = [
   {
     no: '01',
     title: 'Pajak Bumi & Bangunan (PBB)',
-    desc: 'Informasi tagihan, jatuh tempo, dan tata cara pembayaran PBB-P2 warga Desa Borong.',
+    desc: 'Informasi tagihan, jatuh tempo, dan tata cara pembayaran PBB-P2 warga Desa Anabanua.',
     icon: CreditCard,
   },
   {
@@ -185,7 +185,7 @@ export const PajakSection = () => {
             {/* Panel ledger / kuitansi */}
             <div
               ref={statsRef}
-              className="relative rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-[0_20px_50px_-24px_rgba(12,43,86,0.25)] dark:shadow-none"
+              className="relative rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-[0_20px_50px_-24px_rgba(36,61,33,0.12)] dark:shadow-none"
               style={{
                 opacity: statsVisible ? 1 : 0,
                 transform: statsVisible ? 'none' : 'translateY(24px)',
@@ -284,7 +284,7 @@ export const PajakSection = () => {
                   Sumber: Sistem Informasi Pajak Desa
                 </p>
                 <span className="font-mono text-[10px] text-neutral-400 tracking-widest">
-                  ID·SIPD-BORONG
+                  ID·SIPD-ANABANUA
                 </span>
               </div>
             </div>
@@ -299,7 +299,7 @@ export const PajakSection = () => {
                     ref={ref as React.Ref<HTMLAnchorElement>}
                     href="/informasi/pajak"
                     aria-label={f.title}
-                    className="group flex items-start gap-4 sm:gap-5 rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900/70 p-4 sm:p-5 hover:border-primary-500/40 hover:shadow-[0_14px_36px_-20px_rgba(11,93,187,0.35)] transition-all duration-300"
+                    className="group flex items-start gap-4 sm:gap-5 rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900/70 p-4 sm:p-5 hover:border-primary-500/40 hover:shadow-[0_14px_36px_-20px_rgba(55,171,52,0.35)] transition-all duration-300"
                     style={{
                       opacity: visible ? 1 : 0,
                       transform: visible ? 'translateX(0)' : 'translateX(26px)',

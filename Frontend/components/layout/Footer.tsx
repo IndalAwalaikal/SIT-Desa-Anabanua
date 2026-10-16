@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { getProfilDesa } from "@/lib/services/desa.service";
 import { FooterLinks } from "./FooterLinks";
+import { VisitorCounter } from "@/components/features/VisitorCounter";
 import { getServerT } from "@/lib/i18n/server";
 import type { ProfilDesa } from "@/types/desa";
 
@@ -20,9 +21,9 @@ import type { ProfilDesa } from "@/types/desa";
 // (p. ej. durante el build sin backend, o si el backend cae), se sirve un
 // perfil de respaldo para que el pie de página siga renderizando.
 const FALLBACK_PROFIL: ProfilDesa = {
-  nama: "Desa Borong",
-  kecamatan: "Kecamatan Herlang",
-  kabupaten: "Kabupaten Bulukumba",
+  nama: "Desa Anabanua",
+  kecamatan: "Kecamatan Barru",
+  kabupaten: "Kabupaten Barru",
   provinsi: "Sulawesi Selatan",
   kodePos: "",
   sejarah: "",
@@ -45,7 +46,7 @@ const FALLBACK_PROFIL: ProfilDesa = {
 export const Footer = async () => {
   const t = getServerT();
   const profil = await getProfilDesa().catch(() => FALLBACK_PROFIL);
-  const logoBulukumba = "/logo-bulukumba.webp";
+  const logoBarru = "/logo-barru.webp";
 
   return (
     <footer className="bg-neutral-950 text-neutral-300 pt-16 pb-12 border-t border-neutral-800 on-dark">
@@ -56,8 +57,8 @@ export const Footer = async () => {
               {/* Logo tanpa border kotak, menggunakan drop-shadow agar batas tetap jelas */}
               <div className="flex items-center justify-center w-14 h-14">
                 <Image
-                  src={logoBulukumba}
-                  alt="Lambang Kabupaten Bulukumba"
+                  src={logoBarru}
+                  alt="Lambang Kabupaten Barru"
                   width={48}
                   height={48}
                   className="h-auto w-14 object-contain drop-shadow-[0_4px_14px_rgba(0,0,0,0.55)]"
@@ -65,7 +66,7 @@ export const Footer = async () => {
               </div>
               <div>
                 <h3 className="font-extrabold text-lg text-white tracking-tight">
-                  DESA BORONG
+                  DESA ANABANUA
                 </h3>
                 <p className="text-xs text-primary-400 font-semibold">
                   {t('Footer.officialWebsite', 'Website Resmi Pemerintahan')}
@@ -73,31 +74,31 @@ export const Footer = async () => {
               </div>
             </div>
             <p className="text-xs text-neutral-400 leading-relaxed">
-              {t('Footer.portalDesc', 'Platform layanan publik dan pusat informasi terpadu Desa Borong, Kecamatan Herlang,')}
+              {t('Footer.portalDesc', 'Platform layanan publik dan pusat informasi terpadu Desa Anabanua, Kecamatan Barru,')}
               <a
-                href="https://bulukumbakab.go.id"
+                href="https://barrukab.go.id"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary-400 hover:underline font-bold inline-flex items-center gap-1"
               >
-                Kabupaten Bulukumba <Globe className="w-3 h-3 inline" />
+                Kabupaten Barru <Globe className="w-3 h-3 inline" />
               </a>
               , Sulawesi Selatan.
             </p>
             ...
             <div className="flex items-center gap-3 pt-2">
               <a
-                href="https://bulukumbakab.go.id"
+                href="https://barrukab.go.id"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2.5 py-1 rounded-xl bg-neutral-900 hover:bg-primary-600 hover:text-white text-neutral-300 text-[11px] font-bold transition-colors inline-flex items-center gap-1.5 border border-neutral-800"
-                title="Website Resmi Kabupaten Bulukumba"
+                title="Website Resmi Kabupaten Barru"
               >
                 <Globe className="w-3.5 h-3.5 text-primary-400" />
-                bulukumbakab.go.id
+                barrukab.go.id
               </a>
               <a
-                href="https://www.facebook.com/search/top?q=Desa%20Borong"
+                href="https://web.facebook.com/desa.anabanua"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-xl bg-neutral-900 hover:bg-primary-600 hover:text-white text-neutral-400 transition-colors"
@@ -107,7 +108,7 @@ export const Footer = async () => {
                 <Facebook className="w-4 h-4" />
               </a>
               <a
-                href="https://www.instagram.com/explore/tags/desaborong/"
+                href="https://www.instagram.com/desa_anabanua/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-xl bg-neutral-900 hover:bg-primary-600 hover:text-white text-neutral-400 transition-colors"
@@ -117,7 +118,7 @@ export const Footer = async () => {
                 <Instagram className="w-4 h-4" />
               </a>
               <a
-                href="https://www.youtube.com/results?search_query=desa+borong"
+                href="https://www.youtube.com/results?search_query=desa+anabanua"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 rounded-xl bg-neutral-900 hover:bg-primary-600 hover:text-white text-neutral-400 transition-colors"
@@ -140,11 +141,11 @@ export const Footer = async () => {
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-primary-500 shrink-0 mt-0.5" />
                 <a
-                  href="https://maps.app.goo.gl/nSJcjAg82dk2tuLm7"
+                  href="https://www.google.com/maps/search/?api=1&query=-4.47928,119.71651"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-primary-400 transition-colors underline decoration-dotted"
-                  title="Buka lokasi Desa Borong di Google Maps"
+                  title="Buka lokasi Desa Anabanua di Google Maps"
                 >
                   {profil.alamatKantor} ({t('Footer.directions', 'Petunjuk Arah ↗')})
                 </a>
@@ -166,10 +167,11 @@ export const Footer = async () => {
         </div>
 
         {/* Bottom copyright bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
+        <div className="pt-8 flex flex-col items-center justify-between gap-4 text-xs text-neutral-500 sm:flex-row">
           <p>
-            © 2026 Pemerintah Desa Borong. {t('Footer.copyright', 'Bagian dari Kabupaten Bulukumba. Hak Cipta Dilindungi.')}
+            © 2026 Pemerintah Desa Anabanua. {t('Footer.copyright', 'Bagian dari Kabupaten Barru. Hak Cipta Dilindungi.')}
           </p>
+          <VisitorCounter />
           <div className="flex items-center gap-6">
             <Link
               href="/dashboard/login"
@@ -178,10 +180,18 @@ export const Footer = async () => {
               <Shield className="w-3.5 h-3.5 text-accent-500" />
               {t('Footer.adminAccess', 'Akses Admin Desa')}
             </Link>
-            <span className="flex items-center gap-1 italic">
-              {t('Footer.motto', 'Bersama Mewujudkan Desa Borong yang Maju, Mandiri, dan Terhubung')}
+            <span className="hidden items-center gap-1 italic lg:inline-flex">
+              {t('Footer.motto', 'Bersama Mewujudkan Desa Anabanua yang Maju, Mandiri, dan Terhubung')}
             </span>
           </div>
+        </div>
+        <div className="mt-7 border-t border-neutral-900 pt-5 text-center">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-neutral-600">
+            Dikembangkan oleh
+          </p>
+          <p className="mt-1 text-[10px] leading-relaxed tracking-wide text-neutral-500/80">
+            Tim Lentera Anabanua KKN-PPL Universitas Negeri Makassar Angkatan XXXIII
+          </p>
         </div>
       </div>
     </footer>

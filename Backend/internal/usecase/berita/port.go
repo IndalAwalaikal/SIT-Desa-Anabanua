@@ -4,7 +4,7 @@ package berita
 import (
 	"context"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 // ListFilter captures pagination / filtering for the news list.

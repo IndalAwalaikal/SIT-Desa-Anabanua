@@ -4,12 +4,13 @@ package galeri
 import (
 	"context"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 // Repository persists galeri albums and their photos.
 type Repository interface {
 	List(ctx context.Context) ([]domain.GaleriAlbum, error)
+	ListPreview(ctx context.Context, limit int) ([]domain.GaleriAlbum, error)
 	GetByID(ctx context.Context, id string) (domain.GaleriAlbum, error)
 	Create(ctx context.Context, album domain.GaleriAlbum) error
 	Update(ctx context.Context, album domain.GaleriAlbum) error

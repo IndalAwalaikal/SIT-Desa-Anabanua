@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS fasilitas_desa,potensi_desa,dusun,perangkat_desa,umkm,galeri_item,galeri_album,agenda_kegiatan,apbdes_item,statistik_penduduk,profil_desa,berita,pengaduan,pengajuan_riwayat_status,pengajuan_lampiran,pengajuan_surat,jenis_surat,refresh_tokens,users;

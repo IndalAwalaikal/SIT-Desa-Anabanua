@@ -4,19 +4,20 @@
 package usecase
 
 import (
-	asecase "desa-borong-api/internal/usecase/auth"
-	"desa-borong-api/internal/usecase/berita"
-	"desa-borong-api/internal/usecase/desa"
-	"desa-borong-api/internal/usecase/finance"
-	"desa-borong-api/internal/usecase/galeri"
-	"desa-borong-api/internal/usecase/notifikasi"
-	"desa-borong-api/internal/usecase/pajak"
-	"desa-borong-api/internal/usecase/pengaduan"
-	"desa-borong-api/internal/usecase/persuratan"
-	"desa-borong-api/internal/usecase/sekilas_info"
-	"desa-borong-api/internal/usecase/sembako"
-	"desa-borong-api/internal/usecase/umkm"
-	ucuser "desa-borong-api/internal/usecase/user"
+	asecase "desa-anabanua-api/internal/usecase/auth"
+	"desa-anabanua-api/internal/usecase/berita"
+	"desa-anabanua-api/internal/usecase/desa"
+	"desa-anabanua-api/internal/usecase/finance"
+	"desa-anabanua-api/internal/usecase/galeri"
+	"desa-anabanua-api/internal/usecase/notifikasi"
+	"desa-anabanua-api/internal/usecase/pajak"
+	"desa-anabanua-api/internal/usecase/pengaduan"
+	"desa-anabanua-api/internal/usecase/pengunjung"
+	"desa-anabanua-api/internal/usecase/persuratan"
+	"desa-anabanua-api/internal/usecase/sekilas_info"
+	"desa-anabanua-api/internal/usecase/sembako"
+	"desa-anabanua-api/internal/usecase/umkm"
+	ucuser "desa-anabanua-api/internal/usecase/user"
 )
 
 // App bundles every use case service; handlers call methods through these
@@ -35,6 +36,7 @@ type App struct {
 	Notifikasi  *notifikasi.Service
 	SekilasInfo *sekilasinfo.Service
 	Sembako     *sembako.Service
+	Pengunjung  *pengunjung.Service
 }
 
 func New(
@@ -51,10 +53,11 @@ func New(
 	notif *notifikasi.Service,
 	sek *sekilasinfo.Service,
 	sbk *sembako.Service,
+	pengunjungSvc *pengunjung.Service,
 ) *App {
 	return &App{
 		Auth: auth, Berita: b, Persuratan: pers, Pengaduan: aduan, Desa: ds,
 		Finance: f, Galeri: g, Umkm: u, User: us, Pajak: p, Notifikasi: notif,
-		SekilasInfo: sek, Sembako: sbk,
+		SekilasInfo: sek, Sembako: sbk, Pengunjung: pengunjungSvc,
 	}
 }

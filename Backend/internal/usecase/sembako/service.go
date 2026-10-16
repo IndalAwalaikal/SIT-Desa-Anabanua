@@ -4,8 +4,8 @@ package sembako
 import (
 	"context"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
 )
 
 // Repository persists sembako periods and their items.

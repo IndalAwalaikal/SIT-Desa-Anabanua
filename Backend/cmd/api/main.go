@@ -9,32 +9,33 @@ import (
 	"syscall"
 	"time"
 
-	httpapi "desa-borong-api/internal/delivery/http"
-	"desa-borong-api/internal/delivery/http/handler"
-	"desa-borong-api/internal/delivery/http/middleware"
-	iauth "desa-borong-api/internal/infrastructure/auth"
-	"desa-borong-api/internal/infrastructure/config"
-	email "desa-borong-api/internal/infrastructure/email"
-	"desa-borong-api/internal/infrastructure/jobs"
-	mysqlstore "desa-borong-api/internal/infrastructure/mysql"
-	"desa-borong-api/internal/infrastructure/storage"
-	whatsapp "desa-borong-api/internal/infrastructure/whatsapp"
-	"desa-borong-api/internal/pkg/apputil"
-	"desa-borong-api/internal/pkg/notif"
-	"desa-borong-api/internal/usecase"
-	asecase "desa-borong-api/internal/usecase/auth"
-	"desa-borong-api/internal/usecase/berita"
-	"desa-borong-api/internal/usecase/desa"
-	"desa-borong-api/internal/usecase/finance"
-	"desa-borong-api/internal/usecase/galeri"
-	"desa-borong-api/internal/usecase/notifikasi"
-	"desa-borong-api/internal/usecase/pajak"
-	"desa-borong-api/internal/usecase/pengaduan"
-	"desa-borong-api/internal/usecase/persuratan"
-	"desa-borong-api/internal/usecase/sekilas_info"
-	"desa-borong-api/internal/usecase/sembako"
-	"desa-borong-api/internal/usecase/umkm"
-	ucuser "desa-borong-api/internal/usecase/user"
+	httpapi "desa-anabanua-api/internal/delivery/http"
+	"desa-anabanua-api/internal/delivery/http/handler"
+	"desa-anabanua-api/internal/delivery/http/middleware"
+	iauth "desa-anabanua-api/internal/infrastructure/auth"
+	"desa-anabanua-api/internal/infrastructure/config"
+	email "desa-anabanua-api/internal/infrastructure/email"
+	"desa-anabanua-api/internal/infrastructure/jobs"
+	mysqlstore "desa-anabanua-api/internal/infrastructure/mysql"
+	"desa-anabanua-api/internal/infrastructure/storage"
+	whatsapp "desa-anabanua-api/internal/infrastructure/whatsapp"
+	"desa-anabanua-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/pkg/notif"
+	"desa-anabanua-api/internal/usecase"
+	asecase "desa-anabanua-api/internal/usecase/auth"
+	"desa-anabanua-api/internal/usecase/berita"
+	"desa-anabanua-api/internal/usecase/desa"
+	"desa-anabanua-api/internal/usecase/finance"
+	"desa-anabanua-api/internal/usecase/galeri"
+	"desa-anabanua-api/internal/usecase/notifikasi"
+	"desa-anabanua-api/internal/usecase/pajak"
+	"desa-anabanua-api/internal/usecase/pengaduan"
+	"desa-anabanua-api/internal/usecase/pengunjung"
+	"desa-anabanua-api/internal/usecase/persuratan"
+	"desa-anabanua-api/internal/usecase/sekilas_info"
+	"desa-anabanua-api/internal/usecase/sembako"
+	"desa-anabanua-api/internal/usecase/umkm"
+	ucuser "desa-anabanua-api/internal/usecase/user"
 )
 
 // asyncMailer wraps an EmailSender and enqueues jobs instead of sending synchronously.
@@ -107,7 +108,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	mailer := email.New(cfg.BrevoAPIKey, cfg.BrevoFromEmail)
+	mailer := email.New(cfg.MailjetAPIKey, cfg.MailjetAPISecret, cfg.MailjetFromEmail)
 	waSender := whatsapp.New(cfg.FlowKirimAPIKey, cfg.FlowKirimBaseURL)
 
 	// Background job worker for async email, WhatsApp, PDF, and cleanup tasks.
@@ -164,6 +165,7 @@ func main() {
 	notifikasiRepo := mysqlstore.NewNotifikasiRepo(db)
 	sekilasInfoRepo := mysqlstore.NewSekilasInfoRepo(db)
 	sembakoRepo := mysqlstore.NewSembakoRepo(db)
+	pengunjungRepo := mysqlstore.NewPengunjungRepo(db)
 
 	// Use case services (business logic).
 	authSvc := asecase.NewService(userRepo, refreshRepo, otpRepo, pendingRepo, asyncMail, hasher, tokens, tx, cfg.RefreshTTL, cfg.OTPTTL)
@@ -186,8 +188,9 @@ func main() {
 	pajakSvc := pajak.NewService(pajakRepo)
 	sekilasInfoSvc := sekilasinfo.NewService(sekilasInfoRepo)
 	sembakoSvc := sembako.NewService(sembakoRepo)
+	pengunjungSvc := pengunjung.NewService(pengunjungRepo, cfg.VisitorHMACSecret)
 
-	app := usecase.New(authSvc, beritaSvc, persSvc, aduanSvc, desaSvc, finSvc, galSvc, umkmSvc, userSvc, pajakSvc, notifSvc, sekilasInfoSvc, sembakoSvc)
+	app := usecase.New(authSvc, beritaSvc, persSvc, aduanSvc, desaSvc, finSvc, galSvc, umkmSvc, userSvc, pajakSvc, notifSvc, sekilasInfoSvc, sembakoSvc, pengunjungSvc)
 	h := handler.New(app)
 	r := httpapi.NewRouter(h, tokens, db)
 

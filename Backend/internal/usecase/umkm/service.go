@@ -5,16 +5,16 @@ import (
 	"strings"
 	"time"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
 )
 
 type Service struct{ repo Repository }
 
 func NewService(repo Repository) *Service { return &Service{repo: repo} }
 
-func (s *Service) List(ctx context.Context, kategori string) ([]domain.Umkm, error) {
-	return s.repo.List(ctx, strings.TrimSpace(kategori))
+func (s *Service) List(ctx context.Context, kategori string, limit int) ([]domain.Umkm, error) {
+	return s.repo.List(ctx, strings.TrimSpace(kategori), limit)
 }
 
 func (s *Service) GetBySlug(ctx context.Context, slug string) (domain.Umkm, error) {

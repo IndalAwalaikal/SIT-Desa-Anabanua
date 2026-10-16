@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 type UserRepo struct{ db *sql.DB }

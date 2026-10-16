@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/persuratan"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/persuratan"
 )
 
 func (h *Handler) PengajuanCreate(w http.ResponseWriter, r *http.Request) {
@@ -175,7 +175,8 @@ func hasPDFMagic(buf []byte) bool {
 }
 
 func (h *Handler) PengajuanSaya(w http.ResponseWriter, r *http.Request) {
-	items, err := h.app.Persuratan.ListByPemohon(r.Context(), principalID(r))
+	pageNumber, limit := page(r)
+	items, total, err := h.app.Persuratan.ListByPemohonPage(r.Context(), principalID(r), pageNumber, limit)
 	if err != nil {
 		httpapi.Error(w, err)
 		return
@@ -184,7 +185,7 @@ func (h *Handler) PengajuanSaya(w http.ResponseWriter, r *http.Request) {
 	for _, p := range items {
 		out = append(out, h.pengajuanResp(r.Context(), p))
 	}
-	httpapi.JSON(w, 200, out)
+	httpapi.List(w, out, pageNumber, limit, total)
 }
 
 func (h *Handler) PengajuanLampiran(w http.ResponseWriter, r *http.Request) {
@@ -225,7 +226,11 @@ func sanitizeFilename(name string) string {
 }
 
 func (h *Handler) PengajuanList(w http.ResponseWriter, r *http.Request) {
-	items, err := h.app.Persuratan.ListAll(r.Context(), r.URL.Query().Get("status"))
+	pageNumber, limit := page(r)
+	items, total, err := h.app.Persuratan.ListPage(
+		r.Context(), r.URL.Query().Get("status"), r.URL.Query().Get("search"),
+		r.URL.Query().Get("sort"), pageNumber, limit,
+	)
 	if err != nil {
 		httpapi.Error(w, err)
 		return
@@ -234,7 +239,7 @@ func (h *Handler) PengajuanList(w http.ResponseWriter, r *http.Request) {
 	for _, p := range items {
 		out = append(out, h.pengajuanResp(r.Context(), p))
 	}
-	httpapi.JSON(w, 200, out)
+	httpapi.List(w, out, pageNumber, limit, total)
 }
 
 func (h *Handler) PengajuanStatus(w http.ResponseWriter, r *http.Request) {
@@ -318,14 +323,13 @@ func (h *Handler) PengajuanBukuAgenda(w http.ResponseWriter, r *http.Request) {
 			"pemohonNama":     p.PemohonNama,
 			"pemohonNik":      nik,
 			"tanggalTerbit":   p.UpdatedAt.Format("02/01/2006"),
-			"penandatangan":   "Kepala Desa Borong",
+			"penandatangan":   "Kepala Desa Anabanua",
 			"filePdfUrl":      p.FilePDFURL,
 			"qrCode":          qrCode,
 		})
 	}
 	httpapi.JSON(w, 200, agenda)
 }
-
 
 func (h *Handler) pengajuanResp(ctx context.Context, p domain.PengajuanSurat) map[string]any {
 	lamp := make([]map[string]any, 0, len(p.Lampiran))
@@ -435,4 +439,3 @@ func pengajuanTrackingResp(p domain.PengajuanSurat) map[string]any {
 	}
 	return resp
 }
-

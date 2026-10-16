@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""WhitePaper Desa Borong v2.1 — layout fixed: strict grid, no overflow"""
+"""WhitePaper Desa Anabanua v2.1 — layout fixed: strict grid, no overflow"""
 import os, math
 import matplotlib
 matplotlib.use('Agg')
@@ -37,7 +37,7 @@ LM = RM = 18*mm
 TM = 22*mm  # extra top for header
 BM = 16*mm
 CW = W - LM - RM  # 493.2 pt = 174mm content width
-OUT = "/home/rex/projek/Desa Borong/White_Paper_DesB_Borong_v2.pdf"
+OUT = "/home/rex/projek/Desa Anabanua/SIT Desa Anabanua/White_Paper_DesA_Anabanua_v2.pdf"
 CHART_DIR = "/tmp/desa_charts"
 os.makedirs(CHART_DIR, exist_ok=True)
 
@@ -337,20 +337,20 @@ def hf(canvas,doc):
         canvas.setStrokeColor(GREEN); canvas.setLineWidth(0.6)
         canvas.line(LM,y_top,W-RM,y_top)
         canvas.setFont('Helvetica',5.5); canvas.setFillColor(GREY_500)
-        canvas.drawString(LM,y_top+3*mm,'White Paper  \u2022  Sistem Informasi Desa Borong  \u2022  v1.2 \u2014 Agustus 2026')
-        canvas.drawRightString(W-RM,y_top+3*mm,'Pemerintah Desa Borong \u2022 MIT')
+        canvas.drawString(LM,y_top+3*mm,'White Paper  \u2022  Sistem Informasi Desa Anabanua  \u2022  v1.2 \u2014 Agustus 2026')
+        canvas.drawRightString(W-RM,y_top+3*mm,'Pemerintah Desa Anabanua \u2022 MIT')
         y_bot=12*mm
         canvas.setStrokeColor(GREY_300); canvas.setLineWidth(0.4)
         canvas.line(LM,y_bot,W-RM,y_bot)
         canvas.setFont('Helvetica',5.5); canvas.setFillColor(GREY_500)
-        canvas.drawString(LM,y_bot-4*mm,'\u00a9 2026 Pemerintah Desa Borong \u2014 github.com/desaborong/desa-borong')
+        canvas.drawString(LM,y_bot-4*mm,'\u00a9 2026 Pemerintah Desa Anabanua \u2014 github.com/IndalAwalaikal/Sistem-Terintegrasi-Desa-Anabanua')
         canvas.drawRightString(W-RM,y_bot-4*mm,f'Hal. {doc.page}')
     canvas.restoreState()
 
 # ── Document
 doc=SimpleDocTemplate(OUT,pagesize=A4,leftMargin=LM,rightMargin=RM,topMargin=TM,bottomMargin=BM,
-    title='White Paper \u2014 Sistem Informasi Desa Borong',author='Pemerintah Desa Borong',
-    subject='Platform Digital Terpadu Desa Borong',keywords='desa borong, whitepaper, e-government')
+    title='White Paper \u2014 Sistem Informasi Desa Anabanua',author='Pemerintah Desa Anabanua',
+    subject='Platform Digital Terpadu Desa Anabanua',keywords='desa anabanua, whitepaper, e-government')
 story=[]
 
 def mono_style(): return ParagraphStyle('mono',parent=sCell,fontName='Courier',fontSize=6,leading=7.5,textColor=GREY_900)
@@ -359,12 +359,12 @@ IMG_W = CW * 0.98
 def chart_img(path,h_mm): return Image(path,width=IMG_W,height=h_mm*mm)
 
 # COVER — no header/footer, pure content
-story.append(P('<font color="#0F4C2E"><b>PEMERINTAH DESA BORONG</b></font><br/><font color="#6B7280" size="6.5">Kecamatan Herlang \u2022 Kabupaten Bulukumba \u2022 Sulawesi Selatan</font>',ParagraphStyle('coverSub',parent=sBody,fontSize=6.5,textColor=GREY_500,alignment=TA_LEFT,spaceAfter=2)))
+story.append(P('<font color="#0F4C2E"><b>PEMERINTAH DESA ANABANUA</b></font><br/><font color="#6B7280" size="6.5">Kecamatan Barru \u2022 Kabupaten Barru \u2022 Sulawesi Selatan</font>',ParagraphStyle('coverSub',parent=sBody,fontSize=6.5,textColor=GREY_500,alignment=TA_LEFT,spaceAfter=2)))
 story.append(Spacer(1,8*mm))
 cover_inner_w = CW - 28
 cover_block=Table([
     [P('<font color="#ffffff" size="8">WHITE PAPER</font>',ParagraphStyle('cb1',parent=sBody,textColor=white,fontName='Helvetica',fontSize=8,leading=9,alignment=TA_LEFT))],
-    [P('<b><font color="#ffffff">Sistem Informasi<br/>Desa Borong</font></b>',ParagraphStyle('cb2',parent=sTitle,textColor=white,fontSize=26,leading=28,alignment=TA_LEFT,spaceAfter=2))],
+    [P('<b><font color="#ffffff">Sistem Informasi<br/>Desa Anabanua</font></b>',ParagraphStyle('cb2',parent=sTitle,textColor=white,fontSize=26,leading=28,alignment=TA_LEFT,spaceAfter=2))],
     [P('<font color="#FEF3C7">Platform Digital Terpadu untuk Transparansi Pemerintahan,<br/>Layanan Administrasi &amp; Keterbukaan Informasi Publik</font>',ParagraphStyle('cb3',parent=sSubtitle,textColor=HexColor('#FEF3C7'),fontSize=8.5,leading=11,alignment=TA_LEFT))],
     [Spacer(1,5*mm)],
     [Table([[P('<font color="#ffffff"><b>v1.2</b></font><br/><font color="#D1FAE5" size="5.5">Agustus 2026</font>',ParagraphStyle('m1',parent=sBody,textColor=white,alignment=TA_CENTER,fontSize=6.5)),
@@ -380,14 +380,14 @@ cover_block.setStyle(TableStyle([
 ]))
 story.append(cover_block)
 story.append(Spacer(1,5*mm))
-meta_rows=[['Pemilik','Pemerintah Desa Borong'],['Pengembang','Indal Awalaikal'],['Repositori','github.com/desaborong/desa-borong'],['Kontak','admin@desaborong.id'],['Status','Operasional \u2014 Local Docker \u2192 target global Q3 2026']]
+meta_rows=[['Pemilik','Pemerintah Desa Anabanua'],['Pengembang','Indal Awalaikal'],['Repositori','github.com/IndalAwalaikal/Sistem-Terintegrasi-Desa-Anabanua'],['Kontak','admin@desaanabanua.id'],['Status','Operasional \u2014 Local Docker \u2192 target global Q3 2026']]
 mt=Table([[P(f"<b>{a}</b>",ParagraphStyle('ml',parent=sCell,fontName='Helvetica-Bold',fontSize=6.7,textColor=GREY_700)),P(b,sCell)] for a,b in meta_rows],colWidths=[CW*0.24,CW*0.76])
 mt.setStyle(TableStyle([('GRID',(0,0),(-1,-1),0.4,HexColor('#E5E7EB')),('BACKGROUND',(0,0),(0,-1),GREY_50),('LEFTPADDING',(0,0),(-1,-1),5),('TOPPADDING',(0,0),(-1,-1),3),('BOTTOMPADDING',(0,0),(-1,-1),3),('ROUNDEDCORNERS',[4,4,4,4]),('VALIGN',(0,0),(-1,-1),'MIDDLE')]))
 story.append(mt)
 story.append(Spacer(1,4*mm))
 story.append(P('Dokumen ini adalah white paper resmi \u2014 ringkas, berbasis bukti, siap diaudit. Setiap klaim kinerja &amp; keamanan merujuk benchmark internal &amp; audit Agustus 2026. Sitasi non-komersial wajib atribusi.',ParagraphStyle('coverNote',parent=sSmall,textColor=GREY_500,alignment=TA_LEFT,fontSize=6.8,leading=9,borderPadding=(5,6,5,6),backColor=GREY_50)))
 story.append(Spacer(1,6*mm))
-story.append(P('<font color="#9CA3AF" size="5.5">\u00a9 2026 Pemerintah Desa Borong \u2022 MIT untuk kode sumber \u2022 Dokumen publik</font>',ParagraphStyle('foot',parent=sBody,alignment=TA_CENTER,textColor=GREY_500,fontSize=5.5)))
+story.append(P('<font color="#9CA3AF" size="5.5">\u00a9 2026 Pemerintah Desa Anabanua \u2022 MIT untuk kode sumber \u2022 Dokumen publik</font>',ParagraphStyle('foot',parent=sBody,alignment=TA_CENTER,textColor=GREY_500,fontSize=5.5)))
 
 # TOC
 story.append(PageBreak())
@@ -403,7 +403,7 @@ story.append(P('Konvensi: <b>hijau</b> = capaian/aman, <b>emas</b> = perhatian/r
 
 # 01 Ringkasan
 story.append(KeepTogether([section_header('01','Ringkasan Eksekutif'),Spacer(1,2*mm),
-    P('Sistem Informasi Desa Borong mengintegrasikan <b>tiga pilar</b> pelayanan desa \u2014 administrasi, transparansi, dan keterbukaan informasi \u2014 dalam satu deployment kontainer yang mudah direplikasi.',sBody)]))
+    P('Sistem Informasi Desa Anabanua mengintegrasikan <b>tiga pilar</b> pelayanan desa \u2014 administrasi, transparansi, dan keterbukaan informasi \u2014 dalam satu deployment kontainer yang mudah direplikasi.',sBody)]))
 # pillars — equal columns exactly CW
 pw=CW/3
 pillar=Table([
@@ -418,7 +418,7 @@ story.append(P('<b>Outcome terukur:</b> penyelesaian surat \u22641 hari \u2022 1
 
 # 02 Latar Belakang
 story.append(section_header('02','Latar Belakang & Konteks'))
-story.append(P('<b>2.1 Konteks</b> \u2014 Desa Borong, Kec. Herlang, Kab. Bulukumba, Sulsel. Unit pemerintahan terkecil yang mengelola adminduk, APBDes, musyawarah, dan UMKM. Kedekatan dengan warga menuntut layanan cepat, transparan, terdokumentasi.',sBody))
+story.append(P('<b>2.1 Konteks</b> \u2014 Desa Anabanua, Kec. Barru, Kab. Barru, Sulsel. Unit pemerintahan terkecil yang mengelola adminduk, APBDes, musyawarah, dan UMKM. Kedekatan dengan warga menuntut layanan cepat, transparan, terdokumentasi.',sBody))
 story.append(P('<b>2.2 Tantangan Pelayanan Konvensional</b>',sH2))
 story.append(styled_table(['Tantangan','Dampak'],[['Akses terbatas','Warga harus datang ke kantor desa pada jam kerja.'],['Proses manual','Verifikasi butuh beberapa kunjungan fisik.'],['Kurang transparansi','Realisasi APBDes sulit diakses warga.'],['Dokumentasi terbatas','Arsip pengajuan &amp; pengaduan rentan hilang.'],['Komunikasi tidak efektif','Pengumuman hanya via papan/mulut ke mulut.']],col_widths=[CW*0.28,CW*0.72]))
 story.append(Spacer(1,2*mm))
@@ -517,13 +517,13 @@ story.append(section_header('12','Operasional & Pemeliharaan'))
 story.append(P('<b>12.1 Deployment</b> \u2014 <font face="Courier">cp .env.example .env \u2192 docker compose up --build -d</font>. Frontend 3300, backend 8088, mysql 127.0.0.1:3306 (loopback only). Production planned: Swarm/K8s, Nginx+TLS Let\u2019s Encrypt, MinIO, backup S3, Prometheus+Grafana, Loki/ELK.',sSmall))
 story.append(styled_table(['Layanan','URL Internal','Port Host'],[['Frontend','http://localhost:3300','3300'],['Backend REST API','http://localhost:8088','8088'],['MySQL','127.0.0.1:3306','3306 loopback']],col_widths=[CW*0.30,CW*0.42,CW*0.28]))
 story.append(Spacer(1,2*mm))
-story.append(P('<b>12.2 Backup &amp; Restore</b> \u2014 <font face="Courier">bash Backend/scripts/backup.sh</font> \u2192 desa_borong_YYYYMMDD_HHMMSS.sql.gz, cron harian, retention 30 hari (BACKUP_RETENTION_DAYS), restore via docker compose exec -T mysql.',sSmall))
+story.append(P('<b>12.2 Backup &amp; Restore</b> \u2014 <font face="Courier">bash Backend/scripts/backup.sh</font> \u2192 desa_anabanua_YYYYMMDD_HHMMSS.sql.gz, cron harian, retention 30 hari (BACKUP_RETENTION_DAYS), restore via docker compose exec -T mysql.',sSmall))
 story.append(P('<b>12.3 Monitoring</b> \u2014 GET /healthz (liveness 200), GET /readyz (readiness cek MySQL, 503 jika down), slog JSON prod (method, path, duration, request_id), panic recovery + stack trace.',sSmall))
 story.append(P('<b>12.4 Secret Rotation (tanpa downtime):</b> JWT_ACCESS_SECRET via previous_secret array (planned), DOCUMENT_HMAC_SECRET tidak dirotasi tanpa re-issue QR, DB password via env+restart.',sSmall))
 
 # 13 CI/CD
 story.append(section_header('13','Pipeline CI/CD'))
-story.append(styled_table(['Job','Langkah Utama'],[['Backend','setup-go 1.26 \u2192 go mod download \u2192 MySQL service \u2192 go vet \u2192 go test \u2192 go test -race'],['Frontend','setup-node 22 \u2192 npm ci \u2192 tsc --noEmit \u2192 eslint \u2192 next build \u2192 vitest run'],['Docker','setup-buildx \u2192 build image desa-borong:latest \u2192 cache gha']],col_widths=[CW*0.18,CW*0.82]))
+story.append(styled_table(['Job','Langkah Utama'],[['Backend','setup-go 1.26 \u2192 go mod download \u2192 MySQL service \u2192 go vet \u2192 go test \u2192 go test -race'],['Frontend','setup-node 22 \u2192 npm ci \u2192 tsc --noEmit \u2192 eslint \u2192 next build \u2192 vitest run'],['Docker','setup-buildx \u2192 build image desa-anabanua:latest \u2192 cache gha']],col_widths=[CW*0.18,CW*0.82]))
 story.append(Spacer(1,2*mm))
 story.append(P('<b>Definition of Done (tiap PR):</b> 1) go vet &amp; go test -race lulus 2) tsc+eslint+vitest lulus 3) docker build sukses 4) migrasi up/down ter-commit 5) endpoint baru ada handler+usecase test 6) perubahan transaksional punya audit trail.',sSmall))
 
@@ -543,7 +543,7 @@ story.append(styled_table(['Fase','Periode','Fokus Utama'],[['Produksi Awal','Q2
 
 # 16 Kesimpulan
 story.append(section_header('16','Kesimpulan'))
-story.append(P('Sistem Informasi Desa Borong membuktikan desa dapat memiliki platform operasional \u2014 bukan sekadar brosur \u2014 dengan standar produksi: performa &lt;50 ms publik, keamanan berlapis (OWASP/UU PDP/PP 71), skalabilitas horizontal stateless, maintainability via Clean Architecture, dan UX PWA aksesibel. 25 temuan \u2192 0, local Docker \u2192 siap global Q3 2026.',sBody))
+story.append(P('Sistem Informasi Desa Anabanua membuktikan desa dapat memiliki platform operasional \u2014 bukan sekadar brosur \u2014 dengan standar produksi: performa &lt;50 ms publik, keamanan berlapis (OWASP/UU PDP/PP 71), skalabilitas horizontal stateless, maintainability via Clean Architecture, dan UX PWA aksesibel. 25 temuan \u2192 0, local Docker \u2192 siap global Q3 2026.',sBody))
 story.append(P('Keberhasilan ini dirancang sebagai <b>model replikasi</b> bagi desa lain: satu desa per deployment, replikasi via Docker Compose, data terpublikasi &amp; terverifikasi QR. E-Government &amp; keterbukaan bukan jargon \u2014 melainkan endpoint yang bisa di-curl dan log yang bisa diaudit.',sBody))
 story.append(Paragraph('<b>Prinsip yang dijaga:</b> boring over clever \u2022 deletion over addition \u2022 standar platform sebelum library \u2022 validasi di trust boundary \u2022 audit trail untuk setiap mutasi \u2014 kepercayaan publik dibangun dari jejak yang tidak bisa dihapus.',ParagraphStyle('concl',parent=sBody,backColor=GREEN_LIGHT,borderPadding=(6,8,6,8),textColor=GREEN_DARK,fontSize=7.5,leading=10)))
 
@@ -553,7 +553,7 @@ story.append(P('<b>Lampiran A \u2014 Endpoint API (Ringkasan)</b>',sH2))
 story.append(styled_table(['Group','Method & Path','Auth','Deskripsi'],[['Auth','POST /api/auth/register','Publik','Registrasi + OTP'],['','POST /api/auth/verify-otp','Publik','Verifikasi OTP'],['','POST /api/auth/login','Publik','\u2192 access+refresh'],['','POST /api/auth/refresh','Refresh cookie','Rotasi token'],['','POST /api/auth/logout','Auth','Revoke token'],['','GET /api/auth/me','Auth','Profil login'],['','POST /api/auth/forgot-password','Publik','Kirim OTP reset'],['','POST /api/auth/reset-password','Publik','Reset via OTP'],['','POST /api/auth/change-password','Auth','Ganti password'],['Berita','GET /api/berita','Publik','List + filter'],['','GET /api/berita/{slug}','Publik','Detail'],['','GET /api/berita/{slug}/komentar','Publik','Komentar'],['','POST /api/berita/{slug}/komentar','Auth','Tambah komentar'],['','GET /api/admin/berita','Admin','Manajemen'],['','POST /api/berita','Admin','Create'],['','PUT /api/berita/{id}','Admin','Update'],['','DELETE /api/berita/{id}','Admin','Delete'],['Persuratan','GET /api/layanan','Publik','Daftar jenis'],['','GET /api/layanan/{kode}','Publik','Detail + form_fields'],['','POST /api/pengajuan','Auth+CSRF','Ajukan + upload'],['','GET /api/pengajuan/{resi}','Publik (RL)','Tracking'],['','GET /api/surat/{resi}','Publik (RL)','Download PDF'],['','GET /api/verifikasi/surat/{code}','Publik (RL)','Verifikasi QR'],['','GET /api/pengajuan/saya','Auth','Riwayat sendiri'],['','GET /api/admin/pengajuan','Admin','List semua'],['','PATCH /api/pengajuan/{id}/status','Admin','Ubah status'],['','POST /api/pengajuan/{id}/publish','Admin','Publish PDF+QR'],['Pengaduan','POST /api/pengaduan','Auth+CSRF','Buat pengaduan'],['','GET /api/pengaduan/{tiket}','Publik (RL)','Tracking'],['','GET /api/pengaduan/saya','Auth','Riwayat sendiri'],['','GET /api/admin/pengaduan','Admin','List semua'],['','PATCH /api/pengaduan/{id}/status','Admin','Ubah + tanggapan'],['Pajak','GET /api/pajak/ringkasan','Publik','Ringkasan transparansi'],['','GET /api/admin/pajak/*','Admin','CRUD pajak'],['Lainnya','GET /api/profil-desa, /statistik, /apbdes, /agenda, /galeri, /umkm, /notifikasi/stream','-','Publik/SSE']],col_widths=[CW*0.13,CW*0.34,CW*0.16,CW*0.37]))
 
 story.append(P('<b>Lampiran B \u2014 Environment Variables (Backend)</b>',sH2))
-story.append(styled_table(['Variable','Wajib','Default','Deskripsi'],[['APP_ENV','Ya','development','development / production'],['APP_PORT','Tidak','8080','Port backend'],['DB_HOST','Ya','localhost','Host MySQL'],['DB_PORT','Tidak','3306','Port MySQL'],['DB_NAME','Ya','-','Nama DB'],['DB_USER','Ya','-','User DB'],['DB_PASSWORD','Ya','-','Password DB'],['JWT_ACCESS_SECRET','Ya (\u226532)','-','Secret JWT access'],['JWT_REFRESH_SECRET','Ya (\u226532)','-','Secret refresh (boleh sama)'],['DOCUMENT_HMAC_SECRET','Ya (prod)','-','HMAC terpisah'],['JWT_ACCESS_TTL','Tidak','15m','TTL access'],['JWT_REFRESH_TTL','Tidak','720h','TTL refresh'],['CORS_ALLOWED_ORIGINS','Ya','-','Origin comma-separated'],['FILE_STORAGE_PATH','Tidak','./uploads','Path upload'],['BREVO_API_KEY','Tidak','(NOOP)','API Brevo'],['BREVO_FROM_EMAIL','Tidak','no-reply@desaborong.id','Email pengirim'],['FLOWKIRIM_API_KEY','Tidak','(NOOP)','API FlowKirim'],['FLOWKIRIM_BASE_URL','Tidak','api.flowkirim.com','Base URL'],['FLOWKIRIM_WEBHOOK_SECRET','Tidak','(no auth)','Secret webhook WA'],['BOOTSTRAP_SUPER_ADMIN_*','Tidak','-','Seed super admin (hapus setelah boot)'],['TRUSTED_PROXIES','Tidak','(no trust)','CIDR proxy XFF'],['OTP_TTL_MINUTES','Tidak','10','TTL OTP menit']],col_widths=[CW*0.24,CW*0.12,CW*0.16,CW*0.48]))
+story.append(styled_table(['Variable','Wajib','Default','Deskripsi'],[['APP_ENV','Ya','development','development / production'],['APP_PORT','Tidak','8080','Port backend'],['DB_HOST','Ya','localhost','Host MySQL'],['DB_PORT','Tidak','3306','Port MySQL'],['DB_NAME','Ya','-','Nama DB'],['DB_USER','Ya','-','User DB'],['DB_PASSWORD','Ya','-','Password DB'],['JWT_ACCESS_SECRET','Ya (\u226532)','-','Secret JWT access'],['JWT_REFRESH_SECRET','Ya (\u226532)','-','Secret refresh (boleh sama)'],['DOCUMENT_HMAC_SECRET','Ya (prod)','-','HMAC terpisah'],['JWT_ACCESS_TTL','Tidak','15m','TTL access'],['JWT_REFRESH_TTL','Tidak','720h','TTL refresh'],['CORS_ALLOWED_ORIGINS','Ya','-','Origin comma-separated'],['FILE_STORAGE_PATH','Tidak','./uploads','Path upload'],['BREVO_API_KEY','Tidak','(NOOP)','API Brevo'],['BREVO_FROM_EMAIL','Tidak','no-reply@desaanabanua.id','Email pengirim'],['FLOWKIRIM_API_KEY','Tidak','(NOOP)','API FlowKirim'],['FLOWKIRIM_BASE_URL','Tidak','api.flowkirim.com','Base URL'],['FLOWKIRIM_WEBHOOK_SECRET','Tidak','(no auth)','Secret webhook WA'],['BOOTSTRAP_SUPER_ADMIN_*','Tidak','-','Seed super admin (hapus setelah boot)'],['TRUSTED_PROXIES','Tidak','(no trust)','CIDR proxy XFF'],['OTP_TTL_MINUTES','Tidak','10','TTL OTP menit']],col_widths=[CW*0.24,CW*0.12,CW*0.16,CW*0.48]))
 
 story.append(P('<b>Lampiran C \u2014 Struktur File Penting (Backend)</b>',sH2))
 rows=[['Backend/cmd/api/main.go','Entrypoint, wiring'],['internal/domain/','Entity, error sentinel'],['internal/usecase/auth/service.go','537 baris \u2014 kompleks'],['internal/usecase/persuratan/','Inti surat online'],['internal/infrastructure/auth/','JWT service'],['internal/infrastructure/mysql/','Repository sqlc+manual'],['internal/delivery/http/router.go','180 baris \u2014 semua route'],['internal/delivery/http/middleware/','auth, csrf, rate_limit, common'],['migrations/*.sql','12 file up/down']]
@@ -565,7 +565,7 @@ story.append(P('<b>Lampiran D \u2014 Dependensi Utama</b>',sH2))
 story.append(Table([[P('<b>Backend (go.mod)</b>',ParagraphStyle('dh',parent=sHead,textColor=GREEN_DARK,fontSize=6.6)),P('<b>Frontend (package.json)</b>',ParagraphStyle('dh2',parent=sHead,textColor=NAVY,fontSize=6.6))],[P('github.com/go-sql-driver/mysql<br/>github.com/golang-jwt/jwt/v5<br/>github.com/golang-migrate/migrate/v4<br/>github.com/oklog/ulid/v2<br/>github.com/stretchr/testify<br/>golang.org/x/crypto<br/>github.com/sqlc-dev/sqlc (tool)',ParagraphStyle('dep',parent=sCell,fontName='Courier',fontSize=5.8,leading=6.8)),P('next@^16, react@^19, typescript@^5<br/>tailwindcss@^4, zustand@^5, zod@^3<br/>recharts@^2, leaflet, lucide-react<br/>sharp@0.35.3, vitest@^3, testing-library',ParagraphStyle('dep2',parent=sCell,fontName='Courier',fontSize=5.8,leading=6.8))]],colWidths=[CW/2,CW/2]))
 story[-1].setStyle(TableStyle([('GRID',(0,0),(-1,-1),0.4,HexColor('#E5E7EB')),('BACKGROUND',(0,0),(-1,0),GREY_100),('VALIGN',(0,0),(-1,-1),'TOP'),('TOPPADDING',(0,0),(-1,-1),5),('BOTTOMPADDING',(0,0),(-1,-1),5),('LEFTPADDING',(0,0),(-1,-1),5)]))
 story.append(Spacer(1,4*mm))
-story.append(P('Dokumen disiapkan 21 Agustus 2026 sebagai white paper resmi. Konten publik, dapat disitasi non-komersial dengan atribusi. <b>\u00a9 2026 Pemerintah Desa Borong. MIT untuk kode sumber.</b>',ParagraphStyle('final',parent=sBody,alignment=TA_CENTER,textColor=GREY_500,fontSize=6.8,leading=9,backColor=GREY_50,borderPadding=(6,8,6,8))))
+story.append(P('Dokumen disiapkan 21 Agustus 2026 sebagai white paper resmi. Konten publik, dapat disitasi non-komersial dengan atribusi. <b>\u00a9 2026 Pemerintah Desa Anabanua. MIT untuk kode sumber.</b>',ParagraphStyle('final',parent=sBody,alignment=TA_CENTER,textColor=GREY_500,fontSize=6.8,leading=9,backColor=GREY_50,borderPadding=(6,8,6,8))))
 
 doc.build(story,onFirstPage=hf,onLaterPages=hf)
 import os as _os; print(f"done \u2192 {OUT} ({_os.path.getsize(OUT)} bytes) CW={CW:.1f}")

@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/usecase/desa"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/usecase/desa"
 )
 
 // ---- Fasilitas Desa ----

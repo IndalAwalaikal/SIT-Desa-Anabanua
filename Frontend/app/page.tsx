@@ -1,7 +1,7 @@
 import React from 'react';
 import { HeroSection } from '@/components/features/beranda/HeroSection';
 import { InfoTicker } from '@/components/features/beranda/InfoTicker';
-import { StatsSection } from '@/components/features/beranda/StatsSection';
+import { DemografiPotensiSection } from '@/components/features/beranda/StatsSection';
 import { QuickServices } from '@/components/features/beranda/QuickServices';
 import { LatestNewsSection } from '@/components/features/beranda/LatestNewsSection';
 import { UmkmShowcase } from '@/components/features/beranda/UmkmShowcase';
@@ -10,37 +10,68 @@ import { PajakSection } from '@/components/features/beranda/PajakSection';
 import { ApbdesSection } from '@/components/features/beranda/ApbdesSection';
 import { AgendaSection } from '@/components/features/beranda/AgendaSection';
 import { ProfilRingkasanSection } from '@/components/features/beranda/ProfilRingkasanSection';
+import { SembakoSection } from '@/components/features/beranda/SembakoSection';
 import { GallerySection } from '@/components/features/beranda/GallerySection';
 import { Reveal } from '@/components/ui/Reveal';
-import { getProfilDesa, getPerangkatDesaList } from '@/lib/services/desa.service';
-import { getStatistikPenduduk } from '@/lib/services/statistik.service';
+import { getProfilDesa, getPerangkatDesaList, getPotensiDesaList } from '@/lib/services/desa.service';
 import { getJenisSuratList } from '@/lib/services/persuratan.service';
 import { getBeritaList } from '@/lib/services/berita.service';
 import { getUmkmList } from '@/lib/services/umkm.service';
 import { getAgendaKegiatan } from '@/lib/services/statistik.service';
-import { getGaleriAlbumList } from '@/lib/services/galeri.service';
+import { getGaleriAlbumPreview } from '@/lib/services/galeri.service';
+import { getSembakoPeriods } from '@/lib/services/sembako.service';
+import type { PotensiDesa } from '@/types/desa';
+
+/**
+ * Memetakan daftar PotensiDesa dari API ke bentuk PotensiWilayah
+ * yang dipakai DemografiPotensiSection. Pencocokan berdasarkan kata kunci
+ * pada kategori/nama; item yang tidak cocok tidak ditampilkan.
+ */
+function mapPotensi(list: PotensiDesa[]) {
+  const fmt = (p?: PotensiDesa) => (p ? `${p.nama} — ${p.deskripsi}` : undefined);
+  const pick = (...keywords: string[]): PotensiDesa | undefined =>
+    list.find((p) =>
+      keywords.some((k) => `${p.kategori} ${p.nama}`.toLowerCase().includes(k)),
+    );
+  const perkebunan = list
+    .filter((item) => `${item.kategori} ${item.nama}`.toLowerCase().includes('perkebunan'))
+    .map(fmt)
+    .filter(Boolean)
+    .join(' · ');
+
+  return {
+    pertanian: fmt(pick('pertanian', 'tanaman pangan')),
+    perkebunan: perkebunan || fmt(pick('kebun')),
+    umkm: fmt(pick('umkm', 'kerajinan', 'usaha')),
+  };
+}
 
 export default async function HomePage() {
-  const [profil, statistik, services, newsResult, businesses, agenda, gallery, perangkat] = await Promise.all([
+  const [profil, services, newsResult, businesses, agenda, gallery, perangkat, sembako, potensi] = await Promise.all([
     getProfilDesa(),
-    getStatistikPenduduk(),
     getJenisSuratList(),
     getBeritaList({ page: 1, perPage: 4 }),
-    getUmkmList(),
+    getUmkmList(undefined, 4),
     getAgendaKegiatan(),
-    getGaleriAlbumList(),
+    getGaleriAlbumPreview(12),
     getPerangkatDesaList(),
+    // Sembako boleh gagal tanpa merobohkan beranda — cukup section disembunyikan.
+    getSembakoPeriods().catch(() => []),
+    getPotensiDesaList().catch(() => []),
   ]);
+  const kepalaDesa = perangkat.find(
+    (item) => item.jabatan?.trim().toLocaleLowerCase('id-ID') === 'kepala desa',
+  );
 
   return (
     <div className="relative flex flex-col min-h-screen overflow-x-hidden">
       {/* === Decorative floating glowing blobs — purely visual, pointer-events none === */}
       <div aria-hidden="true" className="pointer-events-none select-none fixed inset-0 overflow-hidden -z-10">
-        {/* Blob 1: top-left, primary blue — radial glow tanpa blur filter (jauh lebih ringan utk GPU) */}
+        {/* Blob 1: top-left, primary green — radial glow */}
         <div
           className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full opacity-[0.07] dark:opacity-[0.05] hidden md:block"
           style={{
-            background: 'radial-gradient(circle at center, rgba(36,116,212,0.55) 0%, rgba(36,116,212,0) 65%)',
+            background: 'radial-gradient(circle at center, rgba(55,171,52,0.55) 0%, rgba(55,171,52,0) 65%)',
             animation: 'float 9s ease-in-out infinite',
           }}
         />
@@ -52,11 +83,11 @@ export default async function HomePage() {
             animation: 'float 12s ease-in-out infinite 2s',
           }}
         />
-        {/* Blob 3: lower-left, navy/primary — tetap dalam keluarga biru brand */}
+        {/* Blob 3: lower-left, green brand glow */}
         <div
           className="absolute bottom-[15%] -left-24 h-[380px] w-[380px] rounded-full opacity-[0.06] dark:opacity-[0.04] hidden md:block"
           style={{
-            background: 'radial-gradient(circle at center, rgba(11,93,187,0.55) 0%, rgba(11,93,187,0) 65%)',
+            background: 'radial-gradient(circle at center, rgba(55,171,52,0.45) 0%, rgba(55,171,52,0) 65%)',
             animation: 'float 10s ease-in-out infinite 4.5s',
           }}
         />
@@ -65,7 +96,18 @@ export default async function HomePage() {
       <HeroSection profil={profil} />
       <InfoTicker />
       <Reveal>
-        <StatsSection statistik={statistik} profil={profil} />
+        <DemografiPotensiSection
+          demografi={{
+            totalPenduduk: 2419,
+            jumlahKK: 633,
+          }}
+          potensi={mapPotensi(potensi ?? [])}
+          fotoKepalaDesa={kepalaDesa?.foto ?? ''}
+          namaKepalaDesa={kepalaDesa?.nama ?? ''}
+          namaDesa={profil.nama}
+          namaKecamatan={profil.kecamatan}
+          namaKabupaten={profil.kabupaten}
+        />
       </Reveal>
       <Reveal delay={120}>
         <LatestNewsSection news={newsResult.data} />
@@ -78,6 +120,9 @@ export default async function HomePage() {
       </Reveal>
       <Reveal delay={110}>
         <ApbdesSection />
+      </Reveal>
+      <Reveal delay={120}>
+        <SembakoSection periods={sembako ?? []} />
       </Reveal>
       <Reveal delay={130}>
         <AgendaSection agenda={agenda || []} />

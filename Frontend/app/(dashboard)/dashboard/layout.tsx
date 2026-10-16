@@ -49,7 +49,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     if (!hasHydrated || isLoginPage) return;
     if (!isAuthenticated || (user?.role !== 'admin' && user?.role !== 'super_admin')) {
-      router.replace('/dashboard/login');
+      // Langsung ke /login — /dashboard/login hanyalah alias yang juga
+      // bermuara ke sana, jadi hindari redirect berantai.
+      router.replace('/login');
     }
   }, [hasHydrated, isAuthenticated, isLoginPage, user, router]);
 
@@ -88,7 +90,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </button>
             <div className="flex items-center gap-2">
               <ShieldAlert className="w-5 h-5 text-primary-400" />
-              <span className="font-extrabold text-sm tracking-wide">ADMIN DESA BORONG</span>
+              <span className="font-extrabold text-sm tracking-wide">ADMIN DESA ANABANUA</span>
             </div>
           </div>
         </div>

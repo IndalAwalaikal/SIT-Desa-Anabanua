@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
   getAllPengajuanAdmin,
@@ -21,6 +21,7 @@ import { DynamicImage } from "@/components/ui/DynamicImage";
 import { formatTanggal } from "@/lib/utils/format";
 import SuratTemplate from "@/components/surat/SuratTemplate";
 import { useToastStore } from "@/store/toastStore";
+import { PaginationControls } from "@/components/ui/PaginationControls";
 import {
   FileText,
   FileImage,
@@ -61,7 +62,7 @@ function getStatusBadgeStyle(status: StatusPengajuan) {
     case "diverifikasi":
       return "bg-sky-100 text-sky-900 border-sky-300 dark:bg-sky-950/60 dark:text-sky-300 dark:border-sky-800";
     case "diproses":
-      return "bg-indigo-100 text-indigo-900 border-indigo-300 dark:bg-indigo-950/60 dark:text-indigo-300 dark:border-indigo-800";
+      return "bg-cyan-100 text-cyan-900 border-cyan-300 dark:bg-cyan-950/60 dark:text-cyan-300 dark:border-cyan-800";
     case "selesai":
       return "bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
     case "ditolak":
@@ -82,6 +83,9 @@ export default function DashboardPengajuanPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("semua");
   const [sortBy, setSortBy] = useState<'tanggal-desc' | 'tanggal-asc' | 'nama-asc' | 'nama-desc' | 'status'>('tanggal-desc');
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   // Status Change Modal State
   const [modalOpen, setModalOpen] = useState(false);
@@ -112,9 +116,30 @@ export default function DashboardPengajuanPage() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewLoading, setPreviewLoading] = useState(false);
 
+  const refreshList = useCallback(async (requestedPage = page) => {
+    try {
+      const result = await getAllPengajuanAdmin({
+        page: requestedPage,
+        limit: 20,
+        status: filterStatus === "semua" ? undefined : filterStatus as StatusPengajuan,
+        search: searchQuery,
+        sort: sortBy,
+      });
+      setList(result.data);
+      setTotal(result.total);
+      setTotalPages(result.totalPages);
+      if (requestedPage > Math.max(1, result.totalPages)) setPage(Math.max(1, result.totalPages));
+      return result.data;
+    } catch (error) {
+      showError(error instanceof Error ? error.message : "Gagal memuat daftar pengajuan.");
+      return null;
+    }
+  }, [page, filterStatus, searchQuery, sortBy, showError]);
+
   useEffect(() => {
-    getAllPengajuanAdmin().then(setList);
-  }, []);
+    const timer = window.setTimeout(() => { void refreshList(); }, searchQuery ? 300 : 0);
+    return () => window.clearTimeout(timer);
+  }, [refreshList, searchQuery]);
 
   // Buka pratinjau lampiran: ambil Blob via endpoint ber-autentikasi lalu
   // tampilkan lewat object URL (tag <img>/<iframe> biasa tidak bisa membawa
@@ -222,7 +247,7 @@ export default function DashboardPengajuanPage() {
     const defaultNomor = `140/${item.jenisSuratKode}/DB/${BULAN_ROMAWI[now.getMonth() + 1]}/${now.getFullYear()}`;
     setNomorSuratInput(item.dokumenHasil?.nomorSurat || defaultNomor);
     setPublishCatatan(
-      "Surat telah disetujui, diverifikasi, dan diterbitkan resmi oleh Pemerintah Desa Borong.",
+      "Surat telah disetujui, diverifikasi, dan diterbitkan resmi oleh Pemerintah Desa Anabanua.",
     );
     setPublishModalOpen(true);
   };
@@ -243,8 +268,7 @@ export default function DashboardPengajuanPage() {
         "Admin Desa",
       );
       setList((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
-      const freshList = await getAllPengajuanAdmin();
-      setList(freshList);
+      await refreshList();
       setModalOpen(false);
       showSuccess(
         `Status permohonan surat berhasil diubah ke "${targetStatus.toUpperCase()}"!`,
@@ -264,13 +288,12 @@ export default function DashboardPengajuanPage() {
         selected.id,
         nomorSuratInput,
         publishCatatan,
-        "Admin Desa Borong",
+        "Admin Desa Anabanua",
       );
       setList((prev) =>
         prev.map((entry) => (entry.id === updated.id ? updated : entry)),
       );
-      const freshList = await getAllPengajuanAdmin();
-      setList(freshList);
+      await refreshList();
       setPublishModalOpen(false);
       showSuccess(
         `Surat resmi berhasil diterbitkan dengan Nomor: ${nomorSuratInput}!`,
@@ -289,8 +312,7 @@ export default function DashboardPengajuanPage() {
     setSubmitting(true);
     try {
       await deletePengajuanAdmin(selectedToDelete.id);
-      const freshList = await getAllPengajuanAdmin();
-      setList(freshList);
+      await refreshList();
       setDeleteModalOpen(false);
       setSelectedToDelete(null);
       showSuccess("Permohonan surat berhasil dihapus secara permanen!");
@@ -301,29 +323,7 @@ export default function DashboardPengajuanPage() {
     }
   };
 
-  // Filter list
-  const filteredList = list.filter((item) => {
-    const matchesSearch =
-      item.nomorResi.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.pemohonNama.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.jenisSuratNama.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus =
-      filterStatus === "semua" || item.status === filterStatus;
-    return matchesSearch && matchesStatus;
-  });
-
-  const STATUS_ORDER: Record<string, number> = {
-    diajukan: 0, diverifikasi: 1, diproses: 2, selesai: 3, ditolak: 4,
-  };
-  const sortedList = [...filteredList].sort((a, b) => {
-    switch (sortBy) {
-      case 'tanggal-asc':  return new Date(a.dibuatPada).getTime() - new Date(b.dibuatPada).getTime();
-      case 'nama-asc':     return a.pemohonNama.localeCompare(b.pemohonNama, 'id');
-      case 'nama-desc':    return b.pemohonNama.localeCompare(a.pemohonNama, 'id');
-      case 'status':       return (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
-      default:             return new Date(b.dibuatPada).getTime() - new Date(a.dibuatPada).getTime();
-    }
-  });
+  const sortedList = list;
 
   return (
     <div className="space-y-6">
@@ -346,7 +346,7 @@ export default function DashboardPengajuanPage() {
             type="text"
             placeholder="Cari nomor resi, nama pemohon, atau jenis surat..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
             className="w-full pl-10 pr-4 py-2 bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-white placeholder-neutral-400 text-xs rounded-xl border border-neutral-200 dark:border-neutral-800 focus:outline-none focus:border-primary-500 transition-colors"
           />
         </div>
@@ -363,7 +363,7 @@ export default function DashboardPengajuanPage() {
           ].map((st) => (
             <button
               key={st}
-              onClick={() => setFilterStatus(st)}
+              onClick={() => { setFilterStatus(st); setPage(1); }}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize whitespace-nowrap transition-all ${
                 filterStatus === st
                   ? "bg-primary-600 text-white shadow-md shadow-primary-600/20"
@@ -379,7 +379,7 @@ export default function DashboardPengajuanPage() {
           <span className="text-xs text-neutral-500 font-medium hidden sm:inline">Urut:</span>
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+            onChange={(e) => { setSortBy(e.target.value as typeof sortBy); setPage(1); }}
             className="text-xs font-bold bg-neutral-100 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-xl px-3 py-1.5 text-neutral-700 dark:text-neutral-300 focus:outline-none focus:border-primary-500 transition-colors"
             aria-label="Urutkan daftar pengajuan"
           >
@@ -510,8 +510,8 @@ export default function DashboardPengajuanPage() {
                                     <FileText className="w-4 h-4 text-red-600 dark:text-red-400" />
                                   </div>
                                 ) : (
-                                  <div className="w-8 h-8 rounded bg-blue-100 dark:bg-blue-950 flex items-center justify-center shrink-0">
-                                    <Paperclip className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                  <div className="w-8 h-8 rounded bg-primary-100 dark:bg-primary-950 flex items-center justify-center shrink-0">
+                                    <Paperclip className="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                   </div>
                                 )}
                                 <div className="flex-1 min-w-0">
@@ -675,6 +675,8 @@ export default function DashboardPengajuanPage() {
         )}
       </div>
 
+      <PaginationControls page={page} totalPages={totalPages} total={total} onPageChange={setPage} />
+
       {/* Confirmation / Status Change Modal */}
       <Modal
         isOpen={modalOpen}
@@ -715,7 +717,7 @@ export default function DashboardPengajuanPage() {
       <Modal
         isOpen={publishModalOpen}
         onClose={() => setPublishModalOpen(false)}
-        title="Terbitkan Surat Resmi Desa Borong"
+        title="Terbitkan Surat Resmi Desa Anabanua"
       >
         <div className="space-y-4">
           <p className="text-xs text-neutral-600 dark:text-neutral-300">

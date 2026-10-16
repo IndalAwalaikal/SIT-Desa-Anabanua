@@ -80,7 +80,7 @@ export default function DashboardBukuAgendaPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `buku_agenda_surat_keluar_desa_borong_${new Date().getFullYear()}.csv`);
+    link.setAttribute('download', `buku_agenda_surat_keluar_desa_anabanua_${new Date().getFullYear()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -99,7 +99,7 @@ export default function DashboardBukuAgendaPage() {
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-            Registrasi resmi surat terbit Pemerintah Desa Borong sesuai Permendagri No. 47 Tahun 2016.
+            Registrasi resmi surat terbit Pemerintah Desa Anabanua sesuai Permendagri No. 47 Tahun 2016.
           </p>
         </div>
 

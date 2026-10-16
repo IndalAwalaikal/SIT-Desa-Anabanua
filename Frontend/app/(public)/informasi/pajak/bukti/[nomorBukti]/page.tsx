@@ -79,7 +79,7 @@ export default function BuktiPajakPage({ params }: { params: Promise<{ nomorBukt
             Bukti Pajak Tidak Ditemukan
           </h1>
           <p className="text-xs text-neutral-500">
-            Nomor resi <code className="bg-neutral-200 dark:bg-neutral-800 px-2 py-0.5 rounded font-mono">{nomorBukti}</code> tidak terdaftar dalam sistem Desa Borong. Pastikan nomor bukti yang dimasukkan sudah benar.
+            Nomor resi <code className="bg-neutral-200 dark:bg-neutral-800 px-2 py-0.5 rounded font-mono">{nomorBukti}</code> tidak terdaftar dalam sistem Desa Anabanua. Pastikan nomor bukti yang dimasukkan sudah benar.
           </p>
           <Link
             href="/informasi/pajak"
@@ -130,13 +130,13 @@ export default function BuktiPajakPage({ params }: { params: Promise<{ nomorBukt
                 </div>
                 <div>
                   <h2 className="text-xl font-black text-neutral-900 dark:text-white uppercase tracking-wide">
-                    Pemerintah Desa Borong
+                    Pemerintah Desa Anabanua
                   </h2>
                   <p className="text-xs text-neutral-500 font-medium">
                     Tanda Bukti Penerimaan &amp; Monitoring Penyetoran Pajak Desa
                   </p>
                   <p className="text-[10px] text-neutral-400">
-                    Sistem Informasi Transparansi Keuangan Desa Borong
+                    Sistem Informasi Transparansi Keuangan Desa Anabanua
                   </p>
                 </div>
               </div>
@@ -164,7 +164,7 @@ export default function BuktiPajakPage({ params }: { params: Promise<{ nomorBukt
                     <ArrowRightLeft className="w-6 h-6" />
                   </div>
                 ) : isDiverifikasi ? (
-                  <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center">
                     <ShieldCheck className="w-6 h-6" />
                   </div>
                 ) : isBatal ? (
@@ -353,10 +353,10 @@ export default function BuktiPajakPage({ params }: { params: Promise<{ nomorBukt
             {/* Stamp Footer */}
             <div className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-neutral-200 dark:border-neutral-800 text-[11px] text-neutral-500 gap-4">
               <div>
-                Dokumen ini merupakan bukti sah pencatatan transparansi pajak Desa Borong.
+                Dokumen ini merupakan bukti sah pencatatan transparansi pajak Desa Anabanua.
               </div>
               <div className="text-center sm:text-right font-semibold">
-                Pemerintah Desa Borong<br />
+                Pemerintah Desa Anabanua<br />
                 <span className="text-[10px] text-neutral-400 font-mono">Verified Digital Resi System</span>
               </div>
             </div>

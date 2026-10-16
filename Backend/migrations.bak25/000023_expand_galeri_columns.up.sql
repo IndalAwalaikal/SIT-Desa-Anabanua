@@ -1,2 +1,0 @@
-ALTER TABLE `galeri_album` MODIFY `cover_foto` VARCHAR(2048) NOT NULL;
-ALTER TABLE `galeri_item` MODIFY `url` VARCHAR(2048) NOT NULL;

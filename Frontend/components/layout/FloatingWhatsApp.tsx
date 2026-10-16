@@ -12,7 +12,7 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '';
 
 const WA_LINK = WA_NUMBER
   ? `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
-      'Halo Admin Desa Borong, saya ingin bertanya tentang layanan desa.'
+      'Halo Admin Desa Anabanua, saya ingin bertanya tentang layanan desa.'
     )}`
   : '';
 

@@ -2,7 +2,7 @@ package apiresponse
 
 import (
 	"database/sql"
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 	"encoding/json"
 	"errors"
 	"log/slog"

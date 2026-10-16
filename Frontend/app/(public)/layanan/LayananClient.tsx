@@ -31,10 +31,10 @@ const iconMap: Record<string, React.ReactNode> = {
   SKU: <Store className="w-6 h-6 text-secondary-600" />,
   SKTM: <Heart className="w-6 h-6 text-rose-600" />,
   SPK: <CreditCard className="w-6 h-6 text-amber-600" />,
-  SPKK: <Users className="w-6 h-6 text-indigo-600" />,
+  SPKK: <Users className="w-6 h-6 text-emerald-600" />,
   SPN: <HeartHandshake className="w-6 h-6 text-pink-600" />,
   SKL: <Baby className="w-6 h-6 text-sky-600" />,
-  SKM: <FileHeart className="w-6 h-6 text-purple-600" />,
+  SKM: <FileHeart className="w-6 h-6 text-teal-600" />,
 };
 
 interface LayananClientProps {
@@ -74,7 +74,7 @@ export const LayananClient: React.FC<LayananClientProps> = ({ jenisSuratList, pr
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-950 text-primary-700 dark:text-primary-300 text-xs font-bold">
-            <span>SISTEM PERSURATAN TERPADU DESA BORONG</span>
+            <span>SISTEM PERSURATAN TERPADU DESA ANABANUA</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
             Layanan Permohonan Surat Online
@@ -233,7 +233,7 @@ export const LayananClient: React.FC<LayananClientProps> = ({ jenisSuratList, pr
 
                     <Link href={`/layanan/${surat.kode}/ajukan`}>
                       <Button variant="primary" size="sm" className="font-bold">
-                        {t('Layanan.submitButton')} <ArrowRight className="w-4 h-4" />
+                        {t('Layanan.apply')} <ArrowRight className="w-4 h-4" />
                       </Button>
                     </Link>
                   </div>

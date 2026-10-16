@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
 )
 
 // Service berisi seluruh use case Transparansi Pajak Desa.

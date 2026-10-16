@@ -173,6 +173,16 @@ export async function apiRequest<T>(path: string, init: ApiRequestInit = {}): Pr
     });
   };
 
+  // Cek cache sebelum menyentuh backend. Sebelumnya fetch dilakukan lebih dulu,
+  // sehingga cache hanya menyimpan hasil parsing tetapi tetap menambah satu
+  // request jaringan pada setiap render SSR.
+  if (serverCacheTtl > 0) {
+    return runServerTtlCache<T>(`${apiBaseUrl()}${path}`, serverCacheTtl, async () => {
+      const cachedResponse = await doFetch();
+      return parseResponse<T>(cachedResponse);
+    });
+  }
+
   let response = await doFetch();
 
   if (response.status === 401 && auth && retryOnUnauthorized) {
@@ -196,15 +206,6 @@ export async function apiRequest<T>(path: string, init: ApiRequestInit = {}): Pr
         }
       }
     }
-  }
-
-  // Cache runtime server GET: hasil inhibit repose di process TTL map sehingga
-  // navigasi/refresh tidak menunggu backend tiap sekali (halaman tetap no-store
-  // → build aman).
-  if (serverCacheTtl > 0) {
-    return runServerTtlCache<T>(`${apiBaseUrl()}${path}`, serverCacheTtl, () =>
-      parseResponse<T>(response),
-    );
   }
 
   const result = await parseResponse<T>(response);

@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { Reveal, CountUp } from '@/components/ui';
 import { getAllPengajuanAdmin } from '@/lib/services/persuratan.service';
 import { getAllPengaduanAdmin } from '@/lib/services/pengaduan.service';
+import { getAdminAnalytics, type AdminAnalytics } from '@/lib/services/analytics.service';
 import { getBeritaList } from '@/lib/services/berita.service';
 import { getUmkmList } from '@/lib/services/umkm.service';
 import { getGaleriAlbumList } from '@/lib/services/galeri.service';
@@ -21,7 +22,7 @@ import { darkTooltipProps } from '@/lib/utils/chartTooltip';
 const STATUS_COLORS: Record<string, string> = {
   diajukan: '#f59e0b',
   diverifikasi: '#3b82f6',
-  diproses: '#8b5cf6',
+  diproses: '#06b6d4',
   selesai: '#10b981',
   ditolak: '#ef4444',
 };
@@ -29,20 +30,23 @@ const STATUS_COLORS: Record<string, string> = {
 export default function DashboardOverviewPage() {
   const [pengajuan, setPengajuan] = useState<PengajuanSurat[]>([]);
   const [pengaduan, setPengaduan] = useState<Pengaduan[]>([]);
+  const [analytics, setAnalytics] = useState<AdminAnalytics | null>(null);
   const [counts, setCounts] = useState({ berita: 0, umkm: 0, galeri: 0, penduduk: 0, jumlahKK: 0 });
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     void Promise.all([
-      getAllPengajuanAdmin(),
-      getAllPengaduanAdmin(),
+      getAdminAnalytics(),
+      getAllPengajuanAdmin({ page: 1, limit: 6 }),
+      getAllPengaduanAdmin({ page: 1, limit: 5 }),
       getBeritaList({ page: 1, perPage: 100 }),
       getUmkmList(),
       getGaleriAlbumList(),
       getStatistikPenduduk(),
-    ]).then(([p, pgn, berita, umkm, galeri, stat]) => {
-      setPengajuan(p);
-      setPengaduan(pgn);
+    ]).then(([summary, p, pgn, berita, umkm, galeri, stat]) => {
+      setAnalytics(summary);
+      setPengajuan(p.data);
+      setPengaduan(pgn.data);
       setCounts({
         berita: berita.total,
         umkm: umkm.length,
@@ -54,11 +58,13 @@ export default function DashboardOverviewPage() {
     });
   }, []);
 
-  const pendingSurat = pengajuan.filter((x) => x.status === 'diajukan' || x.status === 'diverifikasi').length;
-  const openPengaduan = pengaduan.filter((x) => x.status !== 'selesai').length;
+  const pengajuanCounts = analytics?.pengajuan.byStatus ?? {};
+  const pengaduanCounts = analytics?.pengaduan.byStatus ?? {};
+  const pendingSurat = (pengajuanCounts.diajukan ?? 0) + (pengajuanCounts.diverifikasi ?? 0);
+  const openPengaduan = (pengaduanCounts.diterima ?? 0) + (pengaduanCounts.ditindaklanjuti ?? 0);
 
   const chartData = (['diajukan', 'diverifikasi', 'diproses', 'selesai', 'ditolak'] as const)
-    .map((s) => ({ name: s, jumlah: pengajuan.filter((x) => x.status === s).length }));
+    .map((s) => ({ name: s, jumlah: pengajuanCounts[s] ?? 0 }));
 
   const recentPengaduan = pengaduan.slice(0, 5);
 
@@ -78,7 +84,7 @@ export default function DashboardOverviewPage() {
               <span className="p-2.5 rounded-xl bg-primary-600/20 text-primary-400"><FileText className="w-5 h-5" /></span>
             </div>
             <h2 className="text-3xl font-black text-neutral-900 dark:text-white mt-2">
-              {ready ? <CountUp to={pengajuan.length} formatter={(n) => String(Math.round(n))} /> : <Skeleton className="h-9 w-14 rounded-lg inline-block" />}
+              {ready ? <CountUp to={analytics?.pengajuan.total ?? 0} formatter={(n) => String(Math.round(n))} /> : <Skeleton className="h-9 w-14 rounded-lg inline-block" />}
             </h2>
             <p className="text-xs text-amber-600 dark:text-amber-400 mt-1 font-bold">{pendingSurat} menunggu tindak lanjut</p>
             <Link href="/dashboard/pengajuan" className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-primary-600 dark:text-primary-400 hover:underline">Kelola <ArrowUpRight className="h-3 w-3" /></Link>
@@ -92,7 +98,7 @@ export default function DashboardOverviewPage() {
               <span className="p-2.5 rounded-xl bg-secondary-600/20 text-secondary-500 dark:text-secondary-400"><MessageSquare className="w-5 h-5" /></span>
             </div>
             <h2 className="text-3xl font-black text-neutral-900 dark:text-white mt-2">
-              {ready ? <CountUp to={pengaduan.length} formatter={(n) => String(Math.round(n))} /> : <Skeleton className="h-9 w-14 rounded-lg inline-block" />}
+              {ready ? <CountUp to={analytics?.pengaduan.total ?? 0} formatter={(n) => String(Math.round(n))} /> : <Skeleton className="h-9 w-14 rounded-lg inline-block" />}
             </h2>
             <p className="text-xs text-sky-600 dark:text-sky-400 mt-1 font-bold">{openPengaduan} perlu ditindaklanjuti</p>
             <Link href="/dashboard/pengaduan" className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-primary-600 dark:text-primary-400 hover:underline">Kelola <ArrowUpRight className="h-3 w-3" /></Link>
@@ -120,7 +126,7 @@ export default function DashboardOverviewPage() {
           <Card className="p-5 bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase">Penduduk</span>
-              <span className="p-2.5 rounded-xl bg-purple-600/20 text-purple-500 dark:text-purple-400"><Users className="w-5 h-5" /></span>
+              <span className="p-2.5 rounded-xl bg-primary-600/10 text-primary-600 dark:text-primary-400"><Users className="w-5 h-5" /></span>
             </div>
             <h2 className="text-3xl font-black text-neutral-900 dark:text-white mt-2">
               {ready ? <CountUp to={counts.penduduk} formatter={(n) => Math.round(n).toLocaleString('id-ID')} /> : <Skeleton className="h-9 w-20 rounded-lg inline-block" />}

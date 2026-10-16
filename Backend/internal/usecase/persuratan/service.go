@@ -11,12 +11,12 @@ import (
 
 	"log/slog"
 
-	"desa-borong-api/internal/domain"
-	"desa-borong-api/internal/pkg/apputil"
-	"desa-borong-api/internal/pkg/notif"
-	"desa-borong-api/pkg/pdfengine"
-	"desa-borong-api/pkg/security"
-	"desa-borong-api/pkg/templateengine"
+	"desa-anabanua-api/internal/domain"
+	"desa-anabanua-api/internal/pkg/apputil"
+	"desa-anabanua-api/internal/pkg/notif"
+	"desa-anabanua-api/pkg/pdfengine"
+	"desa-anabanua-api/pkg/security"
+	"desa-anabanua-api/pkg/templateengine"
 )
 
 // SubmittedFile is an uploaded attachment to attach to a pengajuan.
@@ -236,8 +236,20 @@ func (s *Service) ListByPemohon(ctx context.Context, pemohonID string) ([]domain
 	return s.pengajuan.ListByPemohon(ctx, pemohonID)
 }
 
+func (s *Service) ListByPemohonPage(ctx context.Context, pemohonID string, page, limit int) ([]domain.PengajuanSurat, int, error) {
+	return s.pengajuan.ListByPemohonPage(ctx, pemohonID, page, limit)
+}
+
 func (s *Service) ListAll(ctx context.Context, status string) ([]domain.PengajuanSurat, error) {
 	return s.pengajuan.ListAll(ctx, strings.TrimSpace(status))
+}
+
+func (s *Service) ListPage(ctx context.Context, status, search, sort string, page, limit int) ([]domain.PengajuanSurat, int, error) {
+	return s.pengajuan.ListPage(ctx, strings.TrimSpace(status), strings.TrimSpace(search), sort, page, limit)
+}
+
+func (s *Service) CountByStatus(ctx context.Context) (map[string]int, error) {
+	return s.pengajuan.CountByStatus(ctx)
 }
 
 // ChangeStatus validates the state-machine transition then records it.
@@ -292,8 +304,8 @@ func (s *Service) notifyStatusToUser(ctx context.Context, p domain.PengajuanSura
 		return
 	}
 	if email := strings.TrimSpace(user.Email); email != "" {
-		subject := "Status Surat " + p.JenisSuratNama + " - Desa Borong"
-		html := fmt.Sprintf(`<!doctype html><html><body style="font-family:Arial,sans-serif;background:#f3f4f6;margin:0;padding:24px"><div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;padding:28px"><h2 style="color:#0f172a;margin:0 0 12px">Pembaruan Status Surat</h2><p style="color:#334155">Halo <strong>%s</strong>,</p><p style="color:#334155">Status surat <strong>%s</strong> (Resi: %s) kini: <strong>%s</strong>.</p><p><a href="%s/layanan/lacak?resi=%s" style="display:inline-block;background:#0f4c81;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold">Lacak Pengajuan</a></p></div></body></html>`, p.PemohonNama, p.JenisSuratNama, p.NomorResi, p.Status, s.appURL, p.NomorResi)
+		subject := "Status Surat " + p.JenisSuratNama + " - Desa Anabanua"
+		html := fmt.Sprintf(`<!doctype html><html><body style="font-family:Arial,sans-serif;background:#f3f4f6;margin:0;padding:24px"><div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;padding:28px"><h2 style="color:#0f172a;margin:0 0 12px">Pembaruan Status Surat</h2><p style="color:#334155">Halo <strong>%s</strong>,</p><p style="color:#334155">Status surat <strong>%s</strong> (Resi: %s) kini: <strong>%s</strong>.</p><p><a href="%s/layanan/lacak?resi=%s" style="display:inline-block;background:#37AB34;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold">Lacak Pengajuan</a></p></div></body></html>`, p.PemohonNama, p.JenisSuratNama, p.NomorResi, p.Status, s.appURL, p.NomorResi)
 		if eerr := s.mailer.Send(ctx, email, subject, html); eerr != nil {
 			slog.Error("failed to send status notification email", "error", eerr, "pemohonID", p.PemohonID)
 		}
@@ -382,7 +394,7 @@ func (s *Service) Publish(ctx context.Context, id, nomorSuratInput, catatan, cha
 			ttdNip = *kepalaDesa.NIP
 		}
 		if ttdNama == "" {
-			ttdNama = "Kepala Desa Borong"
+			ttdNama = "Kepala Desa Anabanua"
 		}
 
 		// Prepare render context for dynamic HTML template
@@ -391,7 +403,7 @@ func (s *Service) Publish(ctx context.Context, id, nomorSuratInput, catatan, cha
 		if jenis.TemplateHTML != nil && *jenis.TemplateHTML != "" {
 			tplHTML = *jenis.TemplateHTML
 		} else {
-			tplHTML = fmt.Sprintf("<div><h2>PEMERINTAH DESA BORONG</h2><h3>%s</h3><p>Nomor: %s</p><p>Menerangkan bahwa: <strong>%s</strong></p><p>Surat diterbitkan secara resmi melalui Sistem Persuratan Digital Desa Borong.</p></div>", html.EscapeString(cur.JenisSuratNama), html.EscapeString(nomorSurat), html.EscapeString(cur.PemohonNama))
+			tplHTML = fmt.Sprintf("<div><h2>PEMERINTAH DESA ANABANUA</h2><h3>%s</h3><p>Nomor: %s</p><p>Menerangkan bahwa: <strong>%s</strong></p><p>Surat diterbitkan secara resmi melalui Sistem Persuratan Digital Desa Anabanua.</p></div>", html.EscapeString(cur.JenisSuratNama), html.EscapeString(nomorSurat), html.EscapeString(cur.PemohonNama))
 		}
 
 		renderCtx := templateengine.RenderContext{
@@ -403,9 +415,9 @@ func (s *Service) Publish(ctx context.Context, id, nomorSuratInput, catatan, cha
 				"alamat_lengkap": cur.Data["alamatLengkap"],
 			},
 			Desa: map[string]string{
-				"nama_desa": "Borong",
-				"kecamatan": "Lappariaja",
-				"kabupaten": "Bone",
+				"nama_desa": "Anabanua",
+				"kecamatan": "Barru",
+				"kabupaten": "Barru",
 			},
 			TTD: map[string]string{
 				"nama": ttdNama,
@@ -467,10 +479,10 @@ func (s *Service) Publish(ctx context.Context, id, nomorSuratInput, catatan, cha
 		if uerr != nil {
 			slog.Warn("failed to fetch user for completion notification", "error", uerr, "pemohonID", updated.PemohonID)
 		} else {
-			// Notifikasi email (Brevo/noop).
+			// Notifikasi email (Mailjet/noop).
 			if email := strings.TrimSpace(user.Email); email != "" {
 				slog.Info("attempting to send completion email to user", "email", email, "pengajuanID", updated.ID)
-				if eerr := s.mailer.Send(ctx, email, "Surat Selesai - Desa Borong: "+updated.JenisSuratNama, letterDoneHTML(updated, s.appURL)); eerr != nil {
+				if eerr := s.mailer.Send(ctx, email, "Surat Selesai - Desa Anabanua: "+updated.JenisSuratNama, letterDoneHTML(updated, s.appURL)); eerr != nil {
 					slog.Error("failed to send surat notification email", "error", eerr, "recipientEmail", email, "pengajuanID", updated.ID)
 				} else {
 					slog.Info("surat notification email sent successfully", "recipientEmail", email, "pengajuanID", updated.ID)
@@ -481,7 +493,7 @@ func (s *Service) Publish(ctx context.Context, id, nomorSuratInput, catatan, cha
 			// Notifikasi WhatsApp (FlowKirim/noop).
 			if user.Telepon != nil {
 				if phone := normalizeWhatsAppNumber(*user.Telepon); phone != "" {
-					waText := fmt.Sprintf("Halo %s, surat %s (Resi: %s) telah selesai diterbitkan Kantor Desa Borong. Buka di: %s/surat/%s", updated.PemohonNama, updated.JenisSuratNama, updated.NomorResi, s.appURL, updated.NomorResi)
+					waText := fmt.Sprintf("Halo %s, surat %s (Resi: %s) telah selesai diterbitkan Kantor Desa Anabanua. Buka di: %s/surat/%s", updated.PemohonNama, updated.JenisSuratNama, updated.NomorResi, s.appURL, updated.NomorResi)
 					if werr := s.wa.Send(ctx, phone, waText); werr != nil {
 						slog.Error("failed to send surat notification whatsapp via FlowKirim", "error", werr, "recipient", phone, "pengajuanID", updated.ID)
 					} else {
@@ -523,7 +535,7 @@ func letterDoneHTML(p domain.PengajuanSurat, appURL string) string {
 	if p.DokumenHasil != nil && p.DokumenHasil.URL != "" && !strings.HasPrefix(p.DokumenHasil.URL, "data:") {
 		link = p.DokumenHasil.URL
 	}
-	return fmt.Sprintf(`<!doctype html><html><body style="font-family:Arial,sans-serif;background:#f3f4f6;margin:0;padding:24px"><div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;padding:28px"><h2 style="color:#0f172a;margin:0 0 12px">Surat Selesai — Desa Borong</h2><p style="color:#334155">Halo <strong>%s</strong>,</p><p style="color:#334155">Surat <strong>%s</strong> (Resi: %s) telah selesai dan dapat dilihat serta diunduh dalam format PDF.</p><p><a href="%s" style="display:inline-block;background:#0f4c81;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold">Lihat &amp; Unduh Surat</a></p><p style="color:#64748b;font-size:13px">Terima kasih telah menggunakan layanan Desa Borong.</p></div></body></html>`, p.PemohonNama, p.JenisSuratNama, p.NomorResi, link)
+	return fmt.Sprintf(`<!doctype html><html><body style="font-family:Arial,sans-serif;background:#f3f4f6;margin:0;padding:24px"><div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;padding:28px"><h2 style="color:#0f172a;margin:0 0 12px">Surat Selesai — Desa Anabanua</h2><p style="color:#334155">Halo <strong>%s</strong>,</p><p style="color:#334155">Surat <strong>%s</strong> (Resi: %s) telah selesai dan dapat dilihat serta diunduh dalam format PDF.</p><p><a href="%s" style="display:inline-block;background:#37AB34;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold">Lihat &amp; Unduh Surat</a></p><p style="color:#64748b;font-size:13px">Terima kasih telah menggunakan layanan Desa Anabanua.</p></div></body></html>`, p.PemohonNama, p.JenisSuratNama, p.NomorResi, link)
 }
 
 // buildPDF produces a minimal, valid PDF as a data URL placeholder.
@@ -537,8 +549,8 @@ func buildPDF(p domain.PengajuanSurat, nomorSurat string) string {
 		keperluan = p.Data["jenisPermohonan"]
 	}
 	lines := []string{
-		"PEMERINTAH KABUPATEN BULUKUMBA",
-		"KECAMATAN HERLANG - DESA BORONG",
+		"PEMERINTAH KABUPATEN BARRU",
+		"KECAMATAN BARRU - DESA ANABANUA",
 		strings.ToUpper(p.JenisSuratNama),
 		"Nomor: " + nomorSurat,
 		"",
@@ -546,7 +558,7 @@ func buildPDF(p domain.PengajuanSurat, nomorSurat string) string {
 		"NIK: " + p.Data["nik"],
 		"Keperluan: " + keperluan,
 		"",
-		"Dokumen elektronik ini diterbitkan melalui Sistem Desa Borong.",
+		"Dokumen elektronik ini diterbitkan melalui Sistem Desa Anabanua.",
 	}
 	var content strings.Builder
 	for i, line := range lines {

@@ -20,7 +20,7 @@ import { LanguageToggle } from "@/components/ui/LanguageToggle";
 import { NotificationBell } from "@/components/ui/NotificationBell";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 
-const logoBulukumba = "/logo-bulukumba.webp";
+const logoBarru = "/logo-barru.webp";
 
 interface NavMenuItem {
   i18nKey?: string;
@@ -136,40 +136,40 @@ export const Navbar: React.FC = () => {
     <>
       {/* Info bar (portal info + jam kantor) juga melekat agar seluruh
           region header tetap terlihat saat discroll. */}
-      <div className="sticky top-0 z-50 hidden border-b border-white/10 bg-[#061a3a] text-blue-100 md:block print:hidden">
+      <div className="sticky top-0 z-50 hidden border-b border-white/10 bg-[#174b17] text-primary-100 md:block print:hidden">
         <div className="container-desa flex h-9 items-center justify-between text-[11px] font-medium tracking-wide">
           <div className="flex items-center gap-3">
             <p>{t("Navbar.portalInfo")}</p>
             <span>•</span>
             <a
-              href="https://bulukumbakab.go.id"
+              href="https://barrukab.go.id"
               target="_blank"
               rel="noopener noreferrer"
               className="text-accent-400 hover:text-white font-bold transition-colors underline decoration-dotted flex items-center gap-1"
             >
-              Portal Pemkab Bulukumba ↗
+              Portal Pemkab Barru ↗
             </a>
           </div>
-          <p className="text-blue-200">{t("Navbar.officeHours")}</p>
+          <p className="text-primary-200">{t("Navbar.officeHours")}</p>
         </div>
       </div>
 
       {/* Navbar tetap statis (sticky) & selalu terlihat saat discroll,
           sehingga pengguna tidak perlu scroll ke atas hanya untuk membuka menu. */}
       <header
-        className={`sticky top-0 md:top-[36px] z-50 w-full border-b border-neutral-200 bg-white/96 dark:border-neutral-800 dark:bg-neutral-950/96 backdrop-blur transition-all duration-300 print:hidden ${scrolled ? "shadow-[0_12px_32px_rgba(7,35,82,0.08)]" : "shadow-sm"}`}
+        className={`sticky top-0 md:top-[36px] z-50 w-full border-b border-neutral-200 bg-white/96 dark:border-neutral-800 dark:bg-neutral-950/96 backdrop-blur transition-all duration-300 print:hidden ${scrolled ? "shadow-[0_12px_32px_rgba(36,61,33,0.08)]" : "shadow-sm"}`}
       >
         <div className="container-desa flex h-[76px] items-center justify-between gap-5">
           <Link
             href="/"
             className="group flex min-w-0 items-center gap-3"
-            aria-label="Beranda Desa Borong"
+            aria-label="Beranda Desa Anabanua"
           >
             {/* Logo tanpa border kotak, menggunakan drop-shadow agar batas tetap jelas */}
             <span className="grid h-12 w-12 shrink-0 place-items-center transition-transform duration-300 group-hover:-translate-y-0.5">
               <Image
-                src={logoBulukumba}
-                alt="Lambang Kabupaten Bulukumba"
+                src={logoBarru}
+                alt="Lambang Kabupaten Barru"
                 width={44}
                 height={44}
                 className="h-auto w-11 object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
@@ -177,11 +177,11 @@ export const Navbar: React.FC = () => {
               />
             </span>
             <span className="min-w-0 leading-none">
-              <span className="block font-serif text-[19px] font-bold tracking-tight text-[#09285a] dark:text-white sm:text-[21px]">
-                Desa Borong
+              <span className="block font-serif text-[19px] font-bold tracking-tight text-[#174b17] dark:text-white sm:text-[21px]">
+                Desa Anabanua
               </span>
-              <span className="mt-1 block truncate text-[10px] font-bold uppercase tracking-[0.13em] text-blue-600 dark:text-blue-300">
-                Herlang · Bulukumba
+              <span className="mt-1 block truncate text-[10px] font-bold uppercase tracking-[0.13em] text-primary-600 dark:text-primary-300">
+                Kec. Barru · Kab. Barru
               </span>
             </span>
           </Link>
@@ -217,7 +217,7 @@ export const Navbar: React.FC = () => {
                     }}
                     aria-haspopup={menu.children ? "menu" : undefined}
                     aria-expanded={menu.children ? isMenuOpen : undefined}
-                    className={`flex h-full items-center gap-1 px-3 text-[13px] font-semibold transition-colors ${isActive(menu.href) ? "text-blue-700 dark:text-blue-300" : "text-slate-600 hover:text-blue-700 dark:text-slate-300 dark:hover:text-white"}`}
+                    className={`flex h-full items-center gap-1 px-3 text-[13px] font-semibold transition-colors ${isActive(menu.href) ? "text-primary-700 dark:text-primary-300" : "text-slate-600 hover:text-primary-700 dark:text-slate-300 dark:hover:text-white"}`}
                   >
                     {menuLabel}
                     {menu.children && (
@@ -229,7 +229,7 @@ export const Navbar: React.FC = () => {
                   {menu.children && (
                     <div
                       role="menu"
-                      className={`absolute left-1/2 top-[68px] w-60 -translate-x-1/2 rounded-2xl border border-blue-100 bg-white p-2 shadow-[0_18px_45px_rgba(4,35,83,0.16)] transition-all duration-200 dark:border-slate-700 dark:bg-slate-900 ${
+                      className={`absolute left-1/2 top-[68px] w-60 -translate-x-1/2 rounded-2xl border border-primary-100 bg-white p-2 shadow-[0_18px_45px_rgba(36,61,33,0.16)] transition-all duration-200 dark:border-slate-700 dark:bg-slate-900 ${
                         isMenuOpen
                           ? "pointer-events-auto translate-y-0 opacity-100"
                           : "pointer-events-none translate-y-2 opacity-0"
@@ -246,7 +246,7 @@ export const Navbar: React.FC = () => {
                             key={childKey}
                             href={child.href}
                             role="menuitem"
-                            className={`block rounded-xl px-3 py-2.5 text-xs font-semibold transition-colors ${pathname === child.href ? "bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300" : "text-slate-600 hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"}`}
+                            className={`block rounded-xl px-3 py-2.5 text-xs font-semibold transition-colors ${pathname === child.href ? "bg-primary-50 text-primary-700 dark:bg-primary-950/50 dark:text-primary-300" : "text-slate-600 hover:bg-primary-50 hover:text-primary-700 dark:text-slate-300 dark:hover:bg-slate-800"}`}
                           >
                             {childLabel}
                           </Link>
@@ -262,7 +262,7 @@ export const Navbar: React.FC = () => {
           <div className="hidden items-center gap-2 xl:flex">
             <Link
               href="/cari"
-              className="grid h-9 w-9 place-items-center rounded-full text-slate-500 transition hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="grid h-9 w-9 place-items-center rounded-full text-slate-500 transition hover:bg-primary-50 hover:text-primary-700 dark:text-slate-300 dark:hover:bg-slate-800"
               aria-label={t("Navbar.searchSite", "Cari konten di situs")}
             >
               <Search className="h-4 w-4" aria-hidden="true" />
@@ -271,7 +271,7 @@ export const Navbar: React.FC = () => {
             <LanguageToggle />
             <button
               onClick={toggleTheme}
-              className="grid h-9 w-9 place-items-center rounded-full text-slate-500 transition hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="grid h-9 w-9 place-items-center rounded-full text-slate-500 transition hover:bg-primary-50 hover:text-primary-700 dark:text-slate-300 dark:hover:bg-slate-800"
               aria-label={t("Navbar.toggleTheme")}
             >
               {theme === "dark" ? (
@@ -284,13 +284,13 @@ export const Navbar: React.FC = () => {
               <div className="flex items-center gap-2 pl-2">
                 <Link
                   href="/akun"
-                  className="grid h-8 w-8 place-items-center rounded-full bg-blue-700 text-xs font-bold text-white"
+                  className="grid h-8 w-8 place-items-center rounded-full bg-primary-700 text-xs font-bold text-white"
                 >
                   {user?.nama ? user.nama.charAt(0) : "👤"}
                 </Link>
                 <button
                   onClick={logout}
-                  className="text-xs font-bold text-slate-500 hover:text-blue-700"
+                  className="text-xs font-bold text-slate-500 hover:text-primary-700"
                 >
                   {t("Navbar.signOut")}
                 </button>
@@ -299,7 +299,7 @@ export const Navbar: React.FC = () => {
               <Link href="/login">
                 <Button
                   size="sm"
-                  className="rounded-full bg-[#0b4ba8] px-4 shadow-none hover:bg-[#083b86]"
+                  className="rounded-full bg-[#247623] px-4 shadow-none hover:bg-[#1d5e1c]"
                 >
                   {t("Navbar.loginWarga")}
                 </Button>
@@ -322,7 +322,7 @@ export const Navbar: React.FC = () => {
             </button>
             <button
               onClick={() => setOpen(!open)}
-              className="grid h-10 w-10 place-items-center rounded-full bg-blue-50 text-blue-800 transition hover:bg-blue-100 dark:bg-slate-800 dark:text-blue-200"
+              className="grid h-10 w-10 place-items-center rounded-full bg-primary-50 text-primary-800 transition hover:bg-primary-100 dark:bg-slate-800 dark:text-primary-200"
               aria-expanded={open}
               aria-label={open ? t("Navbar.closeMenu") : t("Navbar.openMenu")}
             >
@@ -332,7 +332,7 @@ export const Navbar: React.FC = () => {
         </div>
 
         <div
-          className={`xl:hidden ${open ? "grid" : "hidden"} border-t border-blue-100 bg-white px-4 py-4 shadow-lg dark:border-slate-800 dark:bg-slate-950`}
+          className={`xl:hidden ${open ? "grid" : "hidden"} border-t border-primary-100 bg-white px-4 py-4 shadow-lg dark:border-slate-800 dark:bg-slate-950`}
         >
           <nav
             className="container-desa grid gap-1"
@@ -340,7 +340,7 @@ export const Navbar: React.FC = () => {
           >
             <Link
               href="/cari"
-              className="flex items-center gap-3 rounded-xl bg-blue-50 px-4 py-3 text-sm font-bold text-blue-700 dark:bg-slate-800 dark:text-slate-200"
+              className="flex items-center gap-3 rounded-xl bg-primary-50 px-4 py-3 text-sm font-bold text-primary-700 dark:bg-slate-800 dark:text-slate-200"
               aria-label={t("Navbar.searchSite", "Cari konten di situs")}
             >
               <Search className="h-4 w-4" aria-hidden="true" />
@@ -354,13 +354,13 @@ export const Navbar: React.FC = () => {
                 <div key={menu.i18nKey ?? menu.href}>
                   <Link
                     href={menu.href}
-                    className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold ${isActive(menu.href) ? "bg-blue-700 text-white" : "text-slate-700 hover:bg-blue-50 dark:text-slate-200 dark:hover:bg-slate-800"}`}
+                    className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold ${isActive(menu.href) ? "bg-primary-700 text-white" : "text-slate-700 hover:bg-primary-50 dark:text-slate-200 dark:hover:bg-slate-800"}`}
                   >
                     {menuLabel}
                     {menu.children && <ChevronDown className="h-4 w-4" />}
                   </Link>
                   {menu.children && (
-                    <div className="ml-4 border-l border-blue-100 py-1 pl-4 dark:border-slate-700">
+                    <div className="ml-4 border-l border-primary-100 py-1 pl-4 dark:border-slate-700">
                       {menu.children.map((child) => {
                         const childLabel = child.i18nKey
                           ? t(child.i18nKey)
@@ -371,7 +371,7 @@ export const Navbar: React.FC = () => {
                           <Link
                             key={childKey}
                             href={child.href}
-                            className="block py-2 text-xs font-semibold text-slate-500 hover:text-blue-700 dark:text-slate-400"
+                            className="block py-2 text-xs font-semibold text-slate-500 hover:text-primary-700 dark:text-slate-400"
                           >
                             {childLabel}
                           </Link>
@@ -382,7 +382,7 @@ export const Navbar: React.FC = () => {
                 </div>
               );
             })}
-            <div className="mt-3 flex gap-2 border-t border-blue-100 pt-4 dark:border-slate-800">
+            <div className="mt-3 flex gap-2 border-t border-primary-100 pt-4 dark:border-slate-800">
               <Link href="/layanan" className="flex-1">
                 <Button className="w-full rounded-full">
                   <FileText className="h-4 w-4" /> {t("Navbar.applyLetter")}

@@ -4,9 +4,9 @@ import { getProfilDesa } from '@/lib/services/desa.service';
 import { KontakClient } from './KontakClient';
 
 export const metadata: Metadata = {
-  title: 'Kontak & Lokasi Kantor Desa Borong',
+  title: 'Kontak & Lokasi Kantor Desa Anabanua',
   description:
-    'Informasi kontak resmi Pemerintah Desa Borong, Kecamatan Herlang, Kabupaten Bulukumba. Alamat kantor, nomor telepon/WhatsApp, email, dan jam pelayanan publik.',
+    'Informasi kontak resmi Pemerintah Desa Anabanua, Kecamatan Barru, Kabupaten Barru. Alamat kantor, nomor telepon/WhatsApp, email, dan jam pelayanan publik.',
 };
 
 export default async function KontakPage() {

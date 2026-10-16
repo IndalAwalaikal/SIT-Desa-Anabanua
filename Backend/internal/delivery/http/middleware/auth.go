@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
-	iauth "desa-borong-api/internal/infrastructure/auth"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
+	iauth "desa-anabanua-api/internal/infrastructure/auth"
 )
 
 type ctxKey struct{}

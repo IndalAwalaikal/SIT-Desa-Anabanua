@@ -34,7 +34,7 @@ export const ShareButtons: React.FC<ShareButtonsProps> = ({ title }) => {
       label: 'Facebook',
       href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
       Icon: Facebook,
-      className: 'bg-blue-600/10 text-blue-700 hover:bg-blue-600/20',
+      className: 'bg-primary-600/10 text-primary-700 hover:bg-primary-600/20',
     },
   ];
 

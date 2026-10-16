@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
 )
 
 // SekilasInfoGet serves the public ticker list — only active items are returned.

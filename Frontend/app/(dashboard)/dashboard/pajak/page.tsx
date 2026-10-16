@@ -436,10 +436,10 @@ export default function AdminPajakPage() {
 
         <Card className="p-5 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-[10px] font-extrabold uppercase bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-extrabold uppercase bg-primary-50 dark:bg-primary-950/50 text-primary-700 dark:text-primary-300 px-2 py-0.5 rounded-full">
               Siap Disetor BPD
             </span>
-            <ShieldCheck className="w-4 h-4 text-blue-600" />
+            <ShieldCheck className="w-4 h-4 text-primary-600" />
           </div>
           <div className="text-xl font-black text-neutral-900 dark:text-white">
             {loading ? (
@@ -455,10 +455,10 @@ export default function AdminPajakPage() {
 
         <Card className="p-5 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-[10px] font-extrabold uppercase bg-violet-50 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-extrabold uppercase bg-primary-50 dark:bg-primary-950/50 text-primary-700 dark:text-primary-300 px-2 py-0.5 rounded-full">
               Total Setoran BPD
             </span>
-            <Building2 className="w-4 h-4 text-violet-600" />
+            <Building2 className="w-4 h-4 text-primary-600" />
           </div>
           <div className="text-xl font-black text-neutral-900 dark:text-white">
             {loading ? (
@@ -539,7 +539,7 @@ export default function AdminPajakPage() {
               {selectedTrxIds.length > 0 && (
                 <button
                   onClick={() => setShowSetoranModal(true)}
-                  className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs shadow transition flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-xl bg-primary-600 hover:bg-primary-500 text-white font-extrabold text-xs shadow transition flex items-center gap-1.5"
                 >
                   <Building2 className="w-3.5 h-3.5" /> Buat Batch Setoran BPD (
                   {selectedTrxIds.length})
@@ -812,7 +812,7 @@ export default function AdminPajakPage() {
                       key={s.id}
                       className="hover:bg-neutral-50 dark:hover:bg-neutral-800/40"
                     >
-                      <td className="py-3 px-3 font-mono font-bold text-blue-600 dark:text-blue-400">
+                      <td className="py-3 px-3 font-mono font-bold text-primary-600 dark:text-primary-400">
                         {s.nomorSetoran}
                       </td>
                       <td className="py-3 px-3 font-bold text-neutral-900 dark:text-white">
@@ -832,7 +832,7 @@ export default function AdminPajakPage() {
                           className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] ${
                             s.status === "dikonfirmasi"
                               ? "bg-emerald-100 text-emerald-800"
-                              : "bg-indigo-100 text-indigo-800"
+                              : "bg-amber-100 text-amber-800"
                           }`}
                         >
                           {s.status === "dikonfirmasi"
@@ -882,7 +882,7 @@ export default function AdminPajakPage() {
                   Master Jenis Pajak &amp; Retribusi
                 </h3>
                 <p className="text-xs text-neutral-500">
-                  Kategori pajak yang dikelola Desa Borong.
+                  Kategori pajak yang dikelola Desa Anabanua.
                 </p>
               </div>
               <button
@@ -932,7 +932,7 @@ export default function AdminPajakPage() {
                         });
                         setShowJenisModal(true);
                       }}
-                      className="text-blue-600 font-bold hover:underline"
+                      className="text-primary-600 font-bold hover:underline"
                     >
                       Edit
                     </button>
@@ -1002,7 +1002,7 @@ export default function AdminPajakPage() {
                       });
                       setShowWpModal(true);
                     }}
-                    className="text-blue-600 font-bold hover:underline"
+                    className="text-primary-600 font-bold hover:underline"
                   >
                     Edit
                   </button>
@@ -1278,7 +1278,7 @@ export default function AdminPajakPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-blue-600 text-white font-extrabold"
+                  className="px-5 py-2 rounded-xl bg-primary-600 text-white font-extrabold"
                 >
                   Proses Setor BPD
                 </button>

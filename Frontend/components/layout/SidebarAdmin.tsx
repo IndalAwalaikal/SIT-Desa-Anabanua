@@ -73,7 +73,7 @@ export const SidebarAdmin: React.FC = () => {
   const handleLogout = () => {
     logout();
     showInfo('Sesi admin Anda telah berakhir.');
-    router.replace('/dashboard/login');
+    router.replace('/login');
   };
 
   return (
@@ -105,7 +105,7 @@ export const SidebarAdmin: React.FC = () => {
                 </div>
                 <div>
                   <h2 className="font-extrabold text-sm text-white tracking-tight">ADMIN DESA</h2>
-                  <p className="text-[10px] text-primary-400 font-bold">DESA BORONG DIGITAL</p>
+                  <p className="text-[10px] text-primary-400 font-bold">DESA ANABANUA DIGITAL</p>
                 </div>
               </div>
 

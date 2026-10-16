@@ -2,9 +2,9 @@ import React from 'react';
 import { SejarahClient } from './SejarahClient';
 
 export const metadata = {
-  title: 'Sejarah dan Asal Usul Desa Borong - Kecamatan Herlang',
+  title: 'Sejarah dan Asal Usul Desa Anabanua - Kecamatan Barru',
   description:
-    'Menelusuri sejarah, asal-usul nama, tradisi Adat Sampulo Rua, Karaeng Borong I Luluang Daeng Mabbiring, serta perjalanan terbentuknya Desa Borong di Kabupaten Bulukumba.',
+    'Sejarah pemekaran Desa Anabanua dari Desa Palakka, pembentukan Desa Persiapan Latuttu, makna nama, dan tradisi pertanian Maddoja Bine.',
 };
 
 export default function SejarahPage() {

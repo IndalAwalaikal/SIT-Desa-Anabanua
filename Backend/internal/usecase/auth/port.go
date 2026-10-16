@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 // UserRepository persists user accounts.
@@ -64,7 +64,7 @@ type OTPRepository interface {
 	InvalidateByUserPurpose(ctx context.Context, userID, purpose string) error
 }
 
-// EmailSender delivers outbound email (Brevo or noop). Defined here so the
+// EmailSender delivers outbound email (Mailjet or noop). Defined here so the
 // use case stays decoupled from the email infrastructure package.
 type EmailSender interface {
 	Send(ctx context.Context, to, subject, htmlBody string) error

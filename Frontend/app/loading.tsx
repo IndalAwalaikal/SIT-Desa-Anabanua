@@ -9,7 +9,7 @@ export default function Loading() {
           aria-hidden
         />
         <p className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">
-          Memuat konten Desa Borong...
+          Memuat konten Desa Anabanua...
         </p>
       </div>
     </div>

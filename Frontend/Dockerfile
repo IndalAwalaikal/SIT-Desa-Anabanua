@@ -11,7 +11,7 @@ COPY . .
 # karena .dockerignore mengecualikan file .env*, variabel hanya lewat ARG/ENV.
 ARG NEXT_PUBLIC_API_BASE_URL=/api
 ARG API_INTERNAL_URL=http://backend:8080
-ARG NEXT_PUBLIC_APP_NAME="Website Desa Borong"
+ARG NEXT_PUBLIC_APP_NAME="Website Desa Anabanua"
 ARG NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ARG NEXT_PUBLIC_MOCK_DELAY_MS=0
 ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL

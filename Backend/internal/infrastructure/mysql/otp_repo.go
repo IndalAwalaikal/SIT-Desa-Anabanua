@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 
-	"desa-borong-api/internal/domain"
-	asecase "desa-borong-api/internal/usecase/auth"
+	"desa-anabanua-api/internal/domain"
+	asecase "desa-anabanua-api/internal/usecase/auth"
 )
 
 // OTPRepo persists one-time passcodes in the otp_codes table.

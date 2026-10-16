@@ -1,6 +1,6 @@
 <div align="center">
 
-# Sistem Informasi Desa Borong
+# Sistem Informasi Desa Anabanua
 
 ### Portal Layanan Publik, Transparansi, dan Administrasi Desa Berbasis Web
 
@@ -27,7 +27,7 @@
 
 ---
 
-Sistem Informasi Desa Borong adalah platform digital terpadu yang dirancang untuk menghadirkan transparansi pemerintahan, kecepatan layanan administrasi kependudukan dan persuratan, serta keterbukaan informasi publik bagi warga **Desa Borong, Kecamatan Herlang, Kabupaten Bulukumba, Sulawesi Selatan**.
+Sistem Informasi Desa Anabanua adalah platform digital terpadu yang dirancang untuk menghadirkan transparansi pemerintahan, kecepatan layanan administrasi kependudukan dan persuratan, serta keterbukaan informasi publik bagi warga **Desa Anabanua, Kecamatan Barru, Kabupaten Barru, Sulawesi Selatan**.
 
 Proyek ini dibangun dengan pendekatan **Clean Architecture** pada sisi backend dan teknologi frontend modern untuk memastikan performa tinggi, keamanan data yang ketat, serta pengalaman pengguna yang nyaman baik bagi warga maupun perangkat desa.
 
@@ -73,14 +73,14 @@ Sistem melayani dua sisi pengguna utama:
 
 ## Galeri Antarmuka
 
-Berikut pratinjau tampilan antarmuka Sistem Informasi Desa Borong.
+Berikut pratinjau tampilan antarmuka Sistem Informasi Desa Anabanua.
 
 ### Halaman Beranda
 
 Portal utama yang menyambut pengunjung dengan informasi penting, statistik kependudukan real-time, ticker informasi, serta akses cepat ke berbagai layanan publik.
 
 <p align="center">
-  <img src="docs/images/Beranda.png" alt="Beranda Desa Borong" width="100%" style="border-radius: 12px; border: 1px solid #cbd5e1;" />
+  <img src="docs/images/Beranda.png" alt="Beranda Desa Anabanua" width="100%" style="border-radius: 12px; border: 1px solid #cbd5e1;" />
 </p>
 <p align="center">
   <img src="docs/images/Beranda-dark.png" alt="Beranda Dark Mode" width="100%" style="border-radius: 12px; border: 1px solid #334155;" />
@@ -126,7 +126,7 @@ Panel kendali eksklusif bagi perangkat desa untuk mengelola verifikasi surat, pe
 - **Progressive Web App (PWA)** — Dapat dipasang langsung di perangkat seluler layaknya aplikasi native, dengan dukungan offline caching melalui service worker.
 - **Notifikasi Realtime (SSE)** — Pemberitahuan instan via Server-Sent Events untuk pembaruan status surat dan pengaduan warga tanpa perlu me-refresh halaman.
 - **Autentikasi Aman** — Kombinasi JWT access token berumur pendek (15 menit) dan refresh token terenkripsi dengan rotasi otomatis serta kemampuan pencabutan.
-- **Job Worker Asinkron** — Pengiriman email (Brevo), WhatsApp (FlowKiris), pembuatan PDF, dan pembersihan data diproses secara background, tidak membebani request-response.
+- **Job Worker Asinkron** — Pengiriman email (Sinch Mailjet), WhatsApp (FlowKiris), pembuatan PDF, dan pembersihan data diproses secara background, tidak membebani request-response.
 - **Optimasi Gambar Otomatis** — Menggunakan Next.js Image Optimization dengan `sharp`, mengonversi gambar ke AVIF/WebP dan melakukan resize responsif.
 - **Tema Adaptif (Dark/Light)** — Mendukung mode terang dan gelap secara mulus, dengan preferensi pengguna tersimpan melalui Zustand.
 - **Internasionalisasi (i18n)** — Siap digunakan dalam Bahasa Indonesia maupun Bahasa Inggris.
@@ -315,7 +315,7 @@ Backup database otomatis (mengikuti konfigurasi pada `.env`):
 
 ```bash
 cd Backend && bash scripts/backup.sh
-# hasil tersimpan di: Backend/backups/desa_borong_<timestamp>.sql.gz
+# hasil tersimpan di: Backend/backups/desa_anabanua_<timestamp>.sql.gz
 ```
 
 Untuk meregenerasi kode query type-safe dengan sqlc setelah mengubah skema atau query, jalankan `sqlc generate` (lihat `Backend/sqlc.yaml`).
@@ -393,6 +393,7 @@ Panduan lengkap untuk kontributor tersedia di `Frontend/AGENTS.md` dan `Backend/
 - **README ini** — gambaran umum proyek dan cara menjalankannya secara lokal.
 - **`Backend/README.md`** — detail implementasi API dan arsitektur backend.
 - **`Frontend/README.md`** — detail implementasi antarmuka dan fitur web.
+- **[`DEPLOYMENT.md`](DEPLOYMENT.md)** — panduan deploy terpisah Vercel + Railway.
 - **`Backend/AGENTS.md`** — panduan bagi agent/kontributor backend (arsitektur, Definition of Done, tech stack).
 - **`Frontend/AGENTS.md`** — panduan bagi agent/kontributor frontend.
 - **`Backend/PRD.md`**, **`Backend/SPEC.md`**, **`Frontend/PRD.md`**, **`Frontend/SPEC.md`** — dokumen kebutuhan produk dan spesifikasi teknis.

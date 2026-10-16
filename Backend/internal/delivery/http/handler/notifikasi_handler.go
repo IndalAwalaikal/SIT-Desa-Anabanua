@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/delivery/http/middleware"
-	"desa-borong-api/internal/domain"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/delivery/http/middleware"
+	"desa-anabanua-api/internal/domain"
 )
 
 func (h *Handler) NotifikasiList(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +73,7 @@ func (h *Handler) NotifikasiStream(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-		w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Content-Type", "text/event-stream")
 	w.Header().Set("Cache-Control", "no-cache")
 	w.Header().Set("Connection", "keep-alive")
 	// NOTE: We intentionally do NOT set "Access-Control-Allow-Origin" here.

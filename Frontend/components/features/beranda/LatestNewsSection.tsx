@@ -37,13 +37,13 @@ export const LatestNewsSection: React.FC<LatestNewsSectionProps> = ({
   };
 
   return (
-    <section className="py-20 bg-neutral-100 dark:bg-neutral-900/60 relative overflow-hidden">
+    <section className="py-20 bg-white dark:bg-neutral-950 relative overflow-hidden">
       {/* Decorative backdrop glow */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full opacity-[0.05] dark:opacity-[0.03] blur-3xl"
         style={{
-          background: "radial-gradient(circle, #2474d4 0%, transparent 70%)",
+          background: "radial-gradient(circle, #37AB34 0%, transparent 70%)",
         }}
       />
       <div className="container-desa relative z-10">

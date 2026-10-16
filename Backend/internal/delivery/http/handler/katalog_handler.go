@@ -1,15 +1,22 @@
 package handler
 
 import (
-	httpapi "desa-borong-api/internal/delivery/http/apiresponse"
-	"desa-borong-api/internal/domain"
+	httpapi "desa-anabanua-api/internal/delivery/http/apiresponse"
+	"desa-anabanua-api/internal/domain"
 	"net/http"
+	"strconv"
 )
 
 // ---- Galeri ----
 
 func (h *Handler) GaleriList(w http.ResponseWriter, r *http.Request) {
-	items, err := h.app.Galeri.List(r.Context())
+	var items []domain.GaleriAlbum
+	var err error
+	if r.URL.Query().Get("preview") == "1" {
+		items, err = h.app.Galeri.ListPreview(r.Context(), listLimit(r, 12))
+	} else {
+		items, err = h.app.Galeri.List(r.Context())
+	}
 	if err != nil {
 		httpapi.Error(w, err)
 		return
@@ -65,12 +72,23 @@ func (h *Handler) GaleriDelete(w http.ResponseWriter, r *http.Request) {
 // ---- UMKM ----
 
 func (h *Handler) UmkmList(w http.ResponseWriter, r *http.Request) {
-	items, err := h.app.Umkm.List(r.Context(), r.URL.Query().Get("kategori"))
+	items, err := h.app.Umkm.List(r.Context(), r.URL.Query().Get("kategori"), listLimit(r, 0))
 	if err != nil {
 		httpapi.Error(w, err)
 		return
 	}
 	httpapi.JSON(w, 200, items)
+}
+
+func listLimit(r *http.Request, fallback int) int {
+	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
+	if err != nil || limit < 1 {
+		return fallback
+	}
+	if limit > 100 {
+		return 100
+	}
+	return limit
 }
 
 func (h *Handler) UmkmGet(w http.ResponseWriter, r *http.Request) {

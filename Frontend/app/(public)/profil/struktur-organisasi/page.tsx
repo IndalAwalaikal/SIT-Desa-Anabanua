@@ -125,8 +125,8 @@ export default function StrukturOrganisasiPage() {
         {/* Header Masthead */}
         <PublicMasthead
           eyebrow={t('StrukturOrganisasi.eyebrow', 'TATALAKSANA & ORGANISASI PEMERINTAHAN DESA')}
-          title={t('StrukturOrganisasi.title', 'Struktur & Aparatur Pemerintah Desa Borong')}
-          description={t('StrukturOrganisasi.description', 'Jajaran pimpinan, sekretariat, kepala seksi, kepala urusan, dan kepala dusun yang berkomitmen melayani warga Desa Borong dengan profesional, transparan, dan akuntabel.')}
+          title={t('StrukturOrganisasi.title', 'Struktur & Aparatur Pemerintah Desa Anabanua')}
+          description={t('StrukturOrganisasi.description', 'Jajaran pimpinan, sekretariat, kepala seksi, kepala urusan, dan kepala dusun yang berkomitmen melayani warga Desa Anabanua dengan profesional, transparan, dan akuntabel.')}
           image="/kantor_desa.png"
         />
 
@@ -317,7 +317,7 @@ export default function StrukturOrganisasiPage() {
                       </div>
 
                       <p className="text-xs italic text-neutral-500 dark:text-neutral-400 border-t border-neutral-100 dark:border-neutral-800 pt-3">
-                        &quot;Melayani masyarakat Desa Borong dengan ikhlas,
+                        &quot;Melayani masyarakat Desa Anabanua dengan ikhlas,
                         transparan, dan berkeadilan demi mewujudkan desa yang
                         maju dan sejahtera.&quot;
                       </p>
@@ -407,7 +407,7 @@ export default function StrukturOrganisasiPage() {
                   Jajaran Kepala Seksi (Kasi) &amp; Kepala Urusan (Kaur)
                 </h3>
                 <p className="text-xs text-neutral-600 dark:text-neutral-400">
-                  Unsur Pelaksana Teknis dan Sekretariat Desa Borong
+                  Unsur Pelaksana Teknis dan Sekretariat Desa Anabanua
                 </p>
               </div>
 
@@ -464,7 +464,7 @@ export default function StrukturOrganisasiPage() {
                     Kepala Dusun &amp; Wilayah Desa
                   </h3>
                   <p className="text-xs text-neutral-600 dark:text-neutral-400">
-                    Unsur Pelaksana Kewilayahan Desa Borong
+                    Unsur Pelaksana Kewilayahan Desa Anabanua
                   </p>
                 </div>
 
@@ -661,7 +661,7 @@ export default function StrukturOrganisasiPage() {
                     Lokasi Tugas
                   </span>
                   <span className="font-bold text-neutral-800 dark:text-neutral-200">
-                    Kantor Desa Borong, Kec. Herlang
+                    Kantor Desa Anabanua, Kec. Barru
                   </span>
                 </div>
               </div>

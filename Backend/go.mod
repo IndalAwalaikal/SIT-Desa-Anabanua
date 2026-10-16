@@ -1,4 +1,4 @@
-module desa-borong-api
+module desa-anabanua-api
 
 go 1.26
 

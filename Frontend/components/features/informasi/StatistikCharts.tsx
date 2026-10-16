@@ -21,7 +21,7 @@ import { lightTooltipProps } from '@/lib/utils/chartTooltip';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import type { StatistikPenduduk, TrenPenduduk } from '@/types/statistik';
 
-const COLORS = ['#16a34a', '#2563eb', '#f59e0b', '#dc2626', '#8b5cf6', '#ec4899', '#06b6d4'];
+const COLORS = ['#16a34a', '#37AB34', '#f59e0b', '#dc2626', '#0d9488', '#f97316', '#06b6d4'];
 
 const BULAN_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
@@ -86,8 +86,8 @@ export const StatistikCharts: React.FC<StatistikChartsProps> = ({ data, tren }) 
                   paddingAngle={5}
                   dataKey="value"
                 >
-                  <Cell fill="#2563eb" />
-                  <Cell fill="#ec4899" />
+                  <Cell fill="#37AB34" />
+                  <Cell fill="#f97316" />
                 </Pie>
                 <Tooltip {...lightTooltipProps} />
                 <Legend />
@@ -112,7 +112,7 @@ export const StatistikCharts: React.FC<StatistikChartsProps> = ({ data, tren }) 
                 <XAxis type="number" stroke="#888888" fontSize={12} />
                 <YAxis dataKey="jenjang" type="category" stroke="#888888" fontSize={11} width={130} />
                 <Tooltip {...lightTooltipProps} />
-                <Bar dataKey="jumlah" fill="#2563eb" radius={[0, 8, 8, 0]} />
+                <Bar dataKey="jumlah" fill="#37AB34" radius={[0, 8, 8, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardBody>
@@ -154,7 +154,7 @@ export const StatistikCharts: React.FC<StatistikChartsProps> = ({ data, tren }) 
                   <XAxis dataKey="rentang" stroke="#888888" fontSize={11} />
                   <YAxis stroke="#888888" fontSize={12} />
                   <Tooltip {...lightTooltipProps} />
-                  <Bar dataKey="jumlah" fill="#8b5cf6" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="jumlah" fill="#0d9488" radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardBody>
@@ -214,7 +214,7 @@ export const StatistikCharts: React.FC<StatistikChartsProps> = ({ data, tren }) 
                 <Legend wrapperStyle={{ fontSize: 12 }} />
                 <Line type="monotone" dataKey="lahir" name={t('Statistik.trenLahir', 'Kelahiran')} stroke="#16a34a" strokeWidth={2} dot={{ r: 3 }} />
                 <Line type="monotone" dataKey="meninggal" name={t('Statistik.trenMeninggal', 'Kematian')} stroke="#dc2626" strokeWidth={2} dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="pindahMasuk" name={t('Statistik.trenMasuk', 'Pindah Masuk')} stroke="#2563eb" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="pindahMasuk" name={t('Statistik.trenMasuk', 'Pindah Masuk')} stroke="#37AB34" strokeWidth={2} dot={{ r: 3 }} />
                 <Line type="monotone" dataKey="pindahKeluar" name={t('Statistik.trenKeluar', 'Pindah Keluar')} stroke="#f59e0b" strokeWidth={2} dot={{ r: 3 }} />
               </LineChart>
             </ResponsiveContainer>

@@ -5,7 +5,7 @@ import (
 	"context"
 	"io"
 
-	"desa-borong-api/internal/domain"
+	"desa-anabanua-api/internal/domain"
 )
 
 // JenisSuratRepository persists the letter-type master data.
@@ -32,7 +32,10 @@ type PengajuanRepository interface {
 	GetByIDForUpdate(ctx context.Context, id string) (domain.PengajuanSurat, error)
 	GetByQRVerificationCode(ctx context.Context, code string) (domain.PengajuanSurat, error)
 	ListByPemohon(ctx context.Context, pemohonID string) ([]domain.PengajuanSurat, error)
+	ListByPemohonPage(ctx context.Context, pemohonID string, page, limit int) ([]domain.PengajuanSurat, int, error)
 	ListAll(ctx context.Context, status string) ([]domain.PengajuanSurat, error)
+	ListPage(ctx context.Context, status, search, sort string, page, limit int) ([]domain.PengajuanSurat, int, error)
+	CountByStatus(ctx context.Context) (map[string]int, error)
 	UpdateStatus(ctx context.Context, id string, status domain.StatusPengajuan, catatan, changedBy *string) error
 	AddRiwayat(ctx context.Context, pengajuanID string, r domain.RiwayatStatus) error
 	SetDokumenHasil(ctx context.Context, id string, d domain.DokumenHasilSurat) error
@@ -60,7 +63,7 @@ type UserReader interface {
 	GetByID(ctx context.Context, id string) (domain.User, error)
 }
 
-// EmailSender delivers outbound email (Brevo or noop). Defined here so the
+// EmailSender delivers outbound email (Mailjet or noop). Defined here so the
 // persuratan use case stays decoupled from the email infrastructure package.
 type EmailSender interface {
 	Send(ctx context.Context, to, subject, htmlBody string) error
