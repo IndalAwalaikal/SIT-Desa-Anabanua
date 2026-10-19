@@ -96,6 +96,7 @@ export const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [openMobileMenu, setOpenMobileMenu] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -107,6 +108,7 @@ export const Navbar: React.FC = () => {
   useEffect(() => {
     setOpen(false);
     setOpenMenu(null);
+    setOpenMobileMenu(null);
   }, [pathname]);
 
   // Tutup dropdown desktop saat klik di luar menu atau tekan Escape
@@ -159,28 +161,28 @@ export const Navbar: React.FC = () => {
       <header
         className={`sticky top-0 md:top-[36px] z-50 w-full border-b border-neutral-200 bg-white/96 dark:border-neutral-800 dark:bg-neutral-950/96 backdrop-blur transition-all duration-300 print:hidden ${scrolled ? "shadow-[0_12px_32px_rgba(36,61,33,0.08)]" : "shadow-sm"}`}
       >
-        <div className="container-desa flex h-[76px] items-center justify-between gap-5">
+        <div className="container-desa flex h-16 items-center justify-between gap-2 sm:h-[76px] sm:gap-5">
           <Link
             href="/"
             className="group flex min-w-0 items-center gap-3"
             aria-label="Beranda Desa Anabanua"
           >
             {/* Logo tanpa border kotak, menggunakan drop-shadow agar batas tetap jelas */}
-            <span className="grid h-12 w-12 shrink-0 place-items-center transition-transform duration-300 group-hover:-translate-y-0.5">
+            <span className="grid h-10 w-10 shrink-0 place-items-center transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-12 sm:w-12">
               <Image
                 src={logoBarru}
                 alt="Lambang Kabupaten Barru"
                 width={44}
                 height={44}
-                className="h-auto w-11 object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+                className="h-auto w-9 object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] sm:w-11"
                 priority
               />
             </span>
             <span className="min-w-0 leading-none">
-              <span className="block font-serif text-[19px] font-bold tracking-tight text-[#174b17] dark:text-white sm:text-[21px]">
+              <span className="block truncate font-serif text-[16px] font-bold tracking-tight text-[#174b17] dark:text-white sm:text-[21px]">
                 Desa Anabanua
               </span>
-              <span className="mt-1 block truncate text-[10px] font-bold uppercase tracking-[0.13em] text-primary-600 dark:text-primary-300">
+              <span className="mt-1 block truncate text-[8px] font-bold uppercase tracking-[0.1em] text-primary-600 dark:text-primary-300 sm:text-[10px] sm:tracking-[0.13em]">
                 Kec. Barru · Kab. Barru
               </span>
             </span>
@@ -322,6 +324,7 @@ export const Navbar: React.FC = () => {
             </button>
             <button
               onClick={() => setOpen(!open)}
+              aria-controls="mobile-navigation"
               className="grid h-10 w-10 place-items-center rounded-full bg-primary-50 text-primary-800 transition hover:bg-primary-100 dark:bg-slate-800 dark:text-primary-200"
               aria-expanded={open}
               aria-label={open ? t("Navbar.closeMenu") : t("Navbar.openMenu")}
@@ -332,7 +335,8 @@ export const Navbar: React.FC = () => {
         </div>
 
         <div
-          className={`xl:hidden ${open ? "grid" : "hidden"} border-t border-primary-100 bg-white px-4 py-4 shadow-lg dark:border-slate-800 dark:bg-slate-950`}
+          id="mobile-navigation"
+          className={`xl:hidden ${open ? "grid" : "hidden"} max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-t border-primary-100 bg-white px-4 py-3 shadow-lg sm:max-h-[calc(100dvh-4.75rem)] sm:py-4 dark:border-slate-800 dark:bg-slate-950`}
         >
           <nav
             className="container-desa grid gap-1"
@@ -352,15 +356,24 @@ export const Navbar: React.FC = () => {
                 : (menu.label ?? "Menu");
               return (
                 <div key={menu.i18nKey ?? menu.href}>
-                  <Link
-                    href={menu.href}
-                    className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold ${isActive(menu.href) ? "bg-primary-700 text-white" : "text-slate-700 hover:bg-primary-50 dark:text-slate-200 dark:hover:bg-slate-800"}`}
-                  >
-                    {menuLabel}
-                    {menu.children && <ChevronDown className="h-4 w-4" />}
-                  </Link>
+                  <div className={`flex items-center rounded-xl ${isActive(menu.href) ? "bg-primary-700 text-white" : "text-slate-700 dark:text-slate-200"}`}>
+                    <Link href={menu.href} className="min-w-0 flex-1 px-4 py-3 text-sm font-bold">
+                      {menuLabel}
+                    </Link>
+                    {menu.children && (
+                      <button
+                        type="button"
+                        aria-label={`${openMobileMenu === menu.href ? "Tutup" : "Buka"} ${menuLabel}`}
+                        aria-expanded={openMobileMenu === menu.href}
+                        onClick={() => setOpenMobileMenu(openMobileMenu === menu.href ? null : menu.href)}
+                        className="grid h-11 w-12 shrink-0 place-items-center rounded-r-xl hover:bg-black/5 dark:hover:bg-white/10"
+                      >
+                        <ChevronDown className={`h-4 w-4 transition-transform ${openMobileMenu === menu.href ? "rotate-180" : ""}`} />
+                      </button>
+                    )}
+                  </div>
                   {menu.children && (
-                    <div className="ml-4 border-l border-primary-100 py-1 pl-4 dark:border-slate-700">
+                    <div className={`${openMobileMenu === menu.href ? "grid" : "hidden"} ml-4 border-l border-primary-100 py-1 pl-4 dark:border-slate-700`}>
                       {menu.children.map((child) => {
                         const childLabel = child.i18nKey
                           ? t(child.i18nKey)

@@ -29,7 +29,7 @@ CREATE TABLE master_jenis_pajak (
 
 CREATE TABLE wajib_pajak (
   id CHAR(26) PRIMARY KEY,
-  user_id CHAR(26) NULL,
+  user_id CHAR(26) COLLATE utf8mb4_0900_ai_ci NULL,
   no_objek VARCHAR(100) NOT NULL DEFAULT '',
   nama VARCHAR(150) NOT NULL,
   nik VARCHAR(30) NULL,
